@@ -1,0 +1,74 @@
+/*Ce fichier launch.json est un fichier de configuration pour VS Code
+utilisé pour le debugging en C avec l'extension C/C++ de Microsoft.
+Il définit plusieurs configurations de lancement pour exécuter et déboguer
+des programmes C.*/
+
+{
+    "version": "2.0.0", //Version du schéma de configuration
+    "configurations": [ //Liste des différentes configurations de lancement.
+/*Chaque configuration est un objet avec des paramètres permettant de définir
+comment VS Code doit lancer et déboguer un programme C.*/
+        {
+            "name": "C Launch", //Config 1
+            "type": "cppdbg", //Utilisation du debugger C/C++ de VS Code
+            "request": "launch", //Exécute le programme
+            "program": "${workspaceRoot}/a.out", //Programme lancé (l'exécutable compilé)
+            "preLaunchTask": "build", //tache dans task.json qui compile le code
+            "internalConsoleOptions": "openOnSessionStart",
+            "logging": {
+                "moduleLoad": false,
+                "programOutput": true, //Capture uniquement la sortie du programme
+                "trace": false
+            },
+            "showDisplayString": false,
+            "args": [],// ["arg1", "arg2"]
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true, // true = enable keyboard input (Console externe pour capturer l'entrée utilisateur)
+            "osx": {
+                "MIMode": "lldb" //Option pour macOS
+            }
+        }, //Sum up : Configuration classique pour exécuter et déboguer un programme C avec prise en charge de la console externe.
+		{
+            "name": "Fichier en cours d'édition", //Config 2
+            "type": "cppdbg", //Utilisation du debugger C/C++ de VS Code
+            "request": "launch", //Exécute le programme
+            "program": "${workspaceRoot}/a.out", //Programme lancé (l'exécutable compilé)
+            // "args": ["arg1", "arg2"],
+            "environment": [{ "name": "config", "value": "Debug" }], //Définit une variable d'environnement
+            "cwd": "${workspaceFolder}",//racine (dossier VSCode) - Attention dans l'emploi de chemins d'acces pour args fichiers tests
+            "preLaunchTask": "C/C++: cc build active file" //Compile uniquement le fichier en cours d'édition
+        }, //Sum up : Lance un programme C compilé avec un flag Debug (probablement pour un mode de compilation spécifique).
+		{
+            "name": "C Launch BSD By Fab_BG_du_38", //Config 3
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/a.out",
+            // "args": ["arg1", "arg2"],
+            "environment": [{ "name": "config", "value": "Debug" }],
+            "cwd": "${workspaceFolder}",//racine (dossier VSCode) - Attention dans l'emploi de chemins d'acces pour args fichiers tests
+            "preLaunchTask": "C/C++: cc build active file bsd" //Pré-compilation différente de la config précédente (version adaptée aux systèmes BSD)
+        }, //Sum up : Même but que la config précédente, mais pour un environnement BSD
+		{
+            "name": "LibFt Only", //Config 4
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/a.out",
+            // "args": ["arg1", "arg2"],
+            "environment": [{ "name": "config", "value": "Debug" }],
+            "cwd": "${workspaceFolder}",//racine (dossier VSCode) - Attention dans l'emploi de chemins d'acces pour args fichiers tests
+            "preLaunchTask": "My LibFt library" //Build spécial pour tester fonctions de la LibFt
+        }, //Lance uniquement un programme compilé avec LibFt, sans autre code.
+		{
+            "name": "Get_Next_Line_Only", //Config 2
+            "type": "cppdbg", //Utilisation du debugger C/C++ de VS Code
+            "request": "launch", //Exécute le programme
+            "program": "${workspaceRoot}/a.out", //Programme lancé (l'exécutable compilé)
+            // "args": ["arg1", "arg2"],
+            "environment": [{ "name": "config", "value": "Debug" }], //Définit une variable d'environnement
+            "cwd": "${workspaceFolder}",//racine (dossier VSCode) - Attention dans l'emploi de chemins d'acces pour args fichiers tests
+            "preLaunchTask": "C/C++: cc build get_next_line" //Compile uniquement les fichiers relatifs a GNL
+        }, //Sum up : Config pour GNL uniquement, qui compile le fichier gnl + gnl_utils (voir prelaunch task)
+    ]
+}
