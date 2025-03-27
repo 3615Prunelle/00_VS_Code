@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
@@ -108,3 +108,12 @@ char	*ft_strjoin_bis(char *s1, char *s2)
 	s1 = temp;
 	return (s1);
 }
+
+// void	freedom_yolo(void **mem)
+// {
+// 	if (*mem)
+// 	{
+// 		free(*mem);
+// 		*mem = NULL;
+// 	}
+// }
