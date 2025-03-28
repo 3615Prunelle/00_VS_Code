@@ -104,7 +104,7 @@ int	newline_index_check(char *buffer)
 	return (0);
 }
 
-#define ROUQUINETTE_DEBUG //pour lancer tester : comment out uniquement cette ligne au lieu de tout le reste en dessous
+//#define ROUQUINETTE_DEBUG //pour lancer tester : comment out uniquement cette ligne au lieu de tout le reste en dessous
 #ifdef ROUQUINETTE_DEBUG
 
 void freedom_yolo(void **mem)
@@ -154,7 +154,7 @@ int	main(void)
 		line_number++;
 	}
 	if (!grand_final)
-		printf ("\n*** Last Line Reached [OR] Line not found ***\n");
+	printf ("\n______________________ Last line reached [OR] Line not found ______________________\n\n");
 	freedom_yolo((void **)&grand_final);
 	return (0);
 }

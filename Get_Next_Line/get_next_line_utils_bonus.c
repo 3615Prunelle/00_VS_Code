@@ -108,12 +108,3 @@ char	*ft_strjoin_bis(char *s1, char *s2)
 	s1 = temp;
 	return (s1);
 }
-
-// void	freedom_yolo(void **mem)
-// {
-// 	if (*mem)
-// 	{
-// 		free(*mem);
-// 		*mem = NULL;
-// 	}
-// }
