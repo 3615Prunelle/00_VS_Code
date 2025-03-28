@@ -32,12 +32,12 @@
 char		*get_next_line(int fd);
 
 // Helpers
-void		read_line(int i, int fd_array[i], char *buffer_array[i], char **line, char **temp);
+void		read_line(int fd, char **buffer, char **line, char **temp);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		*ft_memset(void *str, int constante, size_t taille);
 size_t		ft_strlen(const char *str);
 int			newline_index_check(char *buffer);
-int			n_counter(int i, char *buffer_array[i]);
+int			n_counter(char *buffer);
 char		*ft_strchr(const char *s, int c);
 char		*ft_strlcpy(char *dst, const char *src, size_t size);
 char		*ft_strjoin_bis(char *s1, char *s2);

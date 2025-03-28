@@ -23,21 +23,17 @@ char	*get_next_line(int fd)
 	static char *buffer_array[AMOUNT_OF_FD];
 
 	static int i;
-	if (i < AMOUNT_OF_FD)
-	{
-		fd_array[i] = fd; // un FD par élément du tableau
-		buffer_array[i] = buffer; // idem : un buffer par élément pour le même index
-	}
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!buffer_array[i])
 	{
 		buffer_array[i] = ft_calloc (BUFFER_SIZE + 1, 1);
-		read (fd_array[i], buffer_array[i], BUFFER_SIZE);
+		read (fd, buffer_array[i], BUFFER_SIZE);
 	}
 	temp = ft_calloc(BUFFER_SIZE + 1, 1);
 	line = ft_calloc(BUFFER_SIZE + 1, 1);
-	read_line(i, &fd_array[i], &buffer_array[i], &line, &temp); //le problème est ici, au 2ème call de la fonction
+	read_line(fd, &buffer_array[i], &line, &temp);
 	free(temp);
 
 	i++;
@@ -47,23 +43,22 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-void	read_line(int i, int fd_array[i], char *buffer_array[i], char **line, char **temp)
+void	read_line(int fd, char **buffer, char **line, char **temp)
 {
-	//while (*buffer_array[i]) // ce que j'avais mis initialement, mais crée une segfault pour la lecture du fd2
-	while (*buffer_array) // Résoud bug au 2ème call mais pas logique. Dans tous les cas, même avec cette solution j'ai un souci plus bas
+	while (*buffer)
 	{
-		if (n_counter(i, &buffer_array[i]))
+		if (n_counter(*buffer))
 		{
-			*temp = ft_strlcpy(*temp, buffer_array[i],
-					newline_index_check(buffer_array[i]) + 1);
+			*temp = ft_strlcpy(*temp, *buffer,
+					newline_index_check(*buffer) + 1);
 			*line = ft_strjoin_bis(*line, *temp);
-			buffer_array[i] = ft_strlcpy(buffer_array[i], ft_strchr(buffer_array[i], '\n'),
-					ft_strlen(buffer_array[i]) - newline_index_check(buffer_array[i]) + 1);
+			*buffer = ft_strlcpy(*buffer, ft_strchr(*buffer, '\n'),
+					ft_strlen(*buffer) - newline_index_check(*buffer) + 1);
 			break ;
 		}
-		*line = ft_strjoin_bis(*line, buffer_array[i]); // TO DEBUG : buffer_array[i] est bien passé à strjoin pour fd1 mais pas pour fd2, alors qu'il apparait bien dans le débugger
-		ft_memset(buffer_array[i], 0, BUFFER_SIZE);
-		if (read(fd_array[i], buffer_array[i], BUFFER_SIZE) <= 0)
+		*line = ft_strjoin_bis(*line, *buffer);
+		ft_memset(*buffer, 0, BUFFER_SIZE);
+		if (read(fd, *buffer, BUFFER_SIZE) <= 0)
 		{
 			if (*line[0] == '\0')
 			{
@@ -90,26 +85,17 @@ void	*ft_memset(void *str, int constante, size_t taille)
 	return (str);
 }
 
-int	n_counter(int j, char *buffer_array[j])
+int	n_counter(char *buffer)
 {
 	int	i;
 	int	counter;
 
 	i = 0;
 	counter = 0;
-	while ((buffer_array[j]) && i < BUFFER_SIZE)
+	while (buffer[i])
 	{
-		if (*buffer_array[j] == '\n')
-		{
+		if (buffer[i] == '\n')
 			counter++;
-		}
-		*buffer_array[j]++;
-		i++;
-	}
-	i = 0;
-	while (i < BUFFER_SIZE)
-	{
-		*buffer_array[j]--; //putting *buffer_array[j] to its inital position before entering the function
 		i++;
 	}
 	return (counter);
@@ -129,7 +115,7 @@ int	newline_index_check(char *buffer)
 	return (0);
 }
 
-#define ROUQUINETTE_DEBUG //comment out uniquement cette ligne au lieu de tout le reste en dessous
+#define ROUQUINETTE_DEBUG //pour lancer tester : comment out uniquement cette ligne au lieu de tout le reste en dessous
 #ifdef ROUQUINETTE_DEBUG
 
 void freedom_yolo(void **mem)
