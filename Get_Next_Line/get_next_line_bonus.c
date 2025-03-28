@@ -25,10 +25,9 @@ char	*get_next_line(int fd)
 	static int i;
 	if (i < AMOUNT_OF_FD)
 	{
-		fd_array[i] = fd; //on met un FD par case
-		buffer_array[i] = buffer; //on fait correspondre un buffer pour le même index
+		fd_array[i] = fd; // un FD par élément du tableau
+		buffer_array[i] = buffer; // idem : un buffer par élément pour le même index
 	}
-	int test = BUFFER_SIZE;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!buffer_array[i])
@@ -38,7 +37,7 @@ char	*get_next_line(int fd)
 	}
 	temp = ft_calloc(BUFFER_SIZE + 1, 1);
 	line = ft_calloc(BUFFER_SIZE + 1, 1);
-	read_line(i, &fd_array[i], &buffer_array[i], &line, &temp);
+	read_line(i, &fd_array[i], &buffer_array[i], &line, &temp); //le problème est ici, au 2ème call de la fonction
 	free(temp);
 
 	i++;
@@ -50,7 +49,8 @@ char	*get_next_line(int fd)
 
 void	read_line(int i, int fd_array[i], char *buffer_array[i], char **line, char **temp)
 {
-	while (*buffer_array[i])
+	//while (*buffer_array[i]) // ce que j'avais mis initialement, mais crée une segfault pour la lecture du fd2
+	while (*buffer_array) // Résoud bug au 2ème call mais pas logique. Dans tous les cas, même avec cette solution j'ai un souci plus bas
 	{
 		if (n_counter(i, &buffer_array[i]))
 		{
@@ -61,7 +61,7 @@ void	read_line(int i, int fd_array[i], char *buffer_array[i], char **line, char 
 					ft_strlen(buffer_array[i]) - newline_index_check(buffer_array[i]) + 1);
 			break ;
 		}
-		*line = ft_strjoin_bis(*line, buffer_array[i]);
+		*line = ft_strjoin_bis(*line, buffer_array[i]); // TO DEBUG : buffer_array[i] est bien passé à strjoin pour fd1 mais pas pour fd2, alors qu'il apparait bien dans le débugger
 		ft_memset(buffer_array[i], 0, BUFFER_SIZE);
 		if (read(fd_array[i], buffer_array[i], BUFFER_SIZE) <= 0)
 		{
@@ -104,6 +104,12 @@ int	n_counter(int j, char *buffer_array[j])
 			counter++;
 		}
 		*buffer_array[j]++;
+		i++;
+	}
+	i = 0;
+	while (i < BUFFER_SIZE)
+	{
+		*buffer_array[j]--; //putting *buffer_array[j] to its inital position before entering the function
 		i++;
 	}
 	return (counter);
@@ -150,11 +156,11 @@ int	main(void)
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/empty";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/41_no_nl";
-	path_to_file1 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/41_with_nl";
+	//path_to_file1 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/41_with_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/42_no_nl";
-	path_to_file2 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/42_with_nl";
+	//path_to_file2 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/42_with_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/43_no_nl";
-	path_to_file3 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/43_with_nl";
+	//path_to_file3 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/43_with_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_nlx5";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_no_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_with_nl";
@@ -162,6 +168,9 @@ int	main(void)
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_with_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_no_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_with_nl";
+	path_to_file1 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/test_so1";
+	path_to_file2 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/test_so2";
+	path_to_file3 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/test_so3";
 
 	file_descriptor1 = open (path_to_file1, O_RDONLY);
 	file_descriptor2 = open (path_to_file2, O_RDONLY);
@@ -178,14 +187,14 @@ int	main(void)
 		if (grand_final == NULL)
 			break ;
 		printf ("[FD1 - Line %i]	%s", line_number, grand_final);
-		line_number++;
+		//line_number++;
 
 		freedom_yolo ((void **)&grand_final);
 		grand_final = get_next_line(file_descriptor2);
 		if (grand_final == NULL)
 			break ;
 		printf ("[FD2 - Line %i]	%s", line_number, grand_final);
-		line_number++;
+		//line_number++;
 
 		freedom_yolo ((void **)&grand_final);
 		grand_final = get_next_line(file_descriptor3);
