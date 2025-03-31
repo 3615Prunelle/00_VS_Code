@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/03/23 21:36:03 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:30:57 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,18 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+//All #define can be placed only here
+# ifndef BUFFER_SIZE
+# define BUFFER_SIZE 8
+# endif
+
 //All #include only here (put #include "current_ft.h" is in each file)
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
 
 //For test purposes only, comment out when done
-# include <stdio.h>
-# include <limits.h>
-
-//All #define can be placed only here
-# ifndef BUFFER_SIZE
-# define BUFFER_SIZE 8
-# endif
+//# include <stdio.h>
 
 // Main Function
 char		*get_next_line(int fd);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/03/23 21:36:03 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:29:37 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 # include <stdlib.h>
 
 //For test purposes only, comment out when done
-# include <stdio.h>
-# include <limits.h>
+//# include <stdio.h>
 
 //All #define can be placed only here
 # ifndef BUFFER_SIZE

@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 23:21:43 by schappuy          #+#    #+#             */
-/*   Updated: 2025/03/31 19:08:23 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/03/23 21:47:50 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 char	*get_next_line(int fd)
 {
+	static char	*buffer;
 	char		*line;
 	char		*temp;
-	static char	*buffer_array[1024];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	if (!buffer_array[fd])
+	if (!buffer)
 	{
-		buffer_array[fd] = ft_calloc (BUFFER_SIZE + 1, 1);
-		read (fd, buffer_array[fd], BUFFER_SIZE);
+		buffer = ft_calloc (BUFFER_SIZE + 1, 1);
+		read (fd, buffer, BUFFER_SIZE);
 	}
 	temp = ft_calloc(BUFFER_SIZE + 1, 1);
 	line = ft_calloc(BUFFER_SIZE + 1, 1);
-	read_line(fd, &buffer_array[fd], &line, &temp);
+	read_line(fd, &buffer, &line, &temp);
 	free(temp);
-
 	return (line);
 }
 
@@ -119,11 +118,8 @@ void freedom_yolo(void **mem)
 
 int	main(void)
 {
-	const char	*path_to_file1;
-	const char	*path_to_file2;
-	const char	*path_to_file3;
-	int			file_descriptor[3];
-	int			fd_number;
+	const char	*path_to_file;
+	int			file_descriptor;
 	int			line_number;
 	char		*grand_final;
 //ATTENTION _ Chemin d'accès différent selon si je suis au campus ou @home
@@ -131,52 +127,37 @@ int	main(void)
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/empty";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/41_no_nl";
-	//path_to_file1 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/41_with_nl"; //HOME PATH
-	//path_to_file1 = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/41_with_nl"; //SCHOOL PATH
+	path_to_file = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/41_with_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/42_no_nl";
-	//path_to_file2 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/42_with_nl"; //HOME PATH
-	//path_to_file2 = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/42_with_nl"; //SCHOOL PATH
+	//path_to_file = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/42_with_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/43_no_nl";
-	//path_to_file3 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/43_with_nl"; //HOME PATH
-	//path_to_file3 = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/43_with_nl"; //SCHOOL PATH
-	path_to_file1 = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_nlx5";
-	path_to_file2 = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_no_nl";
+	//path_to_file = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/43_with_nl";
+	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_nlx5";
+	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_no_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_with_nl";
-	path_to_file3 = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_no_nl";
+	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_no_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_with_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_no_nl";
 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_with_nl";
 
-	file_descriptor[0] = open (path_to_file1, O_RDONLY);
-	file_descriptor[1] = open (path_to_file2, O_RDONLY);
-	file_descriptor[2] = open (path_to_file3, O_RDONLY);
-
+	file_descriptor = open (path_to_file, O_RDONLY);
 	line_number = 1;
-	fd_number = 1;
 	grand_final = ft_calloc(1, 1);
 
 	while (grand_final != (NULL))
 	{
-		while (fd_number <= 3) // 3 = nombre de fichiers a lire - Trouver un autre moyen moin bancal de rentrer dans la boucle
-		{
-			freedom_yolo ((void **)&grand_final);
-			grand_final = get_next_line(file_descriptor[fd_number - 1]);
-			if (grand_final == NULL)
-				break ;
-			printf ("| File : [%i] - Line : [%i] |	%s", fd_number, line_number, grand_final);
-			fd_number++;
-		}
-		if (!grand_final)
-		{
-			printf ("\n______________________ Last line reached [OR] Line not found ______________________\n\n");
-			get_next_line(-1);//pour repasser une fois de + dans GNL avec (fd negatif) et free les buffers
-		}
+		freedom_yolo ((void **)&grand_final);
+		grand_final = get_next_line(file_descriptor);
+		if (grand_final == NULL)
+			break ;
+		printf ("[Line %i]	%s", line_number, grand_final);
 		line_number++;
-		fd_number = 1;
-		printf ("\n\n"); //pour separer visuellement chaque bloc de lignes
 	}
+	if (!grand_final)
+	printf ("\n______________________ Last line reached [OR] Line not found ______________________\n\n");
 	freedom_yolo((void **)&grand_final);
 	return (0);
 }
 
 #endif
+
