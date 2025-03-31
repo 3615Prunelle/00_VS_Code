@@ -120,103 +120,103 @@ int	newline_index_check(char *buffer)
 	return (0);
 }
 
-#define ROUQUINETTE_DEBUG //pour lancer tester : comment out uniquement cette ligne au lieu de tout le reste en dessous
-#ifdef ROUQUINETTE_DEBUG
+//#define ROUQUINETTE_DEBUG //pour lancer tester : comment out uniquement cette ligne au lieu de tout le reste en dessous
+// #ifdef ROUQUINETTE_DEBUG
 
-void freedom_yolo(void **mem)
-{
-	if (*mem)
-	{
-		free(*mem);
-		*mem = NULL;
-	}
-}
+// void freedom_yolo(void **mem)
+// {
+// 	if (*mem)
+// 	{
+// 		free(*mem);
+// 		*mem = NULL;
+// 	}
+// }
 
-int	main(void)
-{
-	const char	*path_to_file1;
-	const char	*path_to_file2;
-	const char	*path_to_file3;
-	int			file_descriptor[AMOUNT_OF_FD];
-	int			fd_number;
-	int			line_number;
-	char		*grand_final;
-//ATTENTION _ Chemin d'accès différent selon si je suis au campus ou @home
-	//path_to_file = "Invalid File Descriptor";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/empty";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/41_no_nl";
-	path_to_file1 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/41_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/42_no_nl";
-	path_to_file2 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/42_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/43_no_nl";
-	path_to_file3 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/43_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_nlx5";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_no_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_no_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_no_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_with_nl";
+// int	main(void)
+// {
+// 	const char	*path_to_file1;
+// 	const char	*path_to_file2;
+// 	const char	*path_to_file3;
+// 	int			file_descriptor[AMOUNT_OF_FD];
+// 	int			fd_number;
+// 	int			line_number;
+// 	char		*grand_final;
+// //ATTENTION _ Chemin d'accès différent selon si je suis au campus ou @home
+// 	//path_to_file = "Invalid File Descriptor";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/empty";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/nl";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/41_no_nl";
+// 	path_to_file1 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/41_with_nl";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/42_no_nl";
+// 	path_to_file2 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/42_with_nl";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/43_no_nl";
+// 	path_to_file3 = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/43_with_nl";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_nlx5";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_no_nl";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_with_nl";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_no_nl";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_with_nl";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_no_nl";
+// 	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_with_nl";
 
-	file_descriptor[0] = open (path_to_file1, O_RDONLY);
-	file_descriptor[1] = open (path_to_file2, O_RDONLY);
-	file_descriptor[2] = open (path_to_file3, O_RDONLY);
+// 	file_descriptor[0] = open (path_to_file1, O_RDONLY);
+// 	file_descriptor[1] = open (path_to_file2, O_RDONLY);
+// 	file_descriptor[2] = open (path_to_file3, O_RDONLY);
 
-	line_number = 1;
-	fd_number = 1;
-	grand_final = ft_calloc(1, 1);
-	int i = 0;
+// 	line_number = 1;
+// 	fd_number = 1;
+// 	grand_final = ft_calloc(1, 1);
+// 	int i = 0;
 
-	while (grand_final != (NULL))
-	{
-		while (fd_number <= AMOUNT_OF_FD)
-		{
-			freedom_yolo ((void **)&grand_final);
-			grand_final = get_next_line(file_descriptor[i]);
-			if (grand_final == NULL)
-				break ;
-			printf ("| File : [%i] - Line : [%i] |	%s", fd_number, line_number, grand_final);
-			fd_number++;
-			i++;
-		}
-		if (!grand_final)
-		{
-			printf ("\n______________________ Last line reached [OR] Line not found ______________________\n\n");
-			get_next_line(-1);//pour repasser une fois de + dans GNL avec (fd negatif) et free les buffers
-		}
-		line_number++;
-		fd_number = 1;
-		i = 0;
-		//printf ("\n\n");
-	}
-	// while ((grand_final != (NULL)) && i < 3)
-	// {
-	// 	freedom_yolo ((void **)&grand_final);
-	// 	grand_final = get_next_line(file_descriptor1);
-	// 	if (grand_final == NULL)
-	// 		break ;
-	// 	printf ("[FD1 - Line %i]	%s", line_number, grand_final);
-	// 	//line_number++;
+// 	while (grand_final != (NULL))
+// 	{
+// 		while (fd_number <= AMOUNT_OF_FD)
+// 		{
+// 			freedom_yolo ((void **)&grand_final);
+// 			grand_final = get_next_line(file_descriptor[i]);
+// 			if (grand_final == NULL)
+// 				break ;
+// 			printf ("| File : [%i] - Line : [%i] |	%s", fd_number, line_number, grand_final);
+// 			fd_number++;
+// 			i++;
+// 		}
+// 		if (!grand_final)
+// 		{
+// 			printf ("\n______________________ Last line reached [OR] Line not found ______________________\n\n");
+// 			get_next_line(-1);//pour repasser une fois de + dans GNL avec (fd negatif) et free les buffers
+// 		}
+// 		line_number++;
+// 		fd_number = 1;
+// 		i = 0;
+// 		//printf ("\n\n");
+// 	}
+// 	// while ((grand_final != (NULL)) && i < 3)
+// 	// {
+// 	// 	freedom_yolo ((void **)&grand_final);
+// 	// 	grand_final = get_next_line(file_descriptor1);
+// 	// 	if (grand_final == NULL)
+// 	// 		break ;
+// 	// 	printf ("[FD1 - Line %i]	%s", line_number, grand_final);
+// 	// 	//line_number++;
 
-	// 	freedom_yolo ((void **)&grand_final);
-	// 	grand_final = get_next_line(file_descriptor2);
-	// 	if (grand_final == NULL)
-	// 		break ;
-	// 	printf ("[FD2 - Line %i]	%s", line_number, grand_final);
-	// 	//line_number++;
+// 	// 	freedom_yolo ((void **)&grand_final);
+// 	// 	grand_final = get_next_line(file_descriptor2);
+// 	// 	if (grand_final == NULL)
+// 	// 		break ;
+// 	// 	printf ("[FD2 - Line %i]	%s", line_number, grand_final);
+// 	// 	//line_number++;
 
-	// 	freedom_yolo ((void **)&grand_final);
-	// 	grand_final = get_next_line(file_descriptor3);
-	// 	if (grand_final == NULL)
-	// 		break ;
-	// 	printf ("[FD3 - Line %i]	%s", line_number, grand_final);
-	// 	line_number++;
-	// }
-	// if (!grand_final)
-	// 	printf ("\n*** Last Line Right Above [OR] Line not found ***\n");
-	freedom_yolo((void **)&grand_final);
-	return (0);
-}
+// 	// 	freedom_yolo ((void **)&grand_final);
+// 	// 	grand_final = get_next_line(file_descriptor3);
+// 	// 	if (grand_final == NULL)
+// 	// 		break ;
+// 	// 	printf ("[FD3 - Line %i]	%s", line_number, grand_final);
+// 	// 	line_number++;
+// 	// }
+// 	// if (!grand_final)
+// 	// 	printf ("\n*** Last Line Right Above [OR] Line not found ***\n");
+// 	freedom_yolo((void **)&grand_final);
+// 	return (0);
+// }
 
-#endif
+// #endif
