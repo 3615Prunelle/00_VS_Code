@@ -164,11 +164,11 @@ Explication des clés principales :
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                //"get_next_line.c", "get_next_line_utils.c", //compile ces 2 fichiers ensemble. Pas besoin de prendre le .h car pris en compte dans le header (include "GNL.h")
+                //"get_next_line.c", "get_next_line_utils.c", "main.c", //compile ces 2 fichiers ensemble. Pas besoin de prendre le .h car pris en compte dans le header (include "GNL.h")
                 //line dessous créée pour tester le bonus, décommenter la partie qui m'intéresse
 				"get_next_line_bonus.c", "get_next_line_utils_bonus.c",
 				"-D", //un argument par quote, donc ici on met -D et BUFFER_SIZE sur 2 lignes differentes
-				"BUFFER_SIZE=8",
+				"BUFFER_SIZE=20",
 				//"-DROUQUINETTE_DEBUG", // mis dans fonction instead, sinon main grisee
 				"-o",
                 "${workspaceFolder}/a.out", //Génère un exécutable a.out dans le dossier du projet

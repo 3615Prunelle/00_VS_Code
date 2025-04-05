@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 23:21:43 by schappuy          #+#    #+#             */
-/*   Updated: 2025/03/23 21:47:50 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/04/04 15:25:59 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,45 +18,73 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*temp;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0)
+		return (free_null_three(&buffer, NULL, NULL));
 	if (!buffer)
 	{
-		buffer = ft_calloc (BUFFER_SIZE + 1, 1);
-		read (fd, buffer, BUFFER_SIZE);
+		buffer = ft_calloc(BUFFER_SIZE + 1, 1);
+		if (!buffer || read(fd, buffer, BUFFER_SIZE) <= 0)
+			return (free_null_three(&buffer, NULL, NULL));
 	}
 	temp = ft_calloc(BUFFER_SIZE + 1, 1);
+	if (!temp)
+		return (free_null_three(&buffer, NULL, NULL));
 	line = ft_calloc(BUFFER_SIZE + 1, 1);
+	if (!line)
+		return (free_null_three(&buffer, NULL, &temp));
 	read_line(fd, &buffer, &line, &temp);
+	if (!line)
+		return (free_null_three(&buffer, NULL, &temp));
 	free(temp);
 	return (line);
 }
 
 void	read_line(int fd, char **buffer, char **line, char **temp)
 {
+	int	len;
+
 	while (*buffer)
 	{
-		if (n_counter(*buffer))
+		if (ft_strchr(*buffer, '\n'))
 		{
-			*temp = ft_strlcpy(*temp, *buffer,
-					newline_index_check(*buffer) + 1);
+			len = (ft_strchr(*buffer, '\n') - *buffer);
+			*temp = ft_strlcpy(*temp, *buffer, len + 1);
+			len = ft_strlen(*buffer) - len;
+			*buffer = ft_strlcpy(*buffer, ft_strchr(*buffer, '\n'), len + 1);
 			*line = ft_strjoin_bis(*line, *temp);
-			*buffer = ft_strlcpy(*buffer, ft_strchr(*buffer, '\n'),
-					ft_strlen(*buffer) - newline_index_check(*buffer) + 1);
-			break ;
+			return ;
 		}
 		*line = ft_strjoin_bis(*line, *buffer);
+		if (!*line)
+			return ;
 		ft_memset(*buffer, 0, BUFFER_SIZE);
 		if (read(fd, *buffer, BUFFER_SIZE) <= 0)
 		{
-			if (*line[0] == '\0')
-			{
-				free(*line);
-				*line = NULL;
-			}
-			break ;
+			if (*line && *line[0] == '\0')
+				free_null_three(buffer, line, temp);
+			return ;
 		}
 	}
+}
+
+char	*free_null_three(char **buff, char **line, char **temp)
+{
+	if (buff && *buff)
+	{
+		free(*buff);
+		*buff = NULL;
+	}
+	if (line && *line)
+	{
+		free(*line);
+		*line = NULL;
+	}
+	if (temp && *temp)
+	{
+		free(*temp);
+		*temp = NULL;
+	}
+	return (NULL);
 }
 
 void	*ft_memset(void *str, int constante, size_t taille)
@@ -73,91 +101,3 @@ void	*ft_memset(void *str, int constante, size_t taille)
 	}
 	return (str);
 }
-
-int	n_counter(char *buffer)
-{
-	int	i;
-	int	counter;
-
-	i = 0;
-	counter = 0;
-	while (buffer[i])
-	{
-		if (buffer[i] == '\n')
-			counter++;
-		i++;
-	}
-	return (counter);
-}
-
-int	newline_index_check(char *buffer)
-{
-	int	i;
-
-	i = 0;
-	while (buffer[i])
-	{
-		if (buffer[i] == '\n')
-			return (i + 1);
-		i++;
-	}
-	return (0);
-}
-
-//#define ROUQUINETTE_DEBUG //pour lancer tester : comment out uniquement cette ligne au lieu de tout le reste en dessous
-#ifdef ROUQUINETTE_DEBUG
-
-void freedom_yolo(void **mem)
-{
-	if (*mem)
-	{
-		free(*mem);
-		*mem = NULL;
-	}
-}
-
-int	main(void)
-{
-	const char	*path_to_file;
-	int			file_descriptor;
-	int			line_number;
-	char		*grand_final;
-//ATTENTION _ Chemin d'accès différent selon si je suis au campus ou @home
-	//path_to_file = "Invalid File Descriptor";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/empty";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/41_no_nl";
-	path_to_file = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/41_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/42_no_nl";
-	//path_to_file = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/42_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/43_no_nl";
-	//path_to_file = "/home/sophie/Documents/00_VS_Code/Get_Next_Line/gnlTester/files/43_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_nlx5";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_no_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/multiple_line_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_no_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/alternate_line_nl_with_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_no_nl";
-	//path_to_file = "/home/schappuy/00_VS_Code/Get_Next_Line/gnlTester/files/big_line_with_nl";
-
-	file_descriptor = open (path_to_file, O_RDONLY);
-	line_number = 1;
-	grand_final = ft_calloc(1, 1);
-
-	while (grand_final != (NULL))
-	{
-		freedom_yolo ((void **)&grand_final);
-		grand_final = get_next_line(file_descriptor);
-		if (grand_final == NULL)
-			break ;
-		printf ("[Line %i]	%s", line_number, grand_final);
-		line_number++;
-	}
-	if (!grand_final)
-	printf ("\n______________________ Last line reached [OR] Line not found ______________________\n\n");
-	freedom_yolo((void **)&grand_final);
-	return (0);
-}
-
-#endif
-

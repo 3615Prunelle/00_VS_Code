@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 23:21:43 by schappuy          #+#    #+#             */
-/*   Updated: 2025/03/23 21:28:41 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:46:06 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	size_t			i;
 
 	i = 0;
-	ptr = malloc (nmemb * size);
+	ptr = malloc(nmemb * size);
 	if (!ptr)
 		return (NULL);
 	while (i < nmemb * size)
@@ -55,7 +55,7 @@ char	*ft_strlcpy(char *dst, const char *src, size_t size)
 
 char	*ft_strchr(const char *s, int c)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (s[i] != '\0' || s[i] == (char)c)
@@ -95,7 +95,10 @@ char	*ft_strjoin_bis(char *s1, char *s2)
 		return (s2);
 	temp = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!temp)
+	{
+		free(s1);
 		return (NULL);
+	}
 	while (s1[i])
 	{
 		temp[i] = s1[i];
@@ -105,6 +108,5 @@ char	*ft_strjoin_bis(char *s1, char *s2)
 		temp[i++] = s2[j++];
 	temp[i] = '\0';
 	free(s1);
-	s1 = temp;
-	return (s1);
+	return (temp);
 }
