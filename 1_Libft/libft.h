@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/02/04 21:23:32 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/04/15 00:09:22 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-// Structure to represent a node of a list. Add its declaration to the libft.h file:
-typedef struct cool_node // The members of the node struct are:
+// Structure that defines the composition of a single node in a linked list.
+// I define a structure that I call 's_list' with two members: a void ptr to data and a pointer to the structure itself called next
+typedef struct		s_list
 {
-	void					*data;		// The data contained in the node (Using void * allows you to store any type of data)
-	struct cool_node		*next;		// The address of the next node, or NULL if the next node is the last one.
-}	my_first_linked_list;
+	void			*content;	// The data contained in the node (Using void * allows me to store any type of data)
+	struct s_list	*next;		// The address of the next node, or NULL if the next node is the last one.
+}					t_list;		// t_list is an alias for struct s_list to make the code shorter and cleaner in the exercises
 // In Makefile, add a make bonus rule to add the bonus functions in libft.a
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -58,5 +59,16 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
+
+//Bonus functions - Check if new .h file needed before submitting
+t_list	*ft_lstnew (void *content);
+void	ft_lstadd_front(t_list **lst, t_list *new);
+int		ft_lstsize(t_list *lst);
+t_list	*ft_lstlast(t_list *lst);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstdelone(t_list *lst, void (*del)(void *));
+void	ft_lstclear(t_list **lst, void (*del)(void	*));
+void	ft_lstiter(t_list *lst, void (*f)(void *));
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 #endif

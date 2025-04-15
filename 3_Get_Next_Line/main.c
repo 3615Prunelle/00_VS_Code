@@ -25,25 +25,25 @@ int	main(void)
 	// file_descriptor = 42;
 	// file_descriptor = 0;
 	// file_descriptor = open ("Invalid File Descriptor", O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_empty",
+	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_empty",
 	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_nl",
+	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_nl",
 	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_42_char_no_nl",
+	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_42_char_no_nl",
 	// 				O_RDONLY);
-	//file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_42_char_with_nl",
+	//file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_42_char_with_nl",
 	//				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_multiple_line_no_nl",
+	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_multiple_line_no_nl",
 	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_multiple_line_with_nl",
+	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_multiple_line_with_nl",
 	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_multiple_nlx5",
+	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_multiple_nlx5",
 	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_alternate_line_nl_no_nl",
+	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_alternate_line_nl_no_nl",
 	// 				O_RDONLY);
-	 file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_alternate_line_nl_with_nl",
+	 file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_alternate_line_nl_with_nl",
 					O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/Get_Next_Line/TestFile_big_line_no_nl",
+	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_big_line_no_nl",
 	// 				O_RDONLY);
 	// file_descriptor = open("/home/schappuy/francinette/tests/get_next_line/gnlTester/files/big_line_with_nl",
 	// 				O_RDONLY);

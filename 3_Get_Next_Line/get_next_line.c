@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 23:21:43 by schappuy          #+#    #+#             */
-/*   Updated: 2025/04/04 15:25:59 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/04/08 20:25:17 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 	char		*temp;
+
+	printf("%d\n", BUFFER_SIZE);
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0)
 		return (free_null_three(&buffer, NULL, NULL));
