@@ -36,7 +36,7 @@ ft_printf_main.c
 *.out
 *.app
 *.i*86
-*.x86_64
+*.lineee86_64
 *.hex
 
 # Debug files

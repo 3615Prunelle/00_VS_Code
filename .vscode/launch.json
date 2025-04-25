@@ -61,7 +61,7 @@ comment VS Code doit lancer et déboguer un programme C.*/
             "preLaunchTask": "My LibFt library" //Build spécial pour tester fonctions de la LibFt
         }, //Lance uniquement un programme compilé avec LibFt, sans autre code.
 		{
-            "name": "Get_Next_Line_Only", //Config 2
+            "name": "Get_Next_Line_Only", //Config 5
             "type": "cppdbg", //Utilisation du debugger C/C++ de VS Code
             "request": "launch", //Exécute le programme
             "program": "${workspaceRoot}/a.out", //Programme lancé (l'exécutable compilé)
@@ -70,5 +70,15 @@ comment VS Code doit lancer et déboguer un programme C.*/
             "cwd": "${workspaceFolder}",//racine (dossier VSCode) - Attention dans l'emploi de chemins d'acces pour args fichiers tests
             "preLaunchTask": "C/C++: cc build get_next_line" //Compile uniquement les fichiers relatifs a GNL
         }, //Sum up : Config pour GNL uniquement, qui compile le fichier gnl + gnl_utils (voir prelaunch task)
-    ]
+		{
+            "name": "So_Long_Only", //Config 6
+            "type": "cppdbg", //Utilisation du debugger C/C++ de VS Code
+            "request": "launch", //Exécute le programme
+            "program": "${workspaceRoot}/a.out", //Programme lancé (l'exécutable compilé)
+            // "args": ["arg1", "arg2"],
+            "environment": [{ "name": "config", "value": "Debug" }], //Définit une variable d'environnement
+            "cwd": "${workspaceFolder}",//racine (dossier VSCode) - Attention dans l'emploi de chemins d'acces pour args fichiers tests
+            "preLaunchTask": "C/C++: cc build so_long" //Compile uniquement les fichiers relatifs a GNL
+        }, //Sum up : Test pour so_long
+	]
 }

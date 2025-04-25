@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/04/04 17:47:59 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/04/20 18:20:05 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ char	*get_next_line(int fd);
 
 // Helpers
 void		read_line(int fd, char **buffer, char **line, char **temp);
-void		*ft_calloc(size_t nmemb, size_t size);
-void		*ft_memset(void *str, int constante, size_t taille);
-size_t		ft_strlen(const char *str);
-char		*ft_strchr(const char *s, int c);
-char		*ft_strlcpy(char *dst, const char *src, size_t size);
-char		*ft_strjoin_bis(char *s1, char *s2);
+void		*ft_calloc_copy(size_t nmemb, size_t size);
+void		*ft_memset_copy(void *str, int constante, size_t taille);
+size_t		ft_strlen_copy(const char *str);
+char		*ft_strchr_mod(const char *s, int c);
+char		*ft_strlcpy_copy(char *dst, const char *src, size_t size);
+char		*ft_strjoin_mod(char *s1, char *s2);
 char		*free_null_three(char **buff, char **line, char **temp);
 
 #endif

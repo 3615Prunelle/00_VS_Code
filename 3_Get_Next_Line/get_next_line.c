@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 23:21:43 by schappuy          #+#    #+#             */
-/*   Updated: 2025/04/08 20:25:17 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/04/20 18:20:05 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,18 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*temp;
 
-	printf("%d\n", BUFFER_SIZE);
-
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0)
 		return (free_null_three(&buffer, NULL, NULL));
 	if (!buffer)
 	{
-		buffer = ft_calloc(BUFFER_SIZE + 1, 1);
+		buffer = ft_calloc_copy(BUFFER_SIZE + 1, 1);
 		if (!buffer || read(fd, buffer, BUFFER_SIZE) <= 0)
 			return (free_null_three(&buffer, NULL, NULL));
 	}
-	temp = ft_calloc(BUFFER_SIZE + 1, 1);
+	temp = ft_calloc_copy(BUFFER_SIZE + 1, 1);
 	if (!temp)
 		return (free_null_three(&buffer, NULL, NULL));
-	line = ft_calloc(BUFFER_SIZE + 1, 1);
+	line = ft_calloc_copy(BUFFER_SIZE + 1, 1);
 	if (!line)
 		return (free_null_three(&buffer, NULL, &temp));
 	read_line(fd, &buffer, &line, &temp);
@@ -47,19 +45,19 @@ void	read_line(int fd, char **buffer, char **line, char **temp)
 
 	while (*buffer)
 	{
-		if (ft_strchr(*buffer, '\n'))
+		if (ft_strchr_mod(*buffer, '\n'))
 		{
-			len = (ft_strchr(*buffer, '\n') - *buffer);
-			*temp = ft_strlcpy(*temp, *buffer, len + 1);
-			len = ft_strlen(*buffer) - len;
-			*buffer = ft_strlcpy(*buffer, ft_strchr(*buffer, '\n'), len + 1);
-			*line = ft_strjoin_bis(*line, *temp);
+			len = (ft_strchr_mod(*buffer, '\n') - *buffer);
+			*temp = ft_strlcpy_copy(*temp, *buffer, len + 1);
+			len = ft_strlen_copy(*buffer) - len;
+			*buffer = ft_strlcpy_copy(*buffer, ft_strchr_mod(*buffer, '\n'), len + 1);
+			*line = ft_strjoin_mod(*line, *temp);
 			return ;
 		}
-		*line = ft_strjoin_bis(*line, *buffer);
+		*line = ft_strjoin_mod(*line, *buffer);
 		if (!*line)
 			return ;
-		ft_memset(*buffer, 0, BUFFER_SIZE);
+		ft_memset_copy(*buffer, 0, BUFFER_SIZE);
 		if (read(fd, *buffer, BUFFER_SIZE) <= 0)
 		{
 			if (*line && *line[0] == '\0')
@@ -89,7 +87,7 @@ char	*free_null_three(char **buff, char **line, char **temp)
 	return (NULL);
 }
 
-void	*ft_memset(void *str, int constante, size_t taille)
+void	*ft_memset_copy(void *str, int constante, size_t taille)
 {
 	unsigned char	*ptr_s;
 	size_t			i;

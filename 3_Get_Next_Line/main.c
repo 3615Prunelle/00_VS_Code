@@ -22,37 +22,10 @@ int	main(void)
 	int		line_number;
 	char	*grand_final;
 
-	// file_descriptor = 42;
-	// file_descriptor = 0;
-	// file_descriptor = open ("Invalid File Descriptor", O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_empty",
-	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_nl",
-	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_42_char_no_nl",
-	// 				O_RDONLY);
-	//file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_42_char_with_nl",
-	//				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_multiple_line_no_nl",
-	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_multiple_line_with_nl",
-	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_multiple_nlx5",
-	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_alternate_line_nl_no_nl",
-	// 				O_RDONLY);
-	 file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_alternate_line_nl_with_nl",
-					O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_big_line_no_nl",
-	// 				O_RDONLY);
-	// file_descriptor = open("/home/schappuy/francinette/tests/get_next_line/gnlTester/files/big_line_with_nl",
-	// 				O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/francinette/tests/get_next_line/fsoares",
-	// 				O_RDONLY);
-	// file_descriptor = open ("1char", O_RDONLY);
+	file_descriptor = open ("/home/schappuy/00_VS_Code/1_Libft/ft_isalpha.c", O_RDONLY);
 
 	line_number = 1;
-	grand_final = ft_calloc(1, 1);
+	grand_final = ft_calloc_copy(1, 1);
 	while (grand_final != (NULL))
 	{
 		freedom_yolo((void **)&grand_final);
