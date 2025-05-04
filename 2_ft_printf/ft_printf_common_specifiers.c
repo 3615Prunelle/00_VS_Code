@@ -6,11 +6,10 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:25:57 by schappuy          #+#    #+#             */
-/*   Updated: 2025/02/26 21:20:58 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:00:32 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "ft_printf.h"
 
 int				s_specifier(char *c);

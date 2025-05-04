@@ -1,94 +1,104 @@
 #include "so_long.h"
-// FREE ✅
-// ‼️ Reminder : Use free or free function later
-// ❔
-// ▶️
+
 char		**so_long(int	fd)
 {
-	char		**map;												// pointeur de pointeur = tableau a double entree
-	char		*line_by_line;										//	map[0] me donnait des segfaults donc je procede avec char *
-	position	max; 												// to define size of map (max y = max x)
+	game		my_game;											// Solution badass pour passer toutes les infos en meme temps (FAB 4 PRESIDENT)
+	char		*line_by_line;										// map[0] me donnait des segfaults donc je procede avec char *
 	int			length_line;
-// ------------------------- Deal with the map itself first - Step 1, get the size of it ----------------------------- //
+// -------------------------------------------------------------------------------------------------------------------- Deal with the map itself first / Get the size of it ✅
 	line_by_line = get_next_line(fd);								// ℹ️ GNL aloue la memoire a line_by_line ✅ FREE in the loop below
-	length_line = ft_strlen(line_by_line);
-	if (check_walls (line_by_line, length_line) == 0)
+	if (!line_by_line)
 	{
-		printf("Sorry, your funky map isn't valid, please make sure they're walls all around !\n");
-		return (NULL);
+		printf ("Error\n>> Map empty or not displayable oO\n\n");
+		free_gnl_stuff(&line_by_line, &fd);
+		return (NULL);									// ✅ All heap blocks were freed -- no leaks are possible
 	}
+	length_line = ft_strlen(line_by_line);
 	int line_counter = 0;
 	while (line_by_line != NULL)
 	{
-		free(line_by_line);											// FREE ✅
-		line_by_line = get_next_line(fd);							// ℹ️ GNL aloue la memoire a line_by_line ✅ FREE right above
+		free(line_by_line);								// FREE ✅
+		line_by_line = get_next_line(fd);				// ℹ️ GNL aloue la memoire a line_by_line ✅ FREE right above
 		line_counter++;
-// ------------------------- Check if all lines are even (= rectangular map) ----------------------------- //
+// -------------------------------------------------------------------------------------------------------------- Check if all lines are equal in size (= rectangular map) ✅
 		if (((line_by_line != NULL)) && (ft_strlen(line_by_line) != length_line))
 		{
-			printf("Sorry, your funky map isn't valid, please make it rectangular !\n");
-			return (NULL);
+			printf("Error\n>> Sorry, your funky map isn't valid, please make it rectangular !\n\n");
+			free_gnl_stuff(&line_by_line, &fd);
+			return (NULL);								// ✅ All heap blocks were freed -- no leaks are possible
 		}
 	}
-	close(fd);														// Sinon ne lira pas suite
-// ------------------------- Step 2, alloc memory & fill it ----------------------------------------------------------- //
-	map = ft_calloc((line_counter + 1), sizeof(char *));			// On alloue les lignes uniquement (les colonnes seront allouees par GNL) ✅ FREE : In the last loop
-	if (!map)
-	return (NULL);
-	fd = open(PATH, O_RDWR);
-	map[0] = get_next_line(fd);
-	int i = 0;
-	while (map[i] != NULL)
+	if ((length_line < 4) || (line_counter < 3))		// Taille minimum pour avoir autre chose que des murs
 	{
-		//printf("%s", map[i]);
-		i++;
-		map[i] = get_next_line(fd);									// Memoire allouee pour chaque ligne ✅ FREE in the loop at the end of the function
+		printf ("Error\n>> Map not displayable\n\n");
+		free_gnl_stuff(&line_by_line, &fd);
+		return (NULL);									// ✅ All heap blocks were freed -- no leaks are possible
 	}
-	max.line = line_counter;										// Lignes
-	max.column = ft_strlen(map[0]);									// Colonnes
-// ------------------------- ✅ Check Player ----------------------------------- //
-position	player;
-player = is_player(map, max.line);
-if ( (player.line == -1) && (player.column == -1))
-return (NULL);
-// ------------------------- ✅ Check Collectibles ----------------------------- //
-int collec_left;
-collec_left = is_collec(map, max.line, false);
-if (collec_left == 0)
-return (NULL);
-// ------------------------- ✅ Check Exit ------------------------------------- //
-	position	exit;
-	if (is_exit(map, max.line, &exit) == 0)
+	close(fd);															// Sinon ne lira pas suite
+// ------------------------------------------------------------------------------------------------------------------------------------------------ Alloc memory & fill it ✅
+	my_game.content = ft_calloc((line_counter + 1), sizeof(char *));	// On alloue les lignes uniquement (colonnes done by GNL) ✅ FREE : In the last loop
+	if (!my_game.content)
 		return (NULL);
-
-
-
-	printf("⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ Let the fun begin ! ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅\n");
-	while (true)													// condition acceptable ? Rien trouvé d'autre car on sort de la loop avec break.
+	fd = open(PATH, O_RDWR);
+	my_game.content[0] = get_next_line(fd);
+	int i = 0;
+	while (my_game.content[i] != NULL)
 	{
-		collec_left = is_collec(map, max.line, true);
-		print_map_fun(map, max.line, max.column);
+		i++;
+		my_game.content[i] = get_next_line(fd);							// Memoire allouee pour chaque ligne ✅ FREE in the loop at the end of the function
+	}
+
+	my_game.max_lines = line_counter;
+	my_game.max_columns = length_line;
+
+	printf("Map to check :\n\n");
+	print_map_fun(my_game);
+
+	if (check_everything(my_game) == 0)
+	{
+		free_game(&my_game);
+		return (NULL);											// ✅ All heap blocks were freed -- no leaks are possible
+	}
+
+	tile	player;												// Redondance évitable ? Idem pour les deux blocs suivants.
+	player = is_player(my_game);
+
+	tile	exit;
+	exit = is_exit(my_game);
+
+	int collec_left;
+	collec_left = is_collec(my_game, player, false);
+
+	printf("⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳ C'EST PARTI !! ˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅\n\n");
+	while (true)													// Condition acceptable ? Rien trouvé d'autre car on sort de la loop avec break.
+	{
+		collec_left = is_collec(my_game, player, true);
+		print_map_fun(my_game);
+		printf("\n\n");
 		if (collec_left == 0 && (player.line == exit.line) && (player.column == exit.column))
+		{
+			printf("\n⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳ FINITO !! ˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅\n\n");
 			break;
-		player = player_move(map, player, exit, max.line);
+		}
+		player = player_move(my_game, player, exit);
 	}
-	//print_map(map, max.line);
-// ------------------------- Clean up ---------------------------------------------------------------------------------------------------- //
-	while (line_counter >= 0)
-	{
-		free(map[line_counter]);									// FREE ✅
-		line_counter--;
-	}
-	free(map);
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------- Clean up ✅
+	free_game(&my_game);
 	return (NULL);
 }
 
 int		main(void)
 {
+	//mlx_init();							// Let's get the party started
+
 	int	fd;
-	fd = open(PATH, O_RDWR);
+	fd = open(PATH, O_RDWR);				// ‼️ Trouver un moyen pour que ça n'accepte que les .ber
 
+	if((!fd) || (fd < 0))
+	{
+		printf ("Error\n>> Map missing OLALA NICHT GUT\n\n");
+		return (1);
+	}
 	so_long(fd);
-
 	return (0);
 }

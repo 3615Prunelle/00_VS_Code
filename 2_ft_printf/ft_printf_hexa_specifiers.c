@@ -6,12 +6,11 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:25:57 by schappuy          #+#    #+#             */
-/*   Updated: 2025/02/26 22:12:31 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:00:37 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdint.h>
+#include "ft_printf.h"
 
 int	x_specifier(unsigned long long i, char *hexa);
 

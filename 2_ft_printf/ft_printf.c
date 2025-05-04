@@ -6,15 +6,11 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:34:53 by schappuy          #+#    #+#             */
-/*   Updated: 2025/02/26 21:38:23 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:13:13 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdarg.h>
 #include "ft_printf.h"
-#define HEXA_MIN "0123456789abcdef"
-#define HEXA_MAJ "0123456789ABCDEF"
 
 int	specifiers_call(char c, va_list ptr_string);
 
@@ -69,4 +65,9 @@ int	specifiers_call(char c, va_list ptr_string)
 	else if (c == '%')
 		j = c_specifier('%');
 	return (j);
+}
+int main(void)
+{
+	ft_printf("Test");
+	return(0);
 }

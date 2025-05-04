@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:40:26 by schappuy          #+#    #+#             */
-/*   Updated: 2024/12/16 19:40:30 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:11:50 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*ft_memcpy(void *dest, const void *srce, size_t siz)
 	ptr_dest = (unsigned char *)dest;
 	ptr_srce = (const unsigned char *)srce;
 	i = 0;
-	while (i < siz)
+	while (i < siz) // note lo_long : si siz = 10, ptr_sce[10] = '\0'
 	{
 		ptr_dest[i] = ptr_srce[i];
 		i++;
