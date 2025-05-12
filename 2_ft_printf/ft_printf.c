@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:34:53 by schappuy          #+#    #+#             */
-/*   Updated: 2025/04/29 19:13:13 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/05/05 18:12:42 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,4 @@ int	specifiers_call(char c, va_list ptr_string)
 	else if (c == '%')
 		j = c_specifier('%');
 	return (j);
-}
-int main(void)
-{
-	ft_printf("Test");
-	return(0);
 }

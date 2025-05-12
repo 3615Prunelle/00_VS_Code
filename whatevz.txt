@@ -1,0 +1,52 @@
+int		main(void)
+{
+// ----------------------------------------------------------------------------------------------------- Game checklist - Create a window for the game ✅
+	mlx_t	*start_window;
+	start_window = mlx_init(500, 500, "Step 1 - Done !", false);	// Initialize and run a new window instance.
+	if(!start_window)	// If connection to the graphical system set up fails = returns NULL
+	{
+		ft_printf("Error in the window allocation\n");
+		return(1);
+	}
+
+// ------------------------------------------------------------------ Set up Texture buffer (texture = Image pas encore affichée, mais prête à l’être) ✅
+	mlx_texture_t *image_data;														// Set up texture (= Image file = Image data) buffer
+	image_data = mlx_load_png("/home/schappuy/00_VS_Code/4_So_Long/square.png");	// Access the image data
+	if (!image_data)
+	{
+		ft_printf("Error in allocating texture (address) buffer\n");
+		mlx_terminate(start_window);	// Destroy and clean up all images and mlx resources.
+		return (1);
+	}
+
+// --------------------------------------------------------------------------------------------------------- Convert the texture to a diplayable image ✅
+	mlx_image_t *image;															// Set up image buffer - Note : mlx_image_t doit etre toujours un ptr
+	image = mlx_texture_to_image(start_window, image_data);						// Texture (image data) share the same pixel buffer as Image
+	if (!image)
+	{
+		ft_printf("Error in allocating new image buffer\n");
+		mlx_terminate(start_window);	// Destroy and clean up all images and mlx resources.
+		return (1);
+	}
+
+// --------------------------------------------------------------------------------------------------------------------------------- Display the image ✅
+	mlx_image_to_window(start_window, image, 25, 25);
+
+// ----------------------------------------------------------------------------------------------------- Create and allocate a new image (icon) buffer ✅
+	mlx_texture_t	*icon_data;
+	icon_data = mlx_load_png("/home/schappuy/00_VS_Code/4_So_Long/square.png");
+	if (!icon_data)
+	{
+		ft_printf("Error in allocating icon buffer\n");
+		mlx_terminate(start_window);	// Destroy and clean up all images and mlx resources.
+		return (1);
+	}
+
+	mlx_set_icon(start_window, icon_data);
+
+	mlx_loop(start_window);					// ‼️Keep at the end - Keep the window open as long as a shutdown is not requested (zb: closing the window).
+	mlx_close_window(start_window);			// May be useless, check without it when everything is done
+	mlx_terminate(start_window); 			// Destroy and clean up all images and mlx resources.
+
+	return (0);
+}

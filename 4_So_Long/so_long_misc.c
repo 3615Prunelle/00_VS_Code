@@ -5,11 +5,12 @@ tile	player_move(game my_game, tile player, tile exit)
 	tile	target;
 	int	move;
 	static int	counter;
+	ft_printf ("Enter direction :\n", counter);
 	scanf ("%d", &move);
 
 	while ((move != RIGHT) && (move != LEFT) && (move != UP) && (move != DOWN))
 	{
-		printf ("Command not recognized - Only 4(left) 8(up) 6(right) 2(down) are accepted - Try again.\n");
+		ft_printf ("Command not recognized - Only 4(left) 8(up) 6(right) 2(down) are accepted - Try again.\n");
 		scanf ("%d", &move);
 	}
 	counter++;
@@ -41,7 +42,7 @@ tile	player_move(game my_game, tile player, tile exit)
 	}
 	else
 		player = check_target(my_game, player, target);		// That's where the player position changes and gets updated
-	printf ("Diplo made %i steps to far\n", counter);
+	ft_printf ("Diplo step counter [%i]\n", counter);
 	return (player);
 }
 tile	check_target(game my_game, tile player, tile target)
@@ -76,7 +77,7 @@ void		free_gnl_stuff(char **line, int *fd)
 void		print_map(game my_game)
 {
 	for(int p = 0; p < my_game.max_lines; p++)
-		printf("%s", my_game.content[p]);
+		ft_printf("%s", my_game.content[p]);
 }
 void		print_map_fun(game my_game)
 {
@@ -87,25 +88,25 @@ void		print_map_fun(game my_game)
 			switch (my_game.content[p][i])
 			{
 			case 'P':
-				printf(PLA);
+				ft_printf(PLA);
 				break;
 			case 'C':
-				printf(COL);
+				ft_printf(COL);
 				break;
 			case 'E':
-				printf(EXI);
+				ft_printf(EXI);
 				break;
 			case '1':
-				printf(WAL);
+				ft_printf(WAL);
 				break;
 			case '0':
-				printf(EMP);
+				ft_printf(EMP);
 				break;
 			case '\n':
-				printf("\n");
+				ft_printf("\n");
 				break;
 			case VISITAY:					// Remove when I get out this goddam rabbit hole
-				printf("🟥");
+				ft_printf("🟥");
 				break;
 			default:
 				break;

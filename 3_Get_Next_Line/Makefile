@@ -1,5 +1,5 @@
 # Name of the library that will be created
-NAME = libftprintf.a
+NAME = libgetnextline.a
 
 # Compiler and flags
 CC = cc
@@ -7,9 +7,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -I.
 
 # Source files
-SRCS = 	ft_printf_common_specifiers.c \
-		ft_printf_hexa_specifiers.c \
-		ft_printf.c \
+SRCS = 	get_next_line.c \
+		get_next_line_utils.c \
 
 # Object files - $(VARIABLENAME) means "use the value of the VARIABLENAME variable".
 OBJS = $(SRCS:.c=.o) # Converts .c SRCS files to .o objects files
@@ -44,8 +43,9 @@ re: fclean all
 
 # Mettre à jour les dossiers lib&include avec tous les .a, et les .h quand je fais 'make install' (update : pas la peine car automatisé dans 'all' donc via commande 'make')
 install:
-	cp ft_printf.h ../98_include
-	cp libftprintf.a ../99_lib
+	cp get_next_line.h ../98_include
+	cp libgetnextline.a ../99_lib
+
 # Prevents conflicts if files named all, clean, etc., exist
 # Ensures make always runs these rules
 # Marks certain targets as "phony", meaning they aren’t real files but just names for commands

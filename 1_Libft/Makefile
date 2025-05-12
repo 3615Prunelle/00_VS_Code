@@ -8,6 +8,7 @@ SRCS =	ft_isalpha.c \
 		ft_isdigit.c \
 		ft_isalnum.c \
 		ft_isascii.c \
+		ft_itoa.c \
 		ft_isprint.c \
 		ft_strlen.c \
 		ft_memset.c \
@@ -31,7 +32,6 @@ SRCS =	ft_isalpha.c \
 		ft_strjoin.c \
 		ft_strtrim.c \
 		ft_split.c \
-		ft_itoa.c \
 		ft_strmapi.c \
 		ft_striteri.c \
 		ft_putchar_fd.c \
@@ -54,8 +54,8 @@ BONUS_SRCS =	ft_lstnew.c \
 # Object files for the bonus part
 BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
-# Default rule to compile the library
-all: $(NAME)
+# Default rule to compile the library + automatic install "rule"
+all: $(NAME) install
 # Rule to create the static library
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
@@ -73,5 +73,9 @@ fclean: clean
 	rm -f $(NAME)
 # Rule to clean and recompile everything
 re: fclean all
+# Mettre à jour les dossiers lib&include avec tous les .a, et les .h quand je fais 'make install' (update : pas la peine car automatisé dans 'all' donc via commande 'make')
+install:
+	cp libft.h ../98_include
+	cp libft.a ../99_lib
 # Phony targets to prevent conflicts with files
 .PHONY: all clean fclean re bonus

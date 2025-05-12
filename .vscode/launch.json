@@ -87,15 +87,15 @@ comment VS Code doit lancer et déboguer un programme C.*/
         },
 //------------- Sum up : Configuration test pour so_long (qui semble marcher !) ------------------------------------------------------------------ //
 		{
-			"name": "Ft_Printf_Only",							// Test Config 7
+			"name": "So_Long_W_MLX42",							//Config 6
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceRoot}/a.out",
 			// "args": ["arg1", "arg2"],
 			"environment": [{ "name": "config", "value": "Debug" }],
 			"cwd": "${workspaceFolder}",
-			"preLaunchTask": "C/C++: cc build ft_printf"		// Compile uniquement les fichiers relatifs a ft_printf
+			"preLaunchTask": "build with MLX42"
 		},
-//------------- Sum up : Configuration test pour ft_printf (fingers crossed) --------------------------------------------------------------------- //
+//------------- Sum up : Test config pour MLX42 ------------------------------------------------------------------ //
 	]
 }

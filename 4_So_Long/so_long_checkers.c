@@ -1,17 +1,16 @@
 #include "so_long.h"
 
-int			check_everything(game my_game)
+int		check_everything(game my_game)
 {
 // ------------------------------------------------------------------------------------------------------------ Check if walls all around ✅
 	if (check_walls(my_game) == 0)
 	{
-		printf("Error\n>> Sorry, your funky map isn't valid, please make sure they're walls all around !\n\n");
+		ft_printf("Error\n>> Sorry, your funky map isn't valid, please make sure they're walls all around !\n\n");
 		return (0);													// ✅ Valgrind ok, everything dealt with in the so_long function
 	}
 // ---------------------------------------------------------------------------------------------------------------------- Check if Player ✅
 	tile	player;
 	player = is_player(my_game);
-	player.type = 'P';
 	if ((player.line == -1) && (player.column == -1))
 		return (0);													// ✅ Valgrind ok, everything dealt with in the so_long function
 // ---------------------------------------------------------------------------------------------------------------- Check if Collectibles ✅
@@ -28,9 +27,9 @@ int			check_everything(game my_game)
 // ---------------------------------------------------------------------------------------- Check si path valide pour Exit + Collectibles ✅
 	game	my_game_copy;							// Pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
 	my_game_copy = duplicate_game(my_game);			// Free done below ✅
-	if (is_path_valid(player, &exit, my_game_copy, &collec_left) == false)
+	if (is_path_valid(player, exit, my_game_copy, &collec_left) == false)
 	{
-		printf("Error\n>> Looks like some elements can't be reached - Check the walls position !\n");
+		ft_printf("Error\n>> Looks like some elements can't be reached - Check the walls position !\n");
 		free_game(&my_game_copy);
 		return (0);													// ✅ Copy freed here, game freed in so_long function
 	}
@@ -109,9 +108,9 @@ tile	is_player(game my_game)
 	if((player_counter == 0) || (player_counter > 1))
 	{
 		if (player_counter == 0)
-			printf("Error\n>> How do you expect to play a game if there's no player?\n");
+			ft_printf("Error\n>> How do you expect to play a game if there's no player?\n");
 		else
-			printf("Error\n>> Only one dino allowed! Sorry-not-sorry 🐒\n");
+			ft_printf("Error\n>> Only one dino allowed! Sorry-not-sorry 🐒\n");
 		player.line = -1;
 		player.column = -1;
 	}
@@ -127,9 +126,9 @@ int		is_collec(game my_game, tile player, bool in_game_loop)
 	if (in_game_loop == false)					// Otherwise it displays the "no collectibles" error message after all collectibles are picked
 	{
 		if(collectibles_counter == 0)
-			printf("Error\n>> Corn-Quest cancelled - Nothing to collect ! 🌽\n\n");
+			ft_printf("Error\n>> Corn-Quest cancelled - Nothing to collect ! 🌽\n\n");
 		if(collectibles_counter == -1)
-			printf("Error\n>> Looks like at least one collectible can't be reached - Check the walls position !\n");
+			ft_printf("Error\n>> Looks like at least one collectible can't be reached - Check the walls position !\n");
 	}
 	return (collectibles_counter);
 }
@@ -144,7 +143,7 @@ tile	is_exit(game my_game)
 
 	if(exit_counter == 0)
 	{
-		printf("Error\n>> Corn-Quest cancelled - No way to escape.\n");
+		ft_printf("Error\n>> Corn-Quest cancelled - No way to escape.\n");
 		exit.line = -1;
 		exit.column = -1;
 	}
@@ -152,7 +151,7 @@ tile	is_exit(game my_game)
 	{
 		exit.line = -1;
 		exit.column = -1;
-		printf("Error\n>> Corn-Quest cancelled - Too many escapes.\n");
+		ft_printf("Error\n>> Corn-Quest cancelled - Too many escapes.\n");
 	}
 	return (exit);
 }
@@ -180,7 +179,7 @@ game	duplicate_game(game my_game)
 	return (my_game_copy);
 }
 // --------------------------------------------------------------------------------------------------------------- Verif validité du path ✅
-bool	is_path_valid(tile player, tile *destination, game my_game_copy, int *total_collectibles)
+bool	is_path_valid(tile player, tile destination, game my_game_copy, int *total_collectibles)
 {
 	static int collectibles_counter;
 	static int exit_found;
@@ -190,7 +189,7 @@ bool	is_path_valid(tile player, tile *destination, game my_game_copy, int *total
 	if (GET_TILE(my_game_copy.content, player) == COLLECTIBLE)
 		collectibles_counter++;
 // -------------------------------------------------------------------------- Est-ce que player est sur la destination (exit/collectible) ✅
-	if (player.line == destination->line && (player.column == destination->column))
+	if (player.line == destination.line && (player.column == destination.column))
 		exit_found = 1;	/* Ne rien return pour l'instant car on doit etre surs que tous les collectibles sont trouvés */
 // ---------------------------------------------------------------------------------------------------------- Est-ce qu'on est sur un mur ✅
 	if (GET_TILE(my_game_copy.content, player) == WALL)
