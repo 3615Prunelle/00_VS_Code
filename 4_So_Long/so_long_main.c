@@ -3,26 +3,18 @@
 int		main(void)
 {
 	all_mallocs	*stuff_to_free;
-	stuff_to_free = ft_calloc(20, sizeof(all_mallocs));						// ‼️‼️ Use free or free function
+	stuff_to_free = malloc(sizeof(all_mallocs));						// ‼️‼️ Use free or free function
 	if(!stuff_to_free)
 	{
 		return(1);
 	}
-/* 	stuff_to_free->collec_texture = 0;
-	stuff_to_free->collec_texture->bytes_per_pixel = 0;
-	stuff_to_free->collec_texture.
-	stuff_to_free->exit_texture = 0;
-	stuff_to_free->ground_texture = 0;
-	stuff_to_free->player_image = 0;
-	stuff_to_free->wall_texture = 0;
-	stuff_to_free->window = 0; */
-
 // ----------------------------------------------------------------------------------------------------- Game checklist - Create a window for the game ✅Ⓜ️🆓
 	mlx_t	*game_window;
 	if(!(game_window = mlx_init(500, 500, "Step 1 - Done !", false)))	// If connection to the graphical system set up fails - MLX MALLOC DONE HERE ‼️
 	{
 		ft_printf("Error in the window allocation\n");
 		return(1);
+		/* Autre option : ecrire juste une ligne ft_error();	puis creer cette fonction qui utilise exit (a etudier) : https://github.com/codam-coding-college/MLX42/blob/master/docs/Images.md */
 	}
 	stuff_to_free->window =			game_window;
 
@@ -116,14 +108,21 @@ Only one hook can be set at a time! You cannot attach/have multiple specialized 
 	mlx_loop(game_window);					// ‼️Keep at the end - Starts to render to window with all requested elements, until shutdown is not requested (zb: closing the window)
 	ft_free_exit(stuff_to_free);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
 
-/* 	int	fd;
-	fd = open(PATH, O_RDWR);								// ‼️ Trouver un moyen pour que ça n'accepte que les .ber
+ // ‼️ Trouver un moyen pour que ça n'accepte que les .ber
+	int size_path = ft_strlen(PATH);									// ‼️ Check if mallocs done
+	char *extension = ft_substr(PATH, (size_path - 4), size_path);		// ‼️ Check if mallocs done
+
+	if (ft_strncmp (extension, ft_strdup(".txt"), 5) != 0)				// ‼️ Check if mallocs done + Remplacer par .ber
+		return (1);
+
+	int	fd;
+	fd = open(PATH, O_RDWR);
 
 	if((!fd) || (fd < 0))
 	{
 		ft_printf ("Error\n>> Map missing OLALA NICHT GUT\n\n");
 		return (1);
 	}
-	so_long(fd); */
+	so_long(fd);
 	return (0);
 }
