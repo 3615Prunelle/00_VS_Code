@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/05/06 01:11:51 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/05/06 01:20:11 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 int				ft_printf(const char *string, ...);
 
 // Helpers
-//char			*ft_itoa(int n);
 int				specifiers_call(char c, va_list ptr_string);
 int				c_specifier(char c);
 int				s_specifier(char *c);
@@ -37,6 +36,5 @@ int				d_and_i_specifier(int i);
 unsigned int	u_specifier(unsigned int i);
 int				p_specifier(void *p);
 int				x_specifier(unsigned long long i, char *hexa);
-//size_t		ft_strlen(const char *str);
 
 #endif

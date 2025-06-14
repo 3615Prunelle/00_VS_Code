@@ -21,7 +21,7 @@ int		main(void)
 	/* If needed : Add the others in .h struct + here */
 // ------------------------------------------------------------------ Set up Texture buffer (texture = Image pas encore affichée, mais prête à l’être) ✅Ⓜ️🆓
 	mlx_texture_t *player_texture;
-	if (!(player_texture = mlx_load_png("/home/schappuy/00_VS_Code/4_So_Long/ic_Play.png")))	// Access the image data - MLX MALLOC DONE HERE ‼️
+	if (!(player_texture = mlx_load_png("./4_So_Long/ic_Play.png")))	// Access the image data - MLX MALLOC DONE HERE ‼️
 	{
 		ft_printf("Failed to load PNG into texture\n");
 		mlx_terminate(game_window);	// Destroy and clean up all images and mlx resources.
@@ -49,25 +49,25 @@ int		main(void)
 // ------------------------------------------------------------ Game checklist - Create the required structure to store all the necessary information ❓❔
 // ---------------------------------------------- Game checklist - Load all the required sprites (image data) for your game and store them into memory ‼️✅Ⓜ️🆓
 	mlx_texture_t *collec_texture;
-	collec_texture = ft_check_texture(stuff_to_free, "/home/schappuy/00_VS_Code/4_So_Long/ic_Coll.png");	// Access the image data - MLX MALLOC DONE HERE ‼️
+	collec_texture = ft_check_texture(stuff_to_free, "./4_So_Long/ic_Coll.png");	// Access the image data - MLX MALLOC DONE HERE ‼️
 	if (!collec_texture)
 		return(1);
 	stuff_to_free->collec_texture =	collec_texture;
 
 	mlx_texture_t *exit_texture;
-	exit_texture = ft_check_texture(stuff_to_free, "/home/schappuy/00_VS_Code/4_So_Long/ic_Exit.png");	// MLX MALLOC DONE HERE ‼️
+	exit_texture = ft_check_texture(stuff_to_free, "./4_So_Long/ic_Exit.png");	// MLX MALLOC DONE HERE ‼️
 	if (!exit_texture)
 		return(1);
 	stuff_to_free->exit_texture =	exit_texture;
 
 	mlx_texture_t *ground_texture;
-	ground_texture = ft_check_texture(stuff_to_free, "/home/schappuy/00_VS_Code/4_So_Long/ic_Grou.png");	// MLX MALLOC DONE HERE ‼️
+	ground_texture = ft_check_texture(stuff_to_free, "./4_So_Long/ic_Grou.png");	// MLX MALLOC DONE HERE ‼️
 	if (!ground_texture)
 		return(1);
 	stuff_to_free->ground_texture =	ground_texture;
 
 	mlx_texture_t *wall_texture;
-	wall_texture = ft_check_texture(stuff_to_free, "/home/schappuy/00_VS_Code/4_So_Long/ic_Wall.png");	// MLX MALLOC DONE HERE ‼️
+	wall_texture = ft_check_texture(stuff_to_free, "./4_So_Long/ic_Wall.png");	// MLX MALLOC DONE HERE ‼️
 	if(!wall_texture)
 		return(1);
 	stuff_to_free->wall_texture =	wall_texture;
