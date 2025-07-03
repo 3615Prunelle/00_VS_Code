@@ -13,8 +13,13 @@
 🟠 mlx_key_hook() appelle ma fonction key_actions (faite sur la base d'une callback function : mlx_keyfun) chaque fois qu’une touche est pressée.
 ‼️ MLX42 NB : 2 forbidden functions mlx_put_pixel  and mlx_resize_image
 
+ft_printf("Error\n>> Please invite Diplo to the game !\n");
+ft_printf("Error\n>> No friends allowed! Sorry-not-sorry\n");
+ft_printf("Error\n>> Corn-Quest cancelled - No way to escape.\n");
+ft_printf("Error\n>> Corn-Quest cancelled - Too many escapes.\n");
+
 TO DO : Dans check everything, garder copie de game, et transformer les fonctions de vérif is_ en booleens
-Ensuite, récupérer les tiles dans my_game qui sera utilisé pour le jeu (avec element_position - get_element_position)
+Ensuite, récupérer les tiles dans my_game qui sera utilisé pour le jeu (avec element_position - get_tile_position)
 is_ = bool
 get_ = récupérer un élément ou une position
 ‼️ Start with line 121
@@ -113,13 +118,13 @@ game	build_map(char *path)
 	my_game.max_lines = line_counter;
 	my_game.max_columns = length_line;
 
-	if (check_everything(my_game) == 0)
+	if (!(check_everything(my_game)))
 	{
 		free_game(&my_game);
 		exit(1);											// ✅ All heap blocks were freed -- no leaks are possible ‼️Double Check after MLX42 set up
 	}
 
-	my_game.escape_position = is_escape(my_game); // Retirer cette ligne ‼️‼️‼️‼️‼️‼️‼️‼️‼️
+	my_game.escape_position = get_tile_position(my_game, EXIT); // Ligne inutile si jeu bien paramétré - A retirer ‼️‼️‼️‼️‼️‼️‼️‼️‼️
 
 	mlx_t	*game_window;
 	if(!(game_window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, "Space Invader Diplo Corn Quest", false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️

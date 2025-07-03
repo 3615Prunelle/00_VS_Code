@@ -5,7 +5,7 @@ tile	target_position(game *my_game, int move)
 {
 	tile	target;
 	tile player;
-	player = is_player(*my_game);
+	player = get_tile_position(*my_game, PLAYER);
 
 	if (move == RIGHT)						// only the target reference is updated, not the player one (yet)
 	{
@@ -30,10 +30,10 @@ tile	target_position(game *my_game, int move)
 	return(target);
 }
 
-bool	player_move(game *my_game, int move)
+void	player_move(game *my_game, int move)
 {
 	tile player;
-	player = is_player(*my_game);
+	player = get_tile_position(*my_game, PLAYER);
 
 	tile	target;
 	target = target_position(my_game, move);
@@ -43,10 +43,10 @@ bool	player_move(game *my_game, int move)
 // ----------------------------------------------------------------- Faire réapparaitre la sortie s'il reste des collectibles ‼️
 	if ((player.column == my_game->escape_position.column) && (player.line == my_game->escape_position.line) && (get_collectibles_left(*my_game, true) > 0))
 	{
-		ESCAPE_POSITION = 'E';	// ✅ Keeping the escape position somewhere or it will be deleted (forever) after pass in check_target
+		ESCAPE_POSITION = 'E';	// ✅ Keeping the escape position somewhere or it will be deleted (forever) after pass in is_move_allowed
 		// my_game->content[my_game->escape_position.line][my_game->escape_position.column] = 'E';
 	}
-	if (check_target(my_game, player, target))	// That's where the player position changes and gets updated
+	if (is_move_allowed(my_game, player, target))
 	{
 		TARGET_POSITION = 'P';
 		if ((player.column == my_game->escape_position.column) && (player.line == my_game->escape_position.line))
@@ -56,12 +56,12 @@ bool	player_move(game *my_game, int move)
 
 		player.line = target.line;			// Update de la position du player
 		player.column = target.column;		// Idem
-		return(true);
+		return;
 	}
-	return(false);
+	return;
 }
 
-bool	check_target(game *my_game, tile player, tile target) // Remove player param
+bool	is_move_allowed(game *my_game, tile player, tile target) // Remove player param
 {
 	if (TARGET_POSITION == '0' || TARGET_POSITION == 'C' || TARGET_POSITION == 'E')
 	{

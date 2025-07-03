@@ -20,8 +20,7 @@ void	key_actions(mlx_key_data_t keydata, void *param)
 	move = 0;
 
 	int		collectibles_amount;											// A chaque touche pressée, on check le nombre de collectibles restant
-	collectibles_amount = get_collectibles_left(*my_game, true);						// bool parameter probably not useful anymore, run tests & remove it
-	// Cette fonction appelle element_position, qui renvoie la position du dernier collectible
+	collectibles_amount = get_collectibles_left(*my_game, true);			// bool parameter probably not useful anymore, run tests & remove it
 
 	if (!my_game || !my_game->player_image || my_game->player_image->count < 1)
 		return;
@@ -60,7 +59,7 @@ void	key_actions(mlx_key_data_t keydata, void *param)
 	number_to_diplay = ft_itoa(my_game->counter);	// Malloc done here
 	mlx_put_string(my_game->window, number_to_diplay, 20, 30);
 
-	tile updated_player_position = is_player(*my_game);
+	tile updated_player_position = get_tile_position(*my_game, PLAYER);
 	my_game->player_image->instances[0].x = updated_player_position.column * TILE_SIZE;		// Déplacement de l'image en prenant en compte l'échelle du jeu
 	my_game->player_image->instances[0].y = updated_player_position.line * TILE_SIZE;		// 1 case (dans représentation non graphique) = 72 pixels (rep visuelle)
 
