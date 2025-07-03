@@ -201,11 +201,11 @@ Explication des clés principales :
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
-				"so_long.c",					// Fichiers à compiler ensemble (les autres projets sont ajoutés différemment plus bas)
+				"so_long_main_build.c",					// Fichiers à compiler ensemble (les autres projets sont ajoutés différemment plus bas)
+				"so_long_graphics.c",
+				"so_long_mlx_helpers.c",
 				"so_long_checkers.c",
 				"so_long_misc.c",
-				"so_long_main.c",
-				"so_long_mlx_helpers.c",
 // Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
 				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
 				"-I${workspaceFolder}/MLX42/include",	// Idem - Note : MLX42 n'est pas dans le répertoire mentionné ci dessus donc je le rajoute ici

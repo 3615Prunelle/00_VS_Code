@@ -15,16 +15,16 @@
 # define SO_LONG_H
 
 // ⚪ All #define can be placed only here
-# define PATH "4_So_Long/test_map.txt"
+# define PATH "./4_So_Long/S_I_map.ber"
 # define RIGHT	6									// !! Change that before eval, so the keys are the same as requested in the subject
 # define LEFT	4
 # define UP		8
 # define DOWN	2
-# define PLAYER_POSITION			my_game.content[player.line][player.column]
 # define GET_TILE(MAP, ELEMENT)		(MAP)[(ELEMENT).line][(ELEMENT).column] // remplace tous les autres - Penser a update
-# define TARGET_POSITION			my_game.content[target.line][target.column]
-# define EXIT_POSITION				my_game.content[exit.line][exit.column]
-# define MAP_SIZE					my_game.content[my_game.max_lines][my_game.max_columns]
+# define PLAYER_POSITION			my_game->content[player.line][player.column]
+# define TARGET_POSITION			my_game->content[target.line][target.column]
+# define ESCAPE_POSITION			my_game->content[my_game->escape_position.line][my_game->escape_position.column]
+# define MAP_SIZE					my_game->content[my_game->max_lines][my_game->max_columns]
 # define PLA "🦕"
 # define COL "🌽"
 # define EXI "🛴"
@@ -38,7 +38,7 @@
 # define VISITAY		'V'
 
 // ⚪ MLX42 related #define
-# define TILE_SIZE 32
+# define TILE_SIZE 72
 
 // ⚪ All #include only here (put #include "current_ft.h" is in each file)
 # include <stdlib.h>
@@ -46,7 +46,7 @@
 # include <stdio.h>
 # include <stdbool.h>
 
-# include <MLX42/MLX42.h>			// Let's get it started with the MLX42
+# include <MLX42/MLX42.h>			// To use MLX42
 
 // ⚪ Include from other projects (put relative path to avoid issues from home computer)
 // ‼️ ‼️ ‼️ Mettre les.h ici + ‼️ Compiler et ajouter la ligne "-l[libname without the lib]" au dessus de "-lgetnextline" dans tasks.json
@@ -63,9 +63,15 @@ typedef struct node
 
 typedef struct game
 {
-	int		max_lines;
-	int		max_columns;
-	char	**content;
+	int			max_lines;
+	int			max_columns;
+	int			counter;
+	char		**content;
+	tile		escape_position;
+	mlx_t		*window;
+	mlx_image_t	*player_image;
+	mlx_image_t	*collectible_image;
+	mlx_image_t	*escape_image;
 } game;
 
 // ⚪ My MLX42 structs
@@ -75,30 +81,30 @@ typedef struct mic_mac		// Struct to pass many arguments to a function that can'
 	/* Add all the stuff to free mlx + not-mlx part (in main + all the other functions) */
 	mlx_texture_t	*player_texture;
 	mlx_texture_t	*collec_texture;
-	mlx_texture_t	*exit_texture;
+	mlx_texture_t	*escape_texture;
 	mlx_texture_t	*ground_texture;
 	mlx_texture_t	*wall_texture;
 	mlx_image_t		*player_image;
+	mlx_image_t		*wall_image;
 	// game	my_game;								// ‼️‼️‼️ Uncomment when previous code is connected to the MLX42 part
 	// anything else added here needs to be added everywhere (initialised where needed + added in the free function)
 
 } all_mallocs;
 
-// ⚪ Main Function
-char	**so_long(int fd);
-
 // ⚪ Helpers
-tile	player_move(game my_game, tile player, tile exit);
-tile	check_target(game my_game, tile player, tile target);
+tile	ex_player_move(game my_game, tile player_position, tile escape_position);
+bool	player_move(game *my_game, int move);
+bool	check_target(game *my_game, tile player_position, tile target);
+tile	target_position(game *my_game, int move);
 
 int		check_everything(game my_game);
 int		check_walls(game my_game);
 tile	is_player(game my_game);
-int		is_collec(game my_game, tile player, bool in_game_loop);
-tile	is_exit(game my_game);
+int		is_collec(game my_game, bool in_game);
+tile	is_escape(game my_game);
 
 game	duplicate_game(game my_game);
-bool	is_path_valid(tile player, tile destination, game my_game_copy, int *total_collectibles);
+bool	is_path_valid(tile player_position, tile destination_position, game my_game_copy, int *total_collectibles);
 
 void	free_game(game *any);
 void	free_gnl_stuff(char **line, int *fd);
@@ -106,9 +112,12 @@ void	print_map(game my_game);
 void	print_map_fun(game my_game);
 
 // ⚪ MLX Helpers
-void			ft_clic_exit(void *param); // model = mlx_closefunc
-void			ft_key_move(mlx_key_data_t keydata, void *param);
-mlx_texture_t	*ft_check_texture(all_mallocs *stuff_to_free, const char *path);
+game			build_map(char *path);
+mlx_image_t		*path_to_image(mlx_t *game_window, char *path);
+void			display_image(mlx_t *game_window, mlx_image_t *image, int colonne, int ligne);
+void			display_map(game *my_game);
+void			free_before_exit(void *param); // model = mlx_closefunc
+void			key_actions(mlx_key_data_t keydata, void *param);
 void			ft_free_exit(all_mallocs *free_this);
 
 #endif
