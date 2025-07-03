@@ -3,29 +3,29 @@
 bool	check_everything(game my_game)
 {
 // ------------------------------------------------------------------------------------------------------------ Check if walls all around ✅
-	if (!(are_walls_approved(my_game)))
+	if (!are_walls_approved(my_game))
 	{
 		ft_printf("Error\n>> Sorry, your funky map isn't valid, please make sure they're walls all around !\n\n");
 		return (false);													// ✅ Valgrind ok, everything dealt with in the so_long function
 	}
-// ----------------------------------------------------------------------------------- Check if all elements are here in the correct amount ✅
-	if((!is_element(&my_game, PLAYER)) || (!is_element(&my_game, EXIT)) || (!is_element(&my_game, COLLECTIBLE)))
+// ---------------------------------------------------------------------------------- Check if all elements are here in the correct amount ✅
+	if((!is_element(my_game, PLAYER)) || (!is_element(my_game, ESCAPE)) || (!is_element(my_game, COLLECTIBLE)))
 	{
 		return (false);													// TBD - Valgrind ok, everything dealt with in the so_long function
 	}
-// ---------------------------------------------------------------------------------------- Check si path valide pour Escape + Collectibles ✅
+// --------------------------------------------------------------------------------------- Check si path valide pour Escape + Collectibles ✅
 	tile	player_position;
 	player_position = get_tile_position(my_game, PLAYER);
 
 	int collectibles_amount;
 	collectibles_amount = get_collectibles_left(my_game, false);
 
-	my_game.escape_position = get_tile_position(my_game, EXIT);
+	my_game.escape_position = get_tile_position(my_game, ESCAPE);
 
 	game	my_game_copy;							// Pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
 
 	my_game_copy = duplicate_game(my_game);			// Free done below ✅
-	if (is_path_valid(player_position, my_game.escape_position, my_game_copy, &collectibles_amount) == false)
+	if (is_path_valid(player_position, my_game.escape_position, my_game_copy, collectibles_amount) == false)
 	{
 		ft_printf("Error\n>> Looks like some elements can't be reached - Check the walls position !\n");
 		free_game(&my_game_copy);
@@ -64,9 +64,8 @@ tile	get_tile_position(game my_game, char element)
 {
 	int y = 0;
 	int	x = 0;
-	//*counter = 0;
 	tile	element_position;
-	element_position.line = -1;							// Return si element not found
+	element_position.line = -1;							// Return si element not found - Utile pour debug
 	element_position.column = -1;
 
 	while (y < my_game.max_lines)
@@ -76,7 +75,6 @@ tile	get_tile_position(game my_game, char element)
 		{
 			if (my_game.content[y][x] == element)
 			{
-				//(*counter)++;
 				element_position.line = y;
 				element_position.column = x;
 			}
@@ -87,19 +85,19 @@ tile	get_tile_position(game my_game, char element)
 	return (element_position);
 }
 
-bool	is_element(game *my_game, char element)			// Nouvelle fonction générique à tester - Uniquement pour check_everything
+bool	is_element(game my_game, char element)			// Uniquement pour check_everything
 {
-	// Check qu'il y a seulement : 1 joueur + 1 exit // AU MOINS 1 collec
+	// Check qu'il y a seulement : 1 joueur + 1 escape // AU MOINS 1 collec
 	int y = 0;
 	int	x = 0;
 	int counter = 0;
 
-	while (y < my_game->max_lines)
+	while (y < my_game.max_lines)
 	{
 		x = 0;
-		while (x < my_game->max_columns)
+		while (x < my_game.max_columns)
 		{
-			if (my_game->content[y][x] == element)
+			if (my_game.content[y][x] == element)
 			{
 				(counter)++;
 			}
@@ -114,33 +112,13 @@ bool	is_element(game *my_game, char element)			// Nouvelle fonction générique 
 	}
 	if ((counter > 1) && ((element == 'P') || (element == 'E')))
 	{
-		ft_printf("Error\n>> Too many ... - Pick & Choose : Players / Exits\n");
+		ft_printf("Error\n>> Too many ... - Pick & Choose : Players / Escapes\n");
 		return(false);
 	}
 	return (true);
 }
 
-/* tile	get_player_tile(game my_game) // A supprimer
-{
-	int	player_counter;
-	player_counter = 0;
-
-	tile player_position;
-	player_position = get_tile_position(my_game, PLAYER);
-
-	if((player_counter == 0) || (player_counter > 1))
-	{
-		if (player_counter == 0)
-			ft_printf("Error\n>> Please invite Diplo to the game !\n");
-		else
-			ft_printf("Error\n>> No friends allowed! Sorry-not-sorry 🐒\n");
-		player_position.line = -1;
-		player_position.column = -1;
-	}
-	return (player_position);
-} */
-// -----------------------------------------------------------------------------  Chercher si au moins un collectible + Combien il y en a ✅
-int		get_collectibles_left(game my_game, bool in_game_loop)
+int		get_collectibles_left(game my_game, bool in_game_loop) // Supprimer bool param ?
 {
 	int	collectibles_amount;
 	collectibles_amount = 0;
@@ -162,39 +140,8 @@ int		get_collectibles_left(game my_game, bool in_game_loop)
 		y++;
 	}
 
-	// element_position(my_game, COLLECTIBLE, &collectibles_amount);	// On va chercher le nombre de collectibles et retourner la position du dernier trouvé
-	// if (in_game_loop == false)					// Otherwise it displays the "no collectibles" error message after all collectibles are picked
-	// {
-	// 	if(collectibles_amount == 0)
-	// 		ft_printf("Error\n>> Corn-Quest cancelled - Nothing to collect !\n\n");
-	// 	if(collectibles_amount == -1)
-	// 		ft_printf("Error\n>> Looks like at least one collectible can't be reached - Check the walls position !\n");
-	// }
 	return (collectibles_amount);
 }
-// -------------------------------------------------------------------------------------------------------- Chercher si une sortie existe ✅
-/* tile	is_escape(game my_game) // Delete this function
-{
-	int	escape_counter;
-	escape_counter = 0;
-
-	tile	escape_position;
-	escape_position = get_tile_position(my_game, EXIT);
-
-	if(escape_counter == 0)
-	{
-		ft_printf("Error\n>> Corn-Quest cancelled - No way to escape.\n");
-		escape_position.line = -1;
-		escape_position.column = -1;
-	}
-	if(escape_counter > 1)
-	{
-		escape_position.line = -1;
-		escape_position.column = -1;
-		ft_printf("Error\n>> Corn-Quest cancelled - Too many escapes.\n");
-	}
-	return (escape_position);
-} */
 
 game	duplicate_game(game my_game)
 {
@@ -219,7 +166,7 @@ game	duplicate_game(game my_game)
 	return (my_game_copy);
 }
 // --------------------------------------------------------------------------------------------------------------- Verif validité du path ✅
-bool	is_path_valid(tile player_position, tile destination_position, game my_game_copy, int *total_collectibles)
+bool	is_path_valid(tile player_position, tile destination_position, game my_game_copy, int total_collectibles)
 {
 	static int collectibles_amount;
 	static int escape_found;
@@ -239,7 +186,7 @@ bool	is_path_valid(tile player_position, tile destination_position, game my_game
 		return (false);
 // ----------------------------------------------------------------------------------------- Sauvegarder visite de la case (marquer un V) ✅
 	GET_TILE(my_game_copy.content, player_position) = VISITAY;
-	if ((collectibles_amount == *total_collectibles) && (escape_found == 1))
+	if ((collectibles_amount == total_collectibles) && (escape_found == 1))
 		return (true);
 	tile	player_up = {player_position.line - 1, player_position.column};
 	tile	player_left = {player_position.line, player_position.column - 1};

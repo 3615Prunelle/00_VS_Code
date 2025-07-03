@@ -53,11 +53,7 @@ void	key_actions(mlx_key_data_t keydata, void *param)
 	if (!move)
 		return;
 
-	player_move(my_game, move);			// Cette fonction ne s'occupe que du déplacement du joueur dans le fonctionnement interne du jeu
-
-	char *number_to_diplay;
-	number_to_diplay = ft_itoa(my_game->counter);	// Malloc done here
-	mlx_put_string(my_game->window, number_to_diplay, 20, 30);
+	player_move(*my_game, move);			// Cette fonction ne s'occupe que du déplacement du joueur dans le fonctionnement interne du jeu
 
 	tile updated_player_position = get_tile_position(*my_game, PLAYER);
 	my_game->player_image->instances[0].x = updated_player_position.column * TILE_SIZE;		// Déplacement de l'image en prenant en compte l'échelle du jeu
@@ -88,6 +84,16 @@ while (index < my_game->collectible_image->count)
 	print_map_fun(*my_game);			// Only for testing purposes
 }
 
+void	bonus_counter(game my_game)		// Not ready yet
+{
+	char *string_to_display;
+	string_to_display = "Step counter";
+	mlx_put_string(my_game.window, string_to_display, 10, 1);
+
+	char *number_to_diplay;
+	number_to_diplay = ft_itoa(my_game.counter);					// Malloc done here
+	mlx_put_string(my_game.window, number_to_diplay, 20, 30);
+}
 // ------------------------------------------------------------------------------------------- Creer fonction pour libérer les textures when exit game ‼️🆓
 void	ft_free_exit(all_mallocs *free_this)
 	{

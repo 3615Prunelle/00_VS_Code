@@ -17,6 +17,7 @@ ft_printf("Error\n>> Please invite Diplo to the game !\n");
 ft_printf("Error\n>> No friends allowed! Sorry-not-sorry\n");
 ft_printf("Error\n>> Corn-Quest cancelled - No way to escape.\n");
 ft_printf("Error\n>> Corn-Quest cancelled - Too many escapes.\n");
+ft_printf("Error\n>> Corn-Quest cancelled - Nothing to collect !\n\n");
 
 TO DO : Dans check everything, garder copie de game, et transformer les fonctions de vérif is_ en booleens
 Ensuite, récupérer les tiles dans my_game qui sera utilisé pour le jeu (avec element_position - get_tile_position)
@@ -27,25 +28,22 @@ get_ = récupérer un élément ou une position
 
 int		main(int	argc, char **argv)
 {
-	char *path = PATH;					// changer pour argv[1] when done
+	char *path = PATH;													// changer pour argv[1] when done
 
 	game	my_game;
-	my_game = build_map(path);			// Création de la carte et affichage de la fenêtre de jeu (vide)
+	my_game = build_map(path);											// Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide)
 
-	display_map(&my_game);				// Set up de l'affichage de la carte (real display dans mlx_loop)
+	display_map(&my_game);												// Set up de l'affichage de la carte (real display dans mlx_loop)
 
 	// Hook = Set up de fonction qui sera appelée par mlx_loop
-	mlx_key_hook(my_game.window, key_actions, &my_game); // Seule fonction pour interagir avec le jeu : key_actions
+	mlx_key_hook(my_game.window, key_actions, &my_game);				// Seule fonction pour interagir avec le jeu : key_actions
 	mlx_close_hook(my_game.window, free_before_exit, &my_game);
 
-	char *counter_to_display;
-	counter_to_display = "Step counter";
-	mlx_put_string(my_game.window, counter_to_display, 10, 1);
+	bonus_counter(my_game);			// To set up (swith to my_game pointer in param ?)
 
-	mlx_loop(my_game.window);		// ‼️Keep at the end - Starts to render to window with all requested elements, until shutdown is requested (zb: closing the window)
+	mlx_loop(my_game.window);		// ‼️Keep at the end - Starts to render to window with all requested elements, until shutdown is requested
 
 // ----------------------------------------------------------------------------------------------------------------------------------- Clean up ✅
-
 	//ft_free_exit(stuff_to_free);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
 	free_game(&my_game);
 	return(0);
@@ -61,7 +59,7 @@ game	build_map(char *path)
 	int size_path = ft_strlen(path);									// ‼️ Check if mallocs done
 	char *extension = ft_substr(path, (size_path - 4), size_path);		// ‼️ Check if mallocs done
 
-	if (ft_strncmp (extension, ft_strdup(".ber"), 5) != 0)				// ‼️ Check if mallocs done + Remplacer par .ber
+	if (ft_strncmp (extension, ft_strdup(".ber"), 5) != 0)				// ‼️ Check if mallocs done
 		exit (1);
 
 	int	fd;
@@ -87,7 +85,7 @@ game	build_map(char *path)
 		free(line_by_line);								// FREE ✅
 		line_by_line = get_next_line(fd);				// ℹ️ GNL aloue la memoire a line_by_line ✅ FREE right above
 		line_counter++;
-// -------------------------------------------------------------------------------------------------------------- Check if all lines are equal in size (= rectangular map) ✅
+// ------------------------------------------------------------------------------------ Check if all lines are equal in size (= rectangular map) ✅
 		if (((line_by_line != NULL)) && (ft_strlen(line_by_line) != length_line))
 		{
 			ft_printf("Error\n>> Sorry, your funky map isn't valid, please make it rectangular !\n\n");
@@ -95,13 +93,13 @@ game	build_map(char *path)
 			exit(1);								// ✅ All heap blocks were freed -- no leaks are possible
 		}
 	}
-	if ((length_line < 4) || (line_counter < 3))		// Taille minimum pour avoir autre chose que des murs
+	if ((length_line < 4) || (line_counter < 3))	// Taille minimum pour avoir autre chose que des murs
 	{
-		ft_printf ("Error\n>> Map not displayable\n\n");
+		ft_printf ("Error\n>> Map not displayable :(\n\n");
 		free_gnl_stuff(&line_by_line, &fd);
 		exit(1);									// ✅ All heap blocks were freed -- no leaks are possible
 	}
-	close(fd);											// Sinon ne lira pas suite
+	close(fd);										// Sinon ne lira pas suite
 // ---------------------------------------------------------------------------------------------------------------------- Alloc memory & fill it ✅
 	my_game.content = ft_calloc((line_counter + 1), sizeof(char *));	// On alloue les lignes uniquement (colonnes done by GNL) ✅ FREE : In the last loop
 	if (!my_game.content)
@@ -118,13 +116,14 @@ game	build_map(char *path)
 	my_game.max_lines = line_counter;
 	my_game.max_columns = length_line;
 
-	if (!(check_everything(my_game)))
+	my_game.escape_position = get_tile_position(my_game, ESCAPE);
+
+	if (!(check_everything(my_game)))						// Attention, on passe my_game donc une copie sera faite = aucune info ne reste
 	{
 		free_game(&my_game);
 		exit(1);											// ✅ All heap blocks were freed -- no leaks are possible ‼️Double Check after MLX42 set up
 	}
 
-	my_game.escape_position = get_tile_position(my_game, EXIT); // Ligne inutile si jeu bien paramétré - A retirer ‼️‼️‼️‼️‼️‼️‼️‼️‼️
 
 	mlx_t	*game_window;
 	if(!(game_window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, "Space Invader Diplo Corn Quest", false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️

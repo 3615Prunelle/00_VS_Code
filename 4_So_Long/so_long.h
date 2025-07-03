@@ -21,9 +21,9 @@
 # define UP		8
 # define DOWN	2
 # define GET_TILE(MAP, ELEMENT)		(MAP)[(ELEMENT).line][(ELEMENT).column] // remplace tous les autres - Penser a update
-# define PLAYER_POSITION			my_game->content[player.line][player.column]
-# define TARGET_POSITION			my_game->content[target.line][target.column]
-# define ESCAPE_POSITION			my_game->content[my_game->escape_position.line][my_game->escape_position.column]
+# define PLAYER_POSITION			my_game.content[player.line][player.column]
+# define TARGET_POSITION			my_game.content[target.line][target.column]
+# define ESCAPE_POSITION			my_game.content[my_game.escape_position.line][my_game.escape_position.column]
 # define MAP_SIZE					my_game->content[my_game->max_lines][my_game->max_columns]
 # define PLA "🦕"
 # define COL "🌽"
@@ -33,7 +33,7 @@
 # define WALL			'1'
 # define PLAYER			'P'
 # define COLLECTIBLE	'C'
-# define EXIT			'E'
+# define ESCAPE			'E'
 # define EMPTY_SPACE	'0'
 # define VISITAY		'V'
 
@@ -94,15 +94,15 @@ typedef struct mic_mac		// Struct to pass many arguments to a function that can'
 // ⚪ Pre launch check functions
 bool		check_everything(game my_game);
 bool		are_walls_approved(game my_game);
-bool		is_path_valid(tile player_position, tile destination_position, game my_game_copy, int *total_collectibles);
-bool		is_element(game *my_game, char element);
+bool		is_path_valid(tile player_position, tile destination_position, game my_game_copy, int total_collectibles);
+bool		is_element(game my_game, char element);
 game		duplicate_game(game my_game);				// Maybe not needed, check when all the rest is sorted (and before dealing with memory)
 
 // ⚪ Helpers
 tile		get_tile_position(game my_game, char element);
-tile		target_position(game *my_game, int move);
-bool		is_move_allowed(game *my_game, tile player_position, tile target);
-void		player_move(game *my_game, int move);
+tile		target_position(game my_game, int move);
+bool		is_move_allowed(game my_game, tile target);
+void		player_move(game my_game, int move);
 int			get_collectibles_left(game my_game, bool in_game);
 
 // ⚪ MLX Helpers
@@ -111,6 +111,7 @@ mlx_image_t	*path_to_image(mlx_t *game_window, char *path);
 void		display_image(mlx_t *game_window, mlx_image_t *image, int colonne, int ligne);
 void		display_map(game *my_game);
 void		key_actions(mlx_key_data_t keydata, void *param);
+void		bonus_counter(game my_game);
 
 // ⚪ Clean up functions - So sort / merge / check / set up / delete
 void		free_game(game *any);
