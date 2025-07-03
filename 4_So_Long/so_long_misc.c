@@ -41,7 +41,7 @@ bool	player_move(game *my_game, int move)
 	my_game->counter++;
 
 // ----------------------------------------------------------------- Faire réapparaitre la sortie s'il reste des collectibles ‼️
-	if ((player.column == my_game->escape_position.column) && (player.line == my_game->escape_position.line) && (is_collec(*my_game, true) > 0))
+	if ((player.column == my_game->escape_position.column) && (player.line == my_game->escape_position.line) && (get_collectibles_left(*my_game, true) > 0))
 	{
 		ESCAPE_POSITION = 'E';	// ✅ Keeping the escape position somewhere or it will be deleted (forever) after pass in check_target
 		// my_game->content[my_game->escape_position.line][my_game->escape_position.column] = 'E';
@@ -63,11 +63,12 @@ bool	player_move(game *my_game, int move)
 
 bool	check_target(game *my_game, tile player, tile target) // Remove player param
 {
-	if (TARGET_POSITION == '0' || TARGET_POSITION == 'C' || TARGET_POSITION == 'E')	// ✅ Keep the escape position somewhere or it will be deleted (forever) after this pass
+	if (TARGET_POSITION == '0' || TARGET_POSITION == 'C' || TARGET_POSITION == 'E')
 	{
 		// If target collectible
 		// Move allowed
 		// Fetch collectible position
+		// Not needed anymore, done in key_actions
 		return(true);
 	}
 	return (false);

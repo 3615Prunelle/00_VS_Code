@@ -19,8 +19,8 @@ void	key_actions(mlx_key_data_t keydata, void *param)
 	int		move;
 	move = 0;
 
-	int		collectibles_left;											// A chaque touche pressée, on check le nombre de collectibles restant
-	collectibles_left = is_collec(*my_game, true);						// bool parameter probably not useful anymore, run tests & remove it
+	int		collectibles_amount;											// A chaque touche pressée, on check le nombre de collectibles restant
+	collectibles_amount = get_collectibles_left(*my_game, true);						// bool parameter probably not useful anymore, run tests & remove it
 	// Cette fonction appelle element_position, qui renvoie la position du dernier collectible
 
 	if (!my_game || !my_game->player_image || my_game->player_image->count < 1)
@@ -64,17 +64,19 @@ void	key_actions(mlx_key_data_t keydata, void *param)
 	my_game->player_image->instances[0].x = updated_player_position.column * TILE_SIZE;		// Déplacement de l'image en prenant en compte l'échelle du jeu
 	my_game->player_image->instances[0].y = updated_player_position.line * TILE_SIZE;		// 1 case (dans représentation non graphique) = 72 pixels (rep visuelle)
 
-	int	index = 0;
-	while (index < my_game->collectible_image->count)
-	{
-		if (my_game->player_image->instances[0].x == my_game->collectible_image->instances[index].x
-			&& my_game->player_image->instances[0].y == my_game->collectible_image->instances[index].y)
+// ------------------------------------------------------------------------------------------------ If on collectible : delete collectible instance ✅
+int	index = 0;
+while (index < my_game->collectible_image->count)
+{
+	if (my_game->player_image->instances[0].x == my_game->collectible_image->instances[index].x
+		&& my_game->player_image->instances[0].y == my_game->collectible_image->instances[index].y)
 		{
 			my_game->collectible_image->instances[index].enabled = false;
 		}
 		index++;
 	}
-	if (collectibles_left == 0)
+// ------------------------------------------------------------------------------------------------- If on escape + collectibles fetched : exit game ✅
+	if (collectibles_amount == 0)
 	{
 		if (my_game->player_image->instances[0].x == my_game->escape_image->instances[0].x
 			&& my_game->player_image->instances[0].y == my_game->escape_image->instances[0].y)
@@ -84,7 +86,7 @@ void	key_actions(mlx_key_data_t keydata, void *param)
 		}
 		index++;
 	}
-	print_map_fun(*my_game);
+	print_map_fun(*my_game);			// Only for testing purposes
 }
 
 // ------------------------------------------------------------------------------------------- Creer fonction pour libérer les textures when exit game ‼️🆓

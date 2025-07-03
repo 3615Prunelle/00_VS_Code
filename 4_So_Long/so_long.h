@@ -92,32 +92,32 @@ typedef struct mic_mac		// Struct to pass many arguments to a function that can'
 } all_mallocs;
 
 // ⚪ Helpers
-tile	ex_player_move(game my_game, tile player_position, tile escape_position);
 bool	player_move(game *my_game, int move);
 bool	check_target(game *my_game, tile player_position, tile target);
-tile	target_position(game *my_game, int move);
+tile	element_position(game my_game, char element, int *counter);
+tile	target_position(game *my_game, int move);	// MERGE
+tile	is_player(game my_game);					// MERGE
+tile	is_escape(game my_game);					// MERGE
 
-int		check_everything(game my_game);
-int		check_walls(game my_game);
-tile	is_player(game my_game);
-int		is_collec(game my_game, bool in_game);
-tile	is_escape(game my_game);
+int		check_everything(game my_game);	// KEEP
+int		check_walls(game my_game);		// KEEP
+int		get_collectibles_left(game my_game, bool in_game);
 
-game	duplicate_game(game my_game);
+game	duplicate_game(game my_game);				// Maybe not needed, check when all the rest is sorted (and before dealing with memory)
 bool	is_path_valid(tile player_position, tile destination_position, game my_game_copy, int *total_collectibles);
 
 void	free_game(game *any);
 void	free_gnl_stuff(char **line, int *fd);
-void	print_map(game my_game);
-void	print_map_fun(game my_game);
+void	print_map(game my_game);					// To delete
+void	print_map_fun(game my_game);				// To delete - Only for testing
 
 // ⚪ MLX Helpers
 game			build_map(char *path);
 mlx_image_t		*path_to_image(mlx_t *game_window, char *path);
 void			display_image(mlx_t *game_window, mlx_image_t *image, int colonne, int ligne);
 void			display_map(game *my_game);
-void			free_before_exit(void *param); // model = mlx_closefunc
 void			key_actions(mlx_key_data_t keydata, void *param);
+void			free_before_exit(void *param); // model = mlx_closefunc
 void			ft_free_exit(all_mallocs *free_this);
 
 #endif
