@@ -36,7 +36,7 @@ bool	check_everything(game my_game)
 	return (true);										// If successful
 }
 
-bool		are_walls_approved(game my_game)
+bool	are_walls_approved(game my_game)
 {
 	int i = 0;
 	int j = 0;

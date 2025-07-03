@@ -43,7 +43,6 @@ void	player_move(game my_game, int move)
 	if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line) && (get_collectibles_left(my_game, true) > 0))
 	{
 		ESCAPE_POSITION = 'E';	// ✅ Keeping the escape position somewhere or it will be deleted (forever) after pass in is_move_allowed
-		// my_game->content[my_game->escape_position.line][my_game->escape_position.column] = 'E';
 	}
 	if (is_move_allowed(my_game, target))
 	{
@@ -68,28 +67,16 @@ bool	is_move_allowed(game my_game, tile target) // Remove player param
 	}
 	return (false);
 }
-// -------------------------------------------------------------------------------------------- Edit & use when things get spicy ✅
-void	free_game(game *any)
-{
-	while (any->max_lines > 0)
-	{
-		free(any->content[any->max_lines-1]);
-		any->max_lines--;
-	}
-	free(any->content);
-}
-void	free_gnl_stuff(char **line, int *fd)
-{
-	free(*line);			// char **line etant l'adresse d'un pointeur, char *line est donc un pointeur, qu'on free [...]
-	*line = NULL;			// [...] puis remet a zero
-	close(*fd);				// Dereference le pointeur vers fd pour le fermer - Fermer un fd est important pour eviter les fd leaks
-	get_next_line(-1);		// Force GNL to free its static buffer
-}
+
+
+
+// Will be deleted before submit
 void	print_map(game my_game)
 {
 	for(int p = 0; p < my_game.max_lines; p++)
 		ft_printf("%s", my_game.content[p]);
 }
+
 void	print_map_fun(game my_game)
 {
 	for(int p = 0; p < my_game.max_lines; p++)

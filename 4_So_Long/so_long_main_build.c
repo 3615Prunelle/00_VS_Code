@@ -33,6 +33,12 @@ int		main(int	argc, char **argv)
 	game	my_game;
 	my_game = build_map(path);											// Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide)
 
+	if (!(check_everything(my_game)))						// Attention, on passe my_game donc une copie sera faite = aucune info ne reste
+	{
+		free_game(&my_game);
+		exit(1);											// 🆓 All heap blocks were freed -- no leaks are possible ‼️Double Check after MLX42 set up
+	}
+
 	display_map(&my_game);												// Set up de l'affichage de la carte (real display dans mlx_loop)
 
 	// Hook = Set up de fonction qui sera appelée par mlx_loop
@@ -45,6 +51,7 @@ int		main(int	argc, char **argv)
 
 // ----------------------------------------------------------------------------------------------------------------------------------- Clean up ✅
 	//ft_free_exit(stuff_to_free);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
+	ft_printf("ON PASSE PAR LA OLALALALALA ------------------------------\n");
 	free_game(&my_game);
 	return(0);
 }
@@ -54,13 +61,15 @@ game	build_map(char *path)
 {
 	game		my_game;											// Solution badass pour passer toutes les infos en meme temps (FAB 4 PRESIDENT)
 	char		*line_by_line;										// map[0] me donnait des segfaults donc je procede avec char *
-	int			length_line;
+	size_t		length_line;
 // ---------------------------------------------------------------------------------------------------------- Edit from .txt to .ber & run tests ‼️
-	int size_path = ft_strlen(path);									// ‼️ Check if mallocs done
-	char *extension = ft_substr(path, (size_path - 4), size_path);		// ‼️ Check if mallocs done
+	int size_path = ft_strlen(path);
+	char *extension = ft_substr(path, (size_path - 4), size_path);	// ‼️ Calloc done pour *extension 🆓 Free done
 
-	if (ft_strncmp (extension, ft_strdup(".ber"), 5) != 0)				// ‼️ Check if mallocs done
+	if (ft_strncmp (extension, ft_strdup(".ber"), 5) != 0)			// ‼️ Malloc done on strdup mais return non stocké dans une variable - No need to free ?
 		exit (1);
+
+	free(extension);
 
 	int	fd;
 	fd = open(path, O_RDWR);
@@ -117,13 +126,6 @@ game	build_map(char *path)
 	my_game.max_columns = length_line;
 
 	my_game.escape_position = get_tile_position(my_game, ESCAPE);
-
-	if (!(check_everything(my_game)))						// Attention, on passe my_game donc une copie sera faite = aucune info ne reste
-	{
-		free_game(&my_game);
-		exit(1);											// ✅ All heap blocks were freed -- no leaks are possible ‼️Double Check after MLX42 set up
-	}
-
 
 	mlx_t	*game_window;
 	if(!(game_window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, "Space Invader Diplo Corn Quest", false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️

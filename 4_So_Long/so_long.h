@@ -79,11 +79,6 @@ typedef struct mic_mac		// Struct to pass many arguments to a function that can'
 {
 	mlx_t			*window;
 	/* Add all the stuff to free mlx + not-mlx part (in main + all the other functions) */
-	mlx_texture_t	*player_texture;
-	mlx_texture_t	*collec_texture;
-	mlx_texture_t	*escape_texture;
-	mlx_texture_t	*ground_texture;
-	mlx_texture_t	*wall_texture;
 	mlx_image_t		*player_image;
 	mlx_image_t		*wall_image;
 	// game	my_game;								// ‼️‼️‼️ Uncomment when previous code is connected to the MLX42 part
@@ -118,6 +113,8 @@ void		free_game(game *any);
 void		free_gnl_stuff(char **line, int *fd);
 void		free_before_exit(void *param); // model = mlx_closefunc		// To merge or set up ?
 void		ft_free_exit(all_mallocs *free_this);
+void		clean_game_exit(char *error_message, game *my_game);
+void		clean_window_exit(const char *error_message, mlx_t *game_window);
 
 // ⚪ Testing
 void		print_map(game my_game);					// To delete
