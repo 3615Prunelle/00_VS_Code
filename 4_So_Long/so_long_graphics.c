@@ -153,13 +153,22 @@ void		key_actions(mlx_key_data_t keydata, void *param) // Je lui ai passé l'adr
 	print_map_fun(*my_game);			// Only for testing purposes
 }
 
-void		bonus_counter(game my_game)		// Not ready yet
+void		bonus_counter(game my_game, int step_counter)
 {
+	static mlx_image_t	*bonus_string1;
+	static mlx_image_t	*bonus_string2;
+
+	if (bonus_string1)
+		mlx_delete_image(my_game.window, bonus_string1);
+	if (bonus_string2)
+		mlx_delete_image(my_game.window, bonus_string2);
+
 	char *string_to_display;
 	string_to_display = "Step counter";
-	mlx_put_string(my_game.window, string_to_display, 10, 1);
+	bonus_string1 = mlx_put_string(my_game.window, string_to_display, 50, 15);
 
 	char *number_to_diplay;
-	number_to_diplay = ft_itoa(my_game.counter);					// Malloc done here
-	mlx_put_string(my_game.window, number_to_diplay, 20, 30);
+	number_to_diplay = ft_itoa(step_counter);					// 🆓 Malloc
+	bonus_string2 = mlx_put_string(my_game.window, number_to_diplay, 100, 35);
+	free(number_to_diplay);										// ✅ Free
 }

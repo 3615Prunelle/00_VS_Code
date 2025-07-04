@@ -65,13 +65,14 @@ typedef struct game
 {
 	int			max_lines;
 	int			max_columns;
-	int			counter;
-	char		**content;
+	//int			step_counter_in_struct;		// Needs to be static = in function
+	char		**content;						// Seule ligne à free dans cette struct (le reste est à faire via delete_mlx42)
 	tile		escape_position;
 	mlx_t		*window;
 	mlx_image_t	*player_image;
 	mlx_image_t	*collectible_image;
 	mlx_image_t	*escape_image;
+	mlx_image_t	*bonus_string1;
 } game;
 
 // ⚪ My MLX42 structs
@@ -106,11 +107,11 @@ mlx_image_t	*path_to_image(mlx_t *game_window, char *path);
 void		display_image(mlx_t *game_window, mlx_image_t *image, int colonne, int ligne);
 void		display_map(game *my_game);
 void		key_actions(mlx_key_data_t keydata, void *param);
-void		bonus_counter(game my_game);
+void		bonus_counter(game my_game, int step_counter);
 
 // ⚪ Clean up functions - So sort / merge / check / set up / delete
-void		free_game(game *any);
-void		free_gnl_stuff(char **line, int *fd);
+void		free_game(char *error_message, game *any_game);
+void		free_gnl_stuff(char *error_message, char **line, int *fd);
 void		free_before_exit(void *param); // model = mlx_closefunc		// To merge or set up ?
 void		ft_free_exit(all_mallocs *free_this);
 void		clean_game_exit(char *error_message, game *my_game);

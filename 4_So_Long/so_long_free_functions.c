@@ -1,22 +1,30 @@
 #include "so_long.h"
 
-void	free_gnl_stuff(char **line, int *fd)
+void	free_gnl_stuff(char *error_message, char **line, int *fd)
 {
+	ft_printf("%s\n", error_message);
+
 	free(*line);			// char **line etant l'adresse d'un pointeur, char *line est donc un pointeur, qu'on free [...]
 	*line = NULL;			// [...] puis remet a zero
 	close(*fd);				// Dereference le pointeur vers fd pour le fermer - Fermer un fd est important pour eviter les fd leaks
 	get_next_line(-1);		// Force GNL to free its static buffer
+
+	exit(1);				// exit sort du programme / return sort de la fonction
 }
 
 // -------------------------------------------------------------------------------------------- Edit & use when things get spicy ‼️
-void	free_game(game *any)
+void	free_game(char *error_message, game *any_game)			// Pour free toutes les lignes de content (rien d'autre à free qui ne soit pas dans MLX42)
 {
-	while (any->max_lines > 0)
+	ft_printf("%s\n", error_message);
+
+	while (any_game->max_lines > 0)
 	{
-		free(any->content[any->max_lines-1]);
-		any->max_lines--;
+		free(any_game->content[any_game->max_lines-1]);
+		any_game->max_lines--;
 	}
-	free(any->content);
+	free(any_game->content);
+
+	//exit(1); // Maybe not necessary because this function is also alsed when no error occurs
 }
 
 // -------------------------------------------------------------------------------- Free everything MLX42 related when exit game ‼

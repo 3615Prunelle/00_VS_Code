@@ -25,13 +25,13 @@ bool	check_everything(game my_game)
 	game	my_game_copy;							// Pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
 
 	my_game_copy = duplicate_game(my_game);			// Free done below ✅
-	if (is_path_valid(player_position, my_game.escape_position, my_game_copy, collectibles_amount) == false)
+	if (!is_path_valid(player_position, my_game.escape_position, my_game_copy, collectibles_amount))
 	{
-		ft_printf("Error\n>> Looks like some elements can't be reached - Check the walls position !\n");
-		free_game(&my_game_copy);
-		return (false);													// ✅ Copy freed here, game freed in so_long function
+		free_game("Error\n>> Looks like some elements can't be reached - Check the walls position !\n", &my_game_copy);
+		exit(1);
+		// ✅ Copy freed here, game ‼️‼️‼️ to free also - Try to erase copy and run tests
 	}
-	free_game(&my_game_copy);
+	//free_game(&my_game_copy); // We don't want to exit but we want to free the copy - Search for solutions
 
 	return (true);										// If successful
 }
@@ -90,7 +90,7 @@ bool	is_element(game my_game, char element)			// Uniquement pour check_everythin
 	// Check qu'il y a seulement : 1 joueur + 1 escape // AU MOINS 1 collec
 	int y = 0;
 	int	x = 0;
-	int counter = 0;
+	int element_counter = 0;
 
 	while (y < my_game.max_lines)
 	{
@@ -99,18 +99,18 @@ bool	is_element(game my_game, char element)			// Uniquement pour check_everythin
 		{
 			if (my_game.content[y][x] == element)
 			{
-				(counter)++;
+				(element_counter)++;
 			}
 			x++;
 		}
 		y++;
 	}
-	if (counter == 0)
+	if (element_counter == 0)
 	{
 		ft_printf("Error\n>> Something is missing - Pick & Choose : Player / Collectible / Exit\n");
 		return(false);
 	}
-	if ((counter > 1) && ((element == 'P') || (element == 'E')))
+	if ((element_counter > 1) && ((element == 'P') || (element == 'E')))
 	{
 		ft_printf("Error\n>> Too many ... - Pick & Choose : Players / Escapes\n");
 		return(false);

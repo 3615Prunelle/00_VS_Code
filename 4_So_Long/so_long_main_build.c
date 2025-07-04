@@ -1,7 +1,9 @@
 #include "so_long.h"
 
 /* Notes random
-🟡 Callback function = Use the amount of parameters mentionned in the .h - If need more, use struct
+🔵 Si on veut qu'une struct soit MAJ en dehors d'une fonction, il faut obligatoirement passer un pointeur de
+🔵 		cette struct (et vérifier que le pointeur est passé dans tous les fonctions appelantes en amont)
+🟡 Callbsack function = Use the amount of parameters mentionned in the .h - If need more, use struct
 🟢 Hooks allow you to add your own functions to the main loop execution of the program, aka these functions get executed every frame.
 🟡 image->instances[0].x/y = Déplacer une image
 🟣 mlx_image_t *img = mlx_new_image(mlx, 32, 32);		= Créer une image à partir de zéro
@@ -28,15 +30,15 @@ get_ = récupérer un élément ou une position
 
 int		main(int	argc, char **argv)
 {
-	char *path = PATH;													// changer pour argv[1] when done
+	char *path = PATH;										// changer pour argv[1] when done
 
 	game	my_game;
-	my_game = build_map(path);											// Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide)
+	my_game = build_map(path);								// Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide)
 
 	if (!(check_everything(my_game)))						// Attention, on passe my_game donc une copie sera faite = aucune info ne reste
 	{
-		free_game(&my_game);
-		exit(1);											// 🆓 All heap blocks were freed -- no leaks are possible ‼️Double Check after MLX42 set up
+		free_game("Correct and try again !\n", &my_game);	// Check if memory leaks
+		exit(1);
 	}
 
 	display_map(&my_game);												// Set up de l'affichage de la carte (real display dans mlx_loop)
@@ -45,14 +47,11 @@ int		main(int	argc, char **argv)
 	mlx_key_hook(my_game.window, key_actions, &my_game);				// Seule fonction pour interagir avec le jeu : key_actions
 	mlx_close_hook(my_game.window, free_before_exit, &my_game);
 
-	bonus_counter(my_game);			// To set up (swith to my_game pointer in param ?)
-
 	mlx_loop(my_game.window);		// ‼️Keep at the end - Starts to render to window with all requested elements, until shutdown is requested
 
 // ----------------------------------------------------------------------------------------------------------------------------------- Clean up ✅
 	//ft_free_exit(stuff_to_free);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
-	ft_printf("ON PASSE PAR LA OLALALALALA ------------------------------\n");
-	free_game(&my_game);
+	free_game("Tiiiime toooo say goodbyyyyyye\n", &my_game);
 	return(0);
 }
 
@@ -64,12 +63,12 @@ game	build_map(char *path)
 	size_t		length_line;
 // ---------------------------------------------------------------------------------------------------------- Edit from .txt to .ber & run tests ‼️
 	int size_path = ft_strlen(path);
-	char *extension = ft_substr(path, (size_path - 4), size_path);	// ‼️ Calloc done pour *extension 🆓 Free done
+	char *extension = ft_substr(path, (size_path - 4), size_path);	// 🆓 Calloc done pour *extension
 
 	if (ft_strncmp (extension, ft_strdup(".ber"), 5) != 0)			// ‼️ Malloc done on strdup mais return non stocké dans une variable - No need to free ?
 		exit (1);
 
-	free(extension);
+	free(extension);												// ✅ Free
 
 	int	fd;
 	fd = open(path, O_RDWR);
@@ -80,33 +79,27 @@ game	build_map(char *path)
 		exit (1);
 	}
 // ----------------------------------------------------------------------------------------- Deal with the map itself first / Get the size of it ✅
-	line_by_line = get_next_line(fd);					// ℹ️ GNL aloue la memoire a line_by_line ✅ FREE in the loop below
+	line_by_line = get_next_line(fd);					// 🆓 GNL aloue la memoire a line_by_line
 	if (!line_by_line)
 	{
-		ft_printf ("Error\n>> Map empty or not displayable oO\n\n");
-		free_gnl_stuff(&line_by_line, &fd);
-		exit(1);									// ✅ All heap blocks were freed -- no leaks are possible
+		free_gnl_stuff("Error\n>> Map empty or not displayable oO\n", &line_by_line, &fd);	// ✅ Free
 	}
 	length_line = ft_strlen(line_by_line);
 	int line_counter = 0;
 	while (line_by_line != NULL)
 	{
-		free(line_by_line);								// FREE ✅
-		line_by_line = get_next_line(fd);				// ℹ️ GNL aloue la memoire a line_by_line ✅ FREE right above
+		free(line_by_line);								// ✅ Free
+		line_by_line = get_next_line(fd);				// 🆓 GNL aloue la memoire a line_by_line ✅ FREE right above
 		line_counter++;
 // ------------------------------------------------------------------------------------ Check if all lines are equal in size (= rectangular map) ✅
 		if (((line_by_line != NULL)) && (ft_strlen(line_by_line) != length_line))
 		{
-			ft_printf("Error\n>> Sorry, your funky map isn't valid, please make it rectangular !\n\n");
-			free_gnl_stuff(&line_by_line, &fd);
-			exit(1);								// ✅ All heap blocks were freed -- no leaks are possible
+			free_gnl_stuff("Error\n>> Sorry, your funky map isn't valid, please make it rectangular !\n", &line_by_line, &fd);	// ✅ Free
 		}
 	}
 	if ((length_line < 4) || (line_counter < 3))	// Taille minimum pour avoir autre chose que des murs
 	{
-		ft_printf ("Error\n>> Map not displayable :(\n\n");
-		free_gnl_stuff(&line_by_line, &fd);
-		exit(1);									// ✅ All heap blocks were freed -- no leaks are possible
+		free_gnl_stuff("Error\n>> Map too small, no space to play :(\n", &line_by_line, &fd);									// ✅ Free
 	}
 	close(fd);										// Sinon ne lira pas suite
 // ---------------------------------------------------------------------------------------------------------------------- Alloc memory & fill it ✅
@@ -130,14 +123,14 @@ game	build_map(char *path)
 	mlx_t	*game_window;
 	if(!(game_window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, "Space Invader Diplo Corn Quest", false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️
 	{
-		ft_printf("Error in the window allocation\n");
+		free_game("Error in the window allocation\n", &my_game);
 		exit(1);
-		/* Autre option : ecrire juste une ligne ft_error();	puis creer cette fonction qui utilise exit (a etudier) : https://github.com/codam-coding-college/MLX42/blob/master/docs/Images.md */
 	}
-	//stuff_to_free->window =			game_window; // If needed : Add the others in .h struct + here
+// ‼️‼️‼️ Malloc on game_window - Set up mic_mac "stuff to free" struct or use game struct ?
 	my_game.window = game_window;
 
 	my_game.player_image = path_to_image(my_game.window, "./4_So_Long/ic_Play.png");
+// ‼️‼️‼️ Malloc on player_image - Set up mic_mac "stuff to free" struct or use game struct ?
 
 	return (my_game);
 }

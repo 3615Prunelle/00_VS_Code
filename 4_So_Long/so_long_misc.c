@@ -38,7 +38,7 @@ void	player_move(game my_game, int move)
 	tile	target;
 	target = target_position(my_game, move);
 
-	my_game.counter++;
+	static int	step_counter;
 // ----------------------------------------------------------------- Faire réapparaitre la sortie s'il reste des collectibles ‼️
 	if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line) && (get_collectibles_left(my_game, true) > 0))
 	{
@@ -54,6 +54,8 @@ void	player_move(game my_game, int move)
 
 		player.line = target.line;			// Update de la position du player
 		player.column = target.column;		// Idem
+		step_counter++;
+		bonus_counter(my_game, step_counter);
 		return;
 	}
 	return;
