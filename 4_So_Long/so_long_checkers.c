@@ -11,29 +11,27 @@ bool	check_everything(game my_game)
 // ---------------------------------------------------------------------------------- Check if all elements are here in the correct amount ✅
 	if((!is_element(my_game, PLAYER)) || (!is_element(my_game, ESCAPE)) || (!is_element(my_game, COLLECTIBLE)))
 	{
-		//free_game_content_and_exit(NULL, &my_game);								// Do I have to do that ? (Aborted error if commented out)
-		return (false);
+		return (false);		// Message d'erreur géré dans is_element
 	}
 // --------------------------------------------------------------------------------------- Check si path valide pour Escape + Collectibles ✅
 	tile	player_position;
 	player_position = get_tile_position(my_game, PLAYER);
 
 	int collectibles_amount;
-	collectibles_amount = get_collectibles_left(my_game, false);
+	collectibles_amount = get_collectibles_left(my_game);
 
 	my_game.escape_position = get_tile_position(my_game, ESCAPE);
 
-	game	my_game_copy;							// Pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
-
+	print_map_fun(my_game);
+	game	my_game_copy;							// Segfault si je ne le fais pas - Pourquoi ? (Initialement créé pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
 	my_game_copy = duplicate_game(my_game);			// Free done below ✅
 	if (!is_path_valid(player_position, my_game.escape_position, my_game_copy, collectibles_amount))
 	{
-		free_game_content_and_exit("Error\n>> Looks like some elements can't be reached - Check the walls position !\n", &my_game_copy); // ✅ Free
-		free_game_content_and_exit("Error\n>> Looks like some elements can't be reached - Check the walls position !\n", &my_game);		// ✅ Free
-		exit(1);
+		free_game_content_no_exit("Error\n>> Looks like some elements can't be reached - Check the walls position !\n", &my_game_copy); // ✅ Free
+		return(false);
 	}
-	free_game_content_and_exit(NULL, &my_game_copy);
-	return (true);									// If successful
+	free_game_content_no_exit("Big check up done, you're good to play, have fun!\n", &my_game_copy);
+	return (true);
 }
 
 bool	are_walls_approved(game my_game)
@@ -82,12 +80,13 @@ tile	get_tile_position(game my_game, char element)
 		}
 		y++;
 	}
+
 	return (element_position);
 }
 
-bool	is_element(game my_game, char element)			// Uniquement pour check_everything
+// ----------------------------------------------------------------- Check qu'il y a seulement : 1 joueur + 1 escape / AU MOINS 1 collec ✅
+bool	is_element(game my_game, char element)			// Appelée seulement par check_everything
 {
-	// Check qu'il y a seulement : 1 joueur + 1 escape // AU MOINS 1 collec
 	int y = 0;
 	int	x = 0;
 	int element_counter = 0;
@@ -118,7 +117,8 @@ bool	is_element(game my_game, char element)			// Uniquement pour check_everythin
 	return (true);
 }
 
-int		get_collectibles_left(game my_game, bool in_game_loop) // Supprimer bool param ?
+
+int		get_collectibles_left(game my_game) // Supprimer bool param ?
 {
 	int	collectibles_amount;
 	collectibles_amount = 0;
@@ -173,19 +173,19 @@ bool	is_path_valid(tile player_position, tile destination_position, game my_game
 // ---------------------------------------------------------------------------------------------  Verifie que start est dans le rectangle ✅
 	if ((player_position.line < 0) || (player_position.column < 0) || (player_position.line > my_game_copy.max_lines) || (player_position.column > my_game_copy.max_columns))
 		return (false);
-	if (GET_TILE(my_game_copy.content, player_position) == COLLECTIBLE)
+	if (TILE_CHAR(my_game_copy.content, player_position) == COLLECTIBLE)
 		collectibles_amount++;
 // -------------------------------------------------------------------------- Est-ce que player est sur la destination (escape/collectible) ✅
 	if (player_position.line == destination_position.line && (player_position.column == destination_position.column))
 		escape_found = 1;	/* Ne rien return pour l'instant car on doit etre surs que tous les collectibles sont trouvés */
 // ---------------------------------------------------------------------------------------------------------- Est-ce qu'on est sur un mur ✅
-	if (GET_TILE(my_game_copy.content, player_position) == WALL)
+	if (TILE_CHAR(my_game_copy.content, player_position) == WALL)
 		return (false);
 // ------------------------------------------------------------------------------------------- Est-ce qu'on est deja passé sur cette case ✅
-	if (GET_TILE(my_game_copy.content, player_position) == VISITAY)
+	if (TILE_CHAR(my_game_copy.content, player_position) == CHECKED)
 		return (false);
 // ----------------------------------------------------------------------------------------- Sauvegarder visite de la case (marquer un V) ✅
-	GET_TILE(my_game_copy.content, player_position) = VISITAY;
+	TILE_CHAR(my_game_copy.content, player_position) = CHECKED;
 	if ((collectibles_amount == total_collectibles) && (escape_found == 1))
 		return (true);
 	tile	player_up = {player_position.line - 1, player_position.column};

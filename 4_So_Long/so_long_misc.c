@@ -1,5 +1,4 @@
 #include "so_long.h"
-// -------------------------------------------------------------------  Vérifier chaque possibilité de mouvement + Create counter ✅
 
 tile	target_position(game my_game, int move)
 {
@@ -30,6 +29,7 @@ tile	target_position(game my_game, int move)
 	return(target);
 }
 
+// -------------------------------------------------------------------  Vérifier chaque possibilité de mouvement + Create counter ✅
 void	player_move(game my_game, int move)
 {
 	tile player;
@@ -39,8 +39,8 @@ void	player_move(game my_game, int move)
 	target = target_position(my_game, move);
 
 	static int	step_counter;
-// ----------------------------------------------------------------- Faire réapparaitre la sortie s'il reste des collectibles ‼️
-	if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line) && (get_collectibles_left(my_game, true) > 0))
+// ----------------------------------------------------------------- Faire réapparaitre la sortie s'il reste des collectibles ✅
+	if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line) && (get_collectibles_left(my_game) > 0))
 	{
 		ESCAPE_POSITION = 'E';	// ✅ Keeping the escape position somewhere or it will be deleted (forever) after pass in is_move_allowed
 	}
@@ -61,7 +61,7 @@ void	player_move(game my_game, int move)
 	return;
 }
 
-bool	is_move_allowed(game my_game, tile target) // Remove player param
+bool	is_move_allowed(game my_game, tile target)
 {
 	if (TARGET_POSITION == '0' || TARGET_POSITION == 'C' || TARGET_POSITION == 'E')
 	{
@@ -69,8 +69,6 @@ bool	is_move_allowed(game my_game, tile target) // Remove player param
 	}
 	return (false);
 }
-
-
 
 // Will be deleted before submit
 void	print_map(game my_game)
@@ -88,25 +86,22 @@ void	print_map_fun(game my_game)
 			switch (my_game.content[p][i])
 			{
 			case 'P':
-				ft_printf(PLA);
+				ft_printf(EMOJI_PLAYER);
 				break;
 			case 'C':
-				ft_printf(COL);
+				ft_printf(EMOJI_COLLECTIBLE);
 				break;
 			case 'E':
-				ft_printf(EXI);
+				ft_printf(EMOJI_ESCAPE);
 				break;
 			case '1':
-				ft_printf(WAL);
+				ft_printf(EMOJI_WALL);
 				break;
 			case '0':
-				ft_printf(EMP);
+				ft_printf(EMOJI_GROUND);
 				break;
 			case '\n':
 				ft_printf("\n");
-				break;
-			case VISITAY:					// Remove when I get out this goddam rabbit hole
-				ft_printf("🟥");
 				break;
 			default:
 				break;

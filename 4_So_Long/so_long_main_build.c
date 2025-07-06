@@ -21,11 +21,8 @@ ft_printf("Error\n>> Corn-Quest cancelled - No way to escape.\n");
 ft_printf("Error\n>> Corn-Quest cancelled - Too many escapes.\n");
 ft_printf("Error\n>> Corn-Quest cancelled - Nothing to collect !\n\n");
 
-TO DO : Dans check everything, garder copie de game, et transformer les fonctions de vérif is_ en booleens
-Ensuite, récupérer les tiles dans my_game qui sera utilisé pour le jeu (avec element_position - get_tile_position)
 is_ = bool
 get_ = récupérer un élément ou une position
-‼️ Start with line 121
 */
 
 int		main(int	argc, char **argv)
@@ -33,12 +30,13 @@ int		main(int	argc, char **argv)
 	char *path = PATH_MAP;									// changer pour argv[1] when done
 
 	game	my_game;
-	my_game = build_map(path);								// Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide)
+	my_game = build_map(path);								// Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide) + upload image player
 
 	if (!(check_everything(my_game)))						// Attention, on passe my_game donc une copie sera faite = aucune info ne reste
 	{
-		free_game_content_and_exit("Try again !\n", &my_game);				// ‼️‼️‼️ Check if memory leaks
-		exit(1);
+		clean_and_exit(&my_game);							// free_game_content ne va pas car MLX a malloc l'image du player dans build_map
+		//free_game_content_no_exit("Try again !\n", &my_game);				// ‼️‼️‼️ Check if memory leaks
+		//exit(1);
 	}
 
 	display_map(&my_game);												// Set up de l'affichage de la carte (real display dans mlx_loop)
@@ -52,7 +50,7 @@ int		main(int	argc, char **argv)
 
 // ----------------------------------------------------------------------------------------------------------------------------------- Clean up ✅
 	//clean_and_exit(stuff_to_free);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
-	free_game_content_and_exit("Pass in free_game_content_and_exit function\n", &my_game);
+	free_game_content_no_exit("Pass in free_game_content_no_exit function\n", &my_game);
 	return(0);
 }
 
@@ -62,14 +60,21 @@ game	build_map(char *path)
 	game		my_game;											// Solution badass pour passer toutes les infos en meme temps (FAB 4 PRESIDENT)
 	char		*line_by_line;										// map[0] me donnait des segfaults donc je procede avec char *
 	size_t		length_line;
-// ---------------------------------------------------------------------------------------------------------- Edit from .txt to .ber & run tests ‼️
+// --------------------------------------------------------------------------------------------------------------------- Only .ber maps + Open FD ✅
 	int size_path = ft_strlen(path);
 	char *extension = ft_substr(path, (size_path - 4), size_path);	// 🆓 Calloc done pour *extension
+	char *compare;
+	compare = ft_strdup(".ber");
 
-	if (ft_strncmp (extension, ft_strdup(".ber"), 5) != 0)			// ‼️ Malloc done on strdup mais return non stocké dans une variable - No need to free ?
-		exit (1);
-
+	if (ft_strncmp (extension, compare, 5) != 0)					// 🆓 Malloc done on strdup
+	{
+		free(extension);
+		free(compare);
+		ft_printf ("Error\n>> Map file extension must be .ber\n\n");	// Ou utiliser strerror & perror ?
+		exit (1);													// ✅ All heap blocks were freed -- no leaks are possible
+	}
 	free(extension);												// ✅ Free
+	free(compare);
 
 	int	fd;
 	fd = open(path, O_RDWR);
@@ -77,14 +82,14 @@ game	build_map(char *path)
 	if((!fd) || (fd < 0))
 	{
 		ft_printf ("Error\n>> Map missing OLALA NICHT GUT\n\n");
-		exit (1);
+		exit (1);													// ✅ All heap blocks were freed -- no leaks are possible
 	}
 // ----------------------------------------------------------------------------------------- Deal with the map itself first / Get the size of it ✅
 	line_by_line = get_next_line(fd);					// 🆓 GNL aloue la memoire a line_by_line
 	if (!line_by_line)
 	{
-		free_gnl_stuff("Error\n>> Map empty or not displayable oO\n", &line_by_line, &fd);	// ✅ Free
-	}
+		free_gnl_return_and_exit("Error\n>> Map empty or not displayable oO\n", &line_by_line, &fd);
+	}// ✅ All heap blocks were freed -- no leaks are possible
 	length_line = ft_strlen(line_by_line);
 	int line_counter = 0;
 	while (line_by_line != NULL)
@@ -95,16 +100,16 @@ game	build_map(char *path)
 // ------------------------------------------------------------------------------------ Check if all lines are equal in size (= rectangular map) ✅
 		if (((line_by_line != NULL)) && (ft_strlen(line_by_line) != length_line))
 		{
-			free_gnl_stuff("Error\n>> Sorry, your funky map isn't valid, please make it rectangular !\n", &line_by_line, &fd);	// ✅ Free
-		}
+			free_gnl_return_and_exit("Error\n>> Sorry, your funky map isn't valid, please make it rectangular !\n", &line_by_line, &fd);
+		}// ✅ All heap blocks were freed -- no leaks are possible
 	}
 	if ((length_line < 4) || (line_counter < 3))	// Taille minimum pour avoir autre chose que des murs
 	{
-		free_gnl_stuff("Error\n>> Map too small, no space to play :(\n", &line_by_line, &fd);									// ✅ Free
-	}
+		free_gnl_return_and_exit("Error\n>> Map too small, no space to play :(\n", &line_by_line, &fd);									// ✅ Free
+	}// ✅ All heap blocks were freed -- no leaks are possible
 	close(fd);										// Sinon ne lira pas suite
 // ---------------------------------------------------------------------------------------------------------------------- Alloc memory & fill it ✅
-	my_game.content = ft_calloc((line_counter + 1), sizeof(char *));	// On alloue les lignes uniquement (colonnes done by GNL) ✅ FREE : In the last loop
+	my_game.content = ft_calloc((line_counter + 1), sizeof(char *));	// On alloue la première colonne uniquement (lignes done by GNL) ✅ FREE dans la fonction appelante (main)
 	if (!my_game.content)
 		exit(1);
 	fd = open(PATH_MAP, O_RDWR);
@@ -113,7 +118,7 @@ game	build_map(char *path)
 	while (my_game.content[i] != NULL)
 	{
 		i++;
-		my_game.content[i] = get_next_line(fd);							// Memoire allouee pour chaque ligne ✅ FREE in the loop at the end of the function
+		my_game.content[i] = get_next_line(fd);			// Memoire allouee pour chaque ligne ✅ FREE dans la fonction appelante (main)
 	}
 
 	my_game.max_lines = line_counter;
@@ -121,17 +126,24 @@ game	build_map(char *path)
 
 	my_game.escape_position = get_tile_position(my_game, ESCAPE);
 
-	mlx_t	*game_window;
-	if(!(game_window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, "Space Invader Diplo Corn Quest", false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️
+	my_game.ground_image = NULL;		// Pour éviter valeurs poubelle et segfaults quand passage dans free_game_content_no_exit
+	my_game.wall_image = NULL;
+	my_game.player_image = NULL;
+	my_game.collectible_image = NULL;
+	my_game.escape_image = NULL;
+	my_game.bonus_string1 = NULL;
+	my_game.bonus_string2 = NULL;
+
+	if(!(my_game.window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, "Space Invader Diplo Corn Quest", false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️
 	{
-		free_game_content_and_exit("Error in the window allocation\n", &my_game);
+		free_game_content_no_exit("Error in the window allocation\n", &my_game);
 		exit(1);
+		// Note: 32 bytes definitely lost when mlx_init() fails.
+		// This is an internal MLX42/GLFW allocation and can't be freed manually.
+		// mlx_terminate(my_game.window); // SURTOUT PAS, car rien n'a été alloué via MLX42
 	}
-// ‼️‼️‼️ Malloc on game_window - Set up mic_mac "stuff to free" struct or use game struct ?
-	my_game.window = game_window;
 
 	my_game.player_image = path_to_image(&my_game, my_game.window, PATH_PLAYER);
-// ‼️‼️‼️ Malloc on player_image - Set up mic_mac "stuff to free" struct or use game struct ?
 
 	return (my_game);
 }

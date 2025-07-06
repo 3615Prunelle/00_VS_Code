@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// ⚪ Name of new library defined here (so we can use #include "current_ft.h")
+// ⚪ Name of new library defined here (so we can use #include "current_project.h" header)
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-// ⚪ All #define can be placed only here
-# define PATH_MAP "./4_So_Long/S_I_map.ber"
+// ⚪ #define
+# define PATH_MAP "./4_So_Long/test_map.ber"
 # define PATH_GROUND "./4_So_Long/ic_Square_Purple.png"
 # define PATH_WALL "./4_So_Long/ic_Square_Black.png"
 # define PATH_PLAYER "./4_So_Long/ic_Player_Diplo.png"
@@ -25,33 +25,33 @@
 # define LEFT	4
 # define UP		8
 # define DOWN	2
-# define GET_TILE(MAP, ELEMENT)		(MAP)[(ELEMENT).line][(ELEMENT).column] // remplace tous les autres - Penser a update
+# define TILE_CHAR(MAP, ELEMENT)		(MAP)[(ELEMENT).line][(ELEMENT).column] // Donne le char présent sur une tile (ou le modifie)
 # define PLAYER_POSITION			my_game.content[player.line][player.column]
 # define TARGET_POSITION			my_game.content[target.line][target.column]
 # define ESCAPE_POSITION			my_game.content[my_game.escape_position.line][my_game.escape_position.column]
-# define MAP_SIZE					my_game->content[my_game->max_lines][my_game->max_columns]
-# define PLA "🦕"
-# define COL "🌽"
-# define EXI "🛴"
-# define WAL "🟩"
-# define EMP "⬛"
+# define EMOJI_PLAYER		"🦕"
+# define EMOJI_COLLECTIBLE	"🌽"
+# define EMOJI_ESCAPE		"🛴"
+# define EMOJI_WALL			"🟩"
+# define EMOJI_GROUND		"⬛"
 # define WALL			'1'
 # define PLAYER			'P'
 # define COLLECTIBLE	'C'
 # define ESCAPE			'E'
 # define EMPTY_SPACE	'0'
-# define VISITAY		'V'
+# define CHECKED		'V'
 
-// ⚪ MLX42 related #define
 # define TILE_SIZE 72
 
-// ⚪ All #include only here (put #include "current_ft.h" is in each file)
+// ⚪ #include (don't forget to put #include "current_project.h" in each file)
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdbool.h>
+//# include <string.h>
+//# include <errno.h> ft_printf("Test errno : [%s]\n", strerror(errno));
 
-# include <MLX42/MLX42.h>			// To use MLX42
+# include <MLX42/MLX42.h>
 
 // ⚪ Include from other projects (put relative path to avoid issues from home computer)
 // ‼️ ‼️ ‼️ Mettre les.h ici + ‼️ Compiler et ajouter la ligne "-l[libname without the lib]" au dessus de "-lgetnextline" dans tasks.json
@@ -59,7 +59,7 @@
 #include "../2_ft_printf/ft_printf.h"
 #include "../3_Get_Next_Line/get_next_line.h"
 
-// ⚪ Non-MLX42 structs
+// ⚪ Structs
 typedef struct node
 {
 	int		line;
@@ -70,7 +70,6 @@ typedef struct game		// Struct to pass many arguments to a function that can't b
 {
 	int			max_lines;
 	int			max_columns;
-	//int			step_counter_in_struct;		// Needs to be static = in function
 	char		**content;						// Seule ligne à free dans cette struct (le reste est à faire via delete_mlx42)
 	tile		escape_position;
 	/* Add all the stuff to free mlx (below) + not-mlx part (above) + Initialised where needed + Added in the free function */
@@ -96,7 +95,7 @@ tile		get_tile_position(game my_game, char element);
 tile		target_position(game my_game, int move);
 bool		is_move_allowed(game my_game, tile target);
 void		player_move(game my_game, int move);
-int			get_collectibles_left(game my_game, bool in_game);
+int			get_collectibles_left(game my_game);
 
 // ⚪ MLX Helpers
 game		build_map(char *path);
@@ -107,8 +106,8 @@ void		key_actions(mlx_key_data_t keydata, void *param);
 void		bonus_counter(game my_game, int step_counter);
 
 // ⚪ Clean up functions - So sort / merge / check / set up / delete
-void		free_game_content_and_exit(char *error_message, game *any_game);		// pour free le game.content sans la partie graphique (si check_everything renvoie false)
-void		free_gnl_stuff(char *error_message, char **line, int *fd);
+void		free_game_content_no_exit(char *error_message, game *any_game);		// pour free le game.content sans la partie graphique (si check_everything renvoie false)
+void		free_gnl_return_and_exit(char *error_message, char **line, int *fd);
 void		clean_and_exit(void *param);					// free everything et exit(1)
 
 // ⚪ Testing

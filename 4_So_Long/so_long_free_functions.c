@@ -1,6 +1,6 @@
 #include "so_long.h"
 
-void	free_gnl_stuff(char *error_message, char **line, int *fd)
+void	free_gnl_return_and_exit(char *error_message, char **line, int *fd)
 {
 	ft_printf("%s\n", error_message);
 
@@ -13,7 +13,7 @@ void	free_gnl_stuff(char *error_message, char **line, int *fd)
 }
 
 // -------------------------------------------------------------------------------------------- Edit & use when things get spicy ‼️
-void	free_game_content_and_exit(char *error_message, game *any_game)			// Pour free toutes les lignes de content (rien d'autre à free qui ne soit pas dans MLX42)
+void	free_game_content_no_exit(char *error_message, game *any_game)			// Pour free toutes les lignes de content (rien d'autre à free qui ne soit pas dans MLX42)
 {
 	ft_printf("%s\n", error_message);
 
@@ -22,9 +22,12 @@ void	free_game_content_and_exit(char *error_message, game *any_game)			// Pour f
 		free(any_game->content[any_game->max_lines-1]);
 		any_game->max_lines--;
 	}
-	free(any_game->content);
 
-	//exit(1); // Maybe not necessary because this function is also alsed when no error occurs
+	if(any_game->content)
+		free(any_game->content);			// Libère le tableau de pointeurs
+
+	// clean_and_exit(any_game);		// SURTOUT PAS (sinon infinite loop car s'appellent entre elles)
+	// exit(1);							// Nope - Because this function is also called when no error occurs
 }
 
 // -------------------------------------------------------------------------------- Free everything MLX42 related when exit game ‼
@@ -64,8 +67,8 @@ void	clean_and_exit(void *param)
 	if(my_game->window)
 		mlx_terminate(my_game->window);												// Free game_window
 
-	free_game_content_and_exit("Game content is theorically free\n", my_game);		// Pour supprimer le game.conten
+	free_game_content_no_exit("Game content is theorically free\n", my_game);		// Pour supprimer le game.content
 	// free(my_game);																// Pour supprimer la struct - Maybe not required (double free if commented out)
-	my_game = NULL;
+	my_game = NULL;								// Nécessaire ?
 	exit(1);									// exit sort du programme / return sort de la fonction
 }

@@ -1,8 +1,8 @@
 #include "so_long.h"
 
+// ------------------------------------------------------------ Render checklist - Draw everything in correct order ✅
 void		display_map(game *my_game)
 {
-	// ------------------------------------------------------------ Render checklist - Draw everything in correct order ✅
 	my_game->ground_image = path_to_image(my_game, my_game->window, PATH_GROUND);
 
 	int column;
@@ -66,16 +66,14 @@ mlx_image_t	*path_to_image(game *my_game, mlx_t *game_window, char *path)
 		//ft_printf("Error in loading PNG file\n"); // No need to put error message because mlx_load_png does it
 		clean_and_exit(my_game);
 	}
-
-// -------------------------------------------------------------------------- Convert the texture to a diplayable image ✅Ⓜ️🆓
-	mlx_image_t *image;															// Set up image buffer - Note : mlx_image_t doit etre toujours un ptr
-	if (!(image = mlx_texture_to_image(game_window, texture)))			// Create a displayable image from texture data - MLX MALLOC DONE HERE ‼️
+// -------------------------------------------------------------------------- Convert the texture to a diplayable image ✅
+	mlx_image_t *image;													// Set up image buffer - Note : mlx_image_t doit etre toujours un ptr
+	if (!(image = mlx_texture_to_image(game_window, texture)))			// Create a displayable image from texture data - MLX MALLOC DONE HERE 🆓
 	{
 		mlx_delete_texture(texture);
 		//ft_printf("Error in allocating image buffer\n"); // No need to put error message because mlx_texture_to_image does it ?? To double check
 		clean_and_exit(my_game);
 	}
-	//stuff_to_free->image =	image; // Ajouter les images à la liste de stuff to free
 	mlx_delete_texture(texture);			// ✅ Free - No need to set to null because the variable is local (= no dangling pointer)
 	return(image);
 }
@@ -89,7 +87,7 @@ void		key_actions(mlx_key_data_t keydata, void *param) // Je lui ai passé l'adr
 	move = 0;
 
 	int		collectibles_amount;											// A chaque touche pressée, on check le nombre de collectibles restant
-	collectibles_amount = get_collectibles_left(*my_game, true);			// bool parameter probably not useful anymore, run tests & remove it
+	collectibles_amount = get_collectibles_left(*my_game);			// bool parameter probably not useful anymore, run tests & remove it
 
 	if (!my_game || !my_game->player_image || my_game->player_image->count < 1)
 		return;
@@ -154,6 +152,7 @@ void		key_actions(mlx_key_data_t keydata, void *param) // Je lui ai passé l'adr
 	}
 	//print_map_fun(*my_game);			// Only for testing purposes
 }
+
 
 void		bonus_counter(game my_game, int step_counter)
 {
