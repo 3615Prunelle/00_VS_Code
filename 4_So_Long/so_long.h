@@ -15,8 +15,13 @@
 # define SO_LONG_H
 
 // ⚪ All #define can be placed only here
-# define PATH "./4_So_Long/S_I_map.ber"
-# define RIGHT	6									// !! Change that before eval, so the keys are the same as requested in the subject
+# define PATH_MAP "./4_So_Long/S_I_map.ber"
+# define PATH_GROUND "./4_So_Long/ic_Square_Purple.png"
+# define PATH_WALL "./4_So_Long/ic_Square_Black.png"
+# define PATH_PLAYER "./4_So_Long/ic_Player_Diplo.png"
+# define PATH_COLLECTIBLE "./4_So_Long/ic_Collectible_Corn.png"
+# define PATH_ESCAPE "./4_So_Long/ic_Escape_Bike.png"
+# define RIGHT	6								// !! Change that before eval, so the keys are the same as requested in the subject
 # define LEFT	4
 # define UP		8
 # define DOWN	2
@@ -61,31 +66,23 @@ typedef struct node
 	int		column;
 } tile;
 
-typedef struct game
+typedef struct game		// Struct to pass many arguments to a function that can't be called twice or can only take a limited amount of arguments
 {
 	int			max_lines;
 	int			max_columns;
 	//int			step_counter_in_struct;		// Needs to be static = in function
 	char		**content;						// Seule ligne à free dans cette struct (le reste est à faire via delete_mlx42)
 	tile		escape_position;
+	/* Add all the stuff to free mlx (below) + not-mlx part (above) + Initialised where needed + Added in the free function */
 	mlx_t		*window;
+	mlx_image_t	*ground_image;
+	mlx_image_t	*wall_image;
 	mlx_image_t	*player_image;
 	mlx_image_t	*collectible_image;
 	mlx_image_t	*escape_image;
 	mlx_image_t	*bonus_string1;
+	mlx_image_t	*bonus_string2;
 } game;
-
-// ⚪ My MLX42 structs
-typedef struct mic_mac		// Struct to pass many arguments to a function that can't be called twice or can only take a limited amount of arguments
-{
-	mlx_t			*window;
-	/* Add all the stuff to free mlx + not-mlx part (in main + all the other functions) */
-	mlx_image_t		*player_image;
-	mlx_image_t		*wall_image;
-	// game	my_game;								// ‼️‼️‼️ Uncomment when previous code is connected to the MLX42 part
-	// anything else added here needs to be added everywhere (initialised where needed + added in the free function)
-
-} all_mallocs;
 
 // ⚪ Pre launch check functions
 bool		check_everything(game my_game);
@@ -103,19 +100,16 @@ int			get_collectibles_left(game my_game, bool in_game);
 
 // ⚪ MLX Helpers
 game		build_map(char *path);
-mlx_image_t	*path_to_image(mlx_t *game_window, char *path);
-void		display_image(mlx_t *game_window, mlx_image_t *image, int colonne, int ligne);
+mlx_image_t	*path_to_image(game *my_game, mlx_t *game_window, char *path);
+void		display_image(game *my_game, mlx_image_t *image, int colonne, int ligne);
 void		display_map(game *my_game);
 void		key_actions(mlx_key_data_t keydata, void *param);
 void		bonus_counter(game my_game, int step_counter);
 
 // ⚪ Clean up functions - So sort / merge / check / set up / delete
-void		free_game(char *error_message, game *any_game);
+void		free_game_content_and_exit(char *error_message, game *any_game);		// pour free le game.content sans la partie graphique (si check_everything renvoie false)
 void		free_gnl_stuff(char *error_message, char **line, int *fd);
-void		free_before_exit(void *param); // model = mlx_closefunc		// To merge or set up ?
-void		ft_free_exit(all_mallocs *free_this);
-void		clean_game_exit(char *error_message, game *my_game);
-void		clean_window_exit(const char *error_message, mlx_t *game_window);
+void		clean_and_exit(void *param);					// free everything et exit(1)
 
 // ⚪ Testing
 void		print_map(game my_game);					// To delete

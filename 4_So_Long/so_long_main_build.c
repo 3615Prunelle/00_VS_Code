@@ -30,28 +30,29 @@ get_ = récupérer un élément ou une position
 
 int		main(int	argc, char **argv)
 {
-	char *path = PATH;										// changer pour argv[1] when done
+	char *path = PATH_MAP;									// changer pour argv[1] when done
 
 	game	my_game;
 	my_game = build_map(path);								// Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide)
 
 	if (!(check_everything(my_game)))						// Attention, on passe my_game donc une copie sera faite = aucune info ne reste
 	{
-		free_game("Correct and try again !\n", &my_game);	// Check if memory leaks
+		free_game_content_and_exit("Try again !\n", &my_game);				// ‼️‼️‼️ Check if memory leaks
 		exit(1);
 	}
 
 	display_map(&my_game);												// Set up de l'affichage de la carte (real display dans mlx_loop)
 
 	// Hook = Set up de fonction qui sera appelée par mlx_loop
-	mlx_key_hook(my_game.window, key_actions, &my_game);				// Seule fonction pour interagir avec le jeu : key_actions
-	mlx_close_hook(my_game.window, free_before_exit, &my_game);
+	mlx_key_hook(my_game.window, key_actions, &my_game);					// Seule fonction pour interagir avec le jeu : key_actions
+// ------------------------------------------------------------------------- Quit in a clean way when clic on cross. Check if MEM LEAKS ‼️
+	mlx_close_hook(my_game.window, clean_and_exit, &my_game);
 
 	mlx_loop(my_game.window);		// ‼️Keep at the end - Starts to render to window with all requested elements, until shutdown is requested
 
 // ----------------------------------------------------------------------------------------------------------------------------------- Clean up ✅
-	//ft_free_exit(stuff_to_free);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
-	free_game("Tiiiime toooo say goodbyyyyyye\n", &my_game);
+	//clean_and_exit(stuff_to_free);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
+	free_game_content_and_exit("Pass in free_game_content_and_exit function\n", &my_game);
 	return(0);
 }
 
@@ -106,7 +107,7 @@ game	build_map(char *path)
 	my_game.content = ft_calloc((line_counter + 1), sizeof(char *));	// On alloue les lignes uniquement (colonnes done by GNL) ✅ FREE : In the last loop
 	if (!my_game.content)
 		exit(1);
-	fd = open(PATH, O_RDWR);
+	fd = open(PATH_MAP, O_RDWR);
 	my_game.content[0] = get_next_line(fd);
 	int i = 0;
 	while (my_game.content[i] != NULL)
@@ -123,13 +124,13 @@ game	build_map(char *path)
 	mlx_t	*game_window;
 	if(!(game_window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, "Space Invader Diplo Corn Quest", false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️
 	{
-		free_game("Error in the window allocation\n", &my_game);
+		free_game_content_and_exit("Error in the window allocation\n", &my_game);
 		exit(1);
 	}
 // ‼️‼️‼️ Malloc on game_window - Set up mic_mac "stuff to free" struct or use game struct ?
 	my_game.window = game_window;
 
-	my_game.player_image = path_to_image(my_game.window, "./4_So_Long/ic_Play.png");
+	my_game.player_image = path_to_image(&my_game, my_game.window, PATH_PLAYER);
 // ‼️‼️‼️ Malloc on player_image - Set up mic_mac "stuff to free" struct or use game struct ?
 
 	return (my_game);

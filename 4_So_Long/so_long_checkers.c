@@ -5,13 +5,14 @@ bool	check_everything(game my_game)
 // ------------------------------------------------------------------------------------------------------------ Check if walls all around ✅
 	if (!are_walls_approved(my_game))
 	{
-		ft_printf("Error\n>> Sorry, your funky map isn't valid, please make sure they're walls all around !\n\n");
+		ft_printf("Error\n>> Sorry, your funky map isn't valid, please make sure there are walls all around !\n");
 		return (false);													// ✅ Valgrind ok, everything dealt with in the so_long function
 	}
 // ---------------------------------------------------------------------------------- Check if all elements are here in the correct amount ✅
 	if((!is_element(my_game, PLAYER)) || (!is_element(my_game, ESCAPE)) || (!is_element(my_game, COLLECTIBLE)))
 	{
-		return (false);													// TBD - Valgrind ok, everything dealt with in the so_long function
+		//free_game_content_and_exit(NULL, &my_game);								// Do I have to do that ? (Aborted error if commented out)
+		return (false);
 	}
 // --------------------------------------------------------------------------------------- Check si path valide pour Escape + Collectibles ✅
 	tile	player_position;
@@ -27,13 +28,12 @@ bool	check_everything(game my_game)
 	my_game_copy = duplicate_game(my_game);			// Free done below ✅
 	if (!is_path_valid(player_position, my_game.escape_position, my_game_copy, collectibles_amount))
 	{
-		free_game("Error\n>> Looks like some elements can't be reached - Check the walls position !\n", &my_game_copy);
+		free_game_content_and_exit("Error\n>> Looks like some elements can't be reached - Check the walls position !\n", &my_game_copy); // ✅ Free
+		free_game_content_and_exit("Error\n>> Looks like some elements can't be reached - Check the walls position !\n", &my_game);		// ✅ Free
 		exit(1);
-		// ✅ Copy freed here, game ‼️‼️‼️ to free also - Try to erase copy and run tests
 	}
-	//free_game(&my_game_copy); // We don't want to exit but we want to free the copy - Search for solutions
-
-	return (true);										// If successful
+	free_game_content_and_exit(NULL, &my_game_copy);
+	return (true);									// If successful
 }
 
 bool	are_walls_approved(game my_game)

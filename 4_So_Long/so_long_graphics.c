@@ -3,8 +3,7 @@
 void		display_map(game *my_game)
 {
 	// ------------------------------------------------------------ Render checklist - Draw everything in correct order ✅
-	mlx_image_t	*background_image;						// N'existe que dans cette fonction, à moins de le mettre dans struct
-	background_image = path_to_image(my_game->window, "./4_So_Long/ic_Grou.png");
+	my_game->ground_image = path_to_image(my_game, my_game->window, PATH_GROUND);
 
 	int column;
 	int line = 0;
@@ -14,20 +13,20 @@ void		display_map(game *my_game)
 		column = 0;
 		while (column < my_game->max_columns)
 		{
-			display_image(my_game->window, background_image, column, line);
+			display_image(my_game, my_game->ground_image, column, line);
 			column++;
 		}
 		line++;
 	}
 
-	mlx_image_t	*wall_image;
-	wall_image = path_to_image(my_game->window, "./4_So_Long/ic_Wall.png");
+	my_game->wall_image = path_to_image(my_game, my_game->window, PATH_WALL);
 
-	my_game->collectible_image = path_to_image(my_game->window, "./4_So_Long/ic_Coll.png");
+	my_game->collectible_image = path_to_image(my_game, my_game->window, PATH_COLLECTIBLE);
 	// Add image to "stuff to free" + all other images ? Or not necessary anymore ?
 
-	my_game->escape_image = path_to_image(my_game->window, "./4_So_Long/ic_Exit.png");
+	my_game->escape_image = path_to_image(my_game, my_game->window, PATH_ESCAPE);
 
+	print_map_fun(*my_game);
 	line = 0;
 	while (line < my_game->max_lines)
 	{
@@ -35,37 +34,37 @@ void		display_map(game *my_game)
 		while (my_game->content[line][column] != '\n')
 		{
 			if (my_game->content[line][column] == '1')
-				display_image(my_game->window, wall_image, column, line);
+				display_image(my_game, my_game->wall_image, column, line);
 			else if (my_game->content[line][column] == 'C')
-				display_image(my_game->window, my_game->collectible_image, column, line);
+				display_image(my_game, my_game->collectible_image, column, line);
 			else if (my_game->content[line][column] == 'E')
-				display_image(my_game->window, my_game->escape_image, column, line);
+				display_image(my_game, my_game->escape_image, column, line);
 			else if (my_game->content[line][column] == 'P')
-				display_image(my_game->window, my_game->player_image, column, line);
+				display_image(my_game, my_game->player_image, column, line);
 			column++;
 		}
 		line++;
 	}
 }
 
-void		display_image(mlx_t *game_window, mlx_image_t *image, int colonne, int ligne)
+void		display_image(game *my_game, mlx_image_t *image, int colonne, int ligne)
 {
-	if (mlx_image_to_window(game_window, image, colonne*TILE_SIZE, ligne*TILE_SIZE) == -1)	// Affiche une instance de l'image. Peut être utilisé à chaque fois qu'on veut display l'image à un endroit différent
+	if (mlx_image_to_window(my_game->window, image, colonne*TILE_SIZE, ligne*TILE_SIZE) == -1)	// Affiche une instance de l'image. Peut être utilisé à chaque fois qu'on veut display l'image à un endroit différent
 	{
 		ft_printf("Erreur lors de l'affichage de l'image\n");
-		//ft_free_exit(stuff_to_free);
-		exit (1);
+		clean_and_exit(my_game);
 	}
 }
 
 // ----------------------- Centraliser le process de chargement de textures ✅ + Conversion en image ✅ + Error handling ✅ + Deal with memory ‼️
-mlx_image_t	*path_to_image(mlx_t *game_window, char *path)
+mlx_image_t	*path_to_image(game *my_game, mlx_t *game_window, char *path)
 {
 	// ------------------------------ Set up Texture buffer (texture = Image pas encore affichée, mais prête à l’être) ✅Ⓜ️🆓
 	mlx_texture_t *texture;
-	if (!(texture = mlx_load_png(path)))	// Access the image data - MLX MALLOC DONE HERE ‼️
+	if (!(texture = mlx_load_png(path)))	// Access the image data - 🆓 MLX Malloc (free below in the same function)
 	{
-		clean_window_exit(mlx_strerror(mlx_errno), game_window); // Maybe other stuff to free - Check later if mem leaks
+		//ft_printf("Error in loading PNG file\n"); // No need to put error message because mlx_load_png does it
+		clean_and_exit(my_game);
 	}
 
 // -------------------------------------------------------------------------- Convert the texture to a diplayable image ✅Ⓜ️🆓
@@ -73,14 +72,15 @@ mlx_image_t	*path_to_image(mlx_t *game_window, char *path)
 	if (!(image = mlx_texture_to_image(game_window, texture)))			// Create a displayable image from texture data - MLX MALLOC DONE HERE ‼️
 	{
 		mlx_delete_texture(texture);
-		clean_window_exit("Error in allocating new image buffer\n", game_window);
+		//ft_printf("Error in allocating image buffer\n"); // No need to put error message because mlx_texture_to_image does it ?? To double check
+		clean_and_exit(my_game);
 	}
-	//stuff_to_free->image =	image;
-	mlx_delete_texture(texture);			// No need to set to null because the variable is local (= no dangling pointer)
+	//stuff_to_free->image =	image; // Ajouter les images à la liste de stuff to free
+	mlx_delete_texture(texture);			// ✅ Free - No need to set to null because the variable is local (= no dangling pointer)
 	return(image);
 }
 
-void		key_actions(mlx_key_data_t keydata, void *param) // Je lui ai passé l'adresse de my_game dans la fonction appelante
+void		key_actions(mlx_key_data_t keydata, void *param) // Je lui ai passé l'adresse de my_game dans la fonction appelante car je dois respecter le "void param" que mlx_key_hook me demande
 {
 	game	*my_game;	// Structure (declared in .h) pour que cette fonction accepte (au moins) 2 parametres au lieu d'un
 	my_game = param;
@@ -96,7 +96,9 @@ void		key_actions(mlx_key_data_t keydata, void *param) // Je lui ai passé l'adr
 
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)	// Exit on ESC key
 	{
-		mlx_close_window(my_game->window);								// don't use mlx_terminate otherwise segfault
+		//mlx_close_window(my_game->window);							// previous option - maybe not necessary anymore
+		ft_printf("Exit through escape key\n");
+		clean_and_exit(my_game);
 	}
 
 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)	// Quelle touche + Est-elle pressée ?
@@ -150,7 +152,7 @@ void		key_actions(mlx_key_data_t keydata, void *param) // Je lui ai passé l'adr
 		}
 		index++;
 	}
-	print_map_fun(*my_game);			// Only for testing purposes
+	//print_map_fun(*my_game);			// Only for testing purposes
 }
 
 void		bonus_counter(game my_game, int step_counter)
