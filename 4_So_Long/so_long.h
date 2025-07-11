@@ -15,7 +15,7 @@
 # define SO_LONG_H
 
 // ⚪ #define
-# define PATH_MAP "./4_So_Long/test_map.ber"
+# define PATH_MAP "./4_So_Long/mapSI.ber"
 # define PATH_GROUND "./4_So_Long/ic_Square_Purple.png"
 # define PATH_WALL "./4_So_Long/ic_Square_Black.png"
 # define PATH_PLAYER "./4_So_Long/ic_Player_Diplo.png"

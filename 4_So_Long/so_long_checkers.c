@@ -85,12 +85,11 @@ tile	get_tile_position(game my_game, char element)
 }
 
 // ----------------------------------------------------------------- Check qu'il y a seulement : 1 joueur + 1 escape / AU MOINS 1 collec ✅
-bool	is_element(game my_game, char element)			// Appelée seulement par check_everything
+bool	is_element(game my_game, char element)
 {
 	int y = 0;
 	int	x = 0;
 	int element_counter = 0;
-
 	while (y < my_game.max_lines)
 	{
 		x = 0;
