@@ -59,7 +59,7 @@ all: $(NAME) install
 # Rule to create the static library
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
-# Compile bonus
+# Compile bonus !!!!!!!!!!!!!!!!!!!!!!!!! Ne sont pas inclus dans commande 'make', comment updater ça ? !!!!!!!!!!!!
 bonus: $(OBJS) $(BONUS_OBJS)
 	ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
 # Rule to compile the source files into object files
