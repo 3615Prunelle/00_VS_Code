@@ -248,11 +248,13 @@ Explication des clés principales :
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
-				"push_swap_ops.c",		// Fichiers à compiler ensemble (les autres projets sont ajoutés différemment plus bas)
+				"push_swap_temp_main.c",
+				"push_swap_operations.c",
+				"push_swap_others.c",
 // Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
 				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
 				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
-				// "-L${workspaceFolder}/5_Push_Swap/",	// Plutot que lister tous les fichiers, je peux aussi faire ca (comment out after clean up)
+				"-L${workspaceFolder}/5_Push_Swap/",	// Pour la library du projet en cours
 
 				//"-DROUQUINETTE_DEBUG",		// Trick super badass si besoin
 				"-o",

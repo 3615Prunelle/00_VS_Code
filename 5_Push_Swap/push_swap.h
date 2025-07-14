@@ -42,7 +42,15 @@ two_stacks		*swap_a(two_stacks *a_and_b);
 two_stacks		*swap_b(two_stacks	*a_and_b);
 two_stacks		*swap_a_and_b(two_stacks *a_and_b);
 two_stacks		*push_a(two_stacks *a_and_b);
+two_stacks		*push_b(two_stacks *a_and_b);
+two_stacks		*rotate_a(two_stacks *a_and_b);
+two_stacks		*rotate_b(two_stacks *a_and_b);
+two_stacks		*rotate_a_and_b(two_stacks *a_and_b);
+two_stacks		*reverse_rotate_a(two_stacks *a_and_b);
+two_stacks		*reverse_rotate_b(two_stacks *a_and_b);
+two_stacks		*reverse_rotate_a_and_b(two_stacks *a_and_b);
 
 // ⚪ Clean up functions
+void			clean_exit(two_stacks *a_and_b);
 
 #endif

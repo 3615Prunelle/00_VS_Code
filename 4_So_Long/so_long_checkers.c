@@ -5,7 +5,7 @@ bool	check_everything(game my_game)
 // ------------------------------------------------------------------------------------------------------------ Check if walls all around ✅
 	if (!are_walls_approved(my_game))
 	{
-		ft_printf(ERROR_MESSSAGE_1);
+		ft_printf(ERROR_MESSSAGE_04);
 		return (false);
 	}
 // ---------------------------------------------------------------------------------- Check if all elements are here in the correct amount ✅
@@ -26,10 +26,10 @@ bool	check_everything(game my_game)
 	my_game_copy = duplicate_game(my_game);			// Free done below ✅
 	if (!is_path_valid(player_position, my_game.escape_position, my_game_copy, collectibles_amount))
 	{
-		free_game_content(ERROR_MESSSAGE_4, &my_game_copy, false); // ✅ Free
+		free_game_content(ERROR_MESSSAGE_09, &my_game_copy, false); // ✅ Free
 		return(false);
 	}
-	free_game_content(OK_MESSSAGE_1, &my_game_copy, false);
+	free_game_content(OK_MESSSAGE_01, &my_game_copy, false);
 	return (true);
 }
 
@@ -56,7 +56,7 @@ bool	are_walls_approved(game my_game)
 	}
 	return (true);
 }
-// ------------------------------------------------------------------------------ Chercher si un element existe, et retourner sa position ✅
+// ---- ⬇️  Chercher si un element existe, et retourner sa position ✅
 tile	get_tile_position(game my_game, char element)
 {
 	int y = 0;
@@ -83,7 +83,7 @@ tile	get_tile_position(game my_game, char element)
 	return (element_position);
 }
 
-// ----------------------------------------------------------------- Check qu'il y a seulement : 1 joueur + 1 escape / AU MOINS 1 collec ✅
+// ---- ⬇️  Check qu'il y a seulement : 1 joueur + 1 escape / AU MOINS 1 collec ✅
 bool	is_element(game my_game, char element)
 {
 	int y = 0;
@@ -104,17 +104,16 @@ bool	is_element(game my_game, char element)
 	}
 	if (element_counter == 0)
 	{
-		ft_printf(ERROR_MESSSAGE_2);
+		ft_printf(ERROR_MESSSAGE_07);
 		return(false);
 	}
 	if ((element_counter > 1) && ((element == 'P') || (element == 'E')))
 	{
-		ft_printf(ERROR_MESSSAGE_3);
+		ft_printf(ERROR_MESSSAGE_08);
 		return(false);
 	}
 	return (true);
 }
-
 
 int		get_collectibles_left(game my_game) // Supprimer bool param ?
 {
@@ -163,7 +162,7 @@ game	duplicate_game(game my_game)
 	}
 	return (my_game_copy);
 }
-// --------------------------------------------------------------------------------------------------------------- Verif validité du path ✅
+// ---- ⬇️  Verif validité du path ✅
 bool	is_path_valid(tile player_position, tile destination_position, game my_game_copy, int total_collectibles)
 {
 	static int collectibles_amount;

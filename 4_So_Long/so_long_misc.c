@@ -29,7 +29,7 @@ tile	target_position(game my_game, int move)
 	return(target);
 }
 
-// -------------------------------------------------------------------  Vérifier chaque possibilité de mouvement + Create counter ✅
+// ---- ⬇️ Vérifier chaque possibilité de mouvement + Create counter ✅
 void	player_move(game my_game, int move)
 {
 	tile player;

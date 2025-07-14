@@ -29,14 +29,12 @@ void	free_game_content(char *message, game *any_game, bool need_exit)
 	{
 		exit(1);		// Because this function is also called when no error occurs
 	}
-	ft_printf(OK_MESSSAGE_6);
+	ft_printf(OK_MESSSAGE_04);
 }
 
-// -------------------------------------------------------------------------------- Free everything MLX42 related when exit game ‼
+// ---- ⬇️ Free everything MLX42 related when exit game ‼
 void	clean_and_exit(void *param)
 {
-	ft_printf(OK_MESSSAGE_2);
-
 	game *my_game;
 	my_game = param;
 
@@ -62,8 +60,10 @@ void	clean_and_exit(void *param)
 	if(my_game->window)
 		mlx_terminate(my_game->window);												// Free game_window
 
-	free_game_content(OK_MESSSAGE_3, my_game, false);		// Pour supprimer le game.content
-	// free(my_game);							// Pour supprimer la struct - Maybe not required
-	my_game = NULL;								// Nécessaire ?
+	free_game_content(OK_MESSSAGE_05, my_game, false);		// Pour supprimer le game.content
+	//free(my_game);						// Pour supprimer la struct mais Aborted si commented out
+	my_game = NULL;							// Nécessaire ?
+
+	ft_printf(OK_MESSSAGE_06);
 	exit(1);									// exit sort du programme / return sort de la fonction
 }

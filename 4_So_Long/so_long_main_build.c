@@ -38,7 +38,7 @@ int		main(int	argc, char **argv)
 // ------------------------------------------------------------------------- Quit in a clean way when clic on cross. Check if MEM LEAKS ‼️
 	mlx_close_hook(my_game.window, clean_and_exit, &my_game);
 
-	ft_printf(OK_MESSSAGE_4);
+	ft_printf(OK_MESSSAGE_02);
 	mlx_loop(my_game.window);		// ‼️Keep at the end - Starts to render to window with all requested elements, until shutdown is requested
 // ----------------------------------------------------------------------------------------------------------------------------------- Clean up ✅
 	clean_and_exit(&my_game);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
@@ -61,7 +61,7 @@ game	build_map(char *path)
 	{
 		free(extension);
 		free(compare);
-		ft_printf (ERROR_MESSSAGE_5);	// Ou utiliser strerror & perror ?
+		ft_printf (ERROR_MESSSAGE_02);	// Ou utiliser strerror & perror ?
 		exit (1);													// ✅ All heap blocks were freed -- no leaks are possible
 	}
 	free(extension);												// ✅ Free
@@ -72,14 +72,14 @@ game	build_map(char *path)
 
 	if((!fd) || (fd < 0))
 	{
-		ft_printf (ERROR_MESSSAGE_6);
+		ft_printf (ERROR_MESSSAGE_01);
 		exit (1);													// ✅ All heap blocks were freed -- no leaks are possible
 	}
 // ----------------------------------------------------------------------------------------- Deal with the map itself first / Get the size of it ✅
 	line_by_line = get_next_line(fd);					// 🆓 GNL aloue la memoire a line_by_line
 	if (!line_by_line)
 	{
-		free_gnl_return_and_exit(ERROR_MESSSAGE_7, &line_by_line, &fd);
+		free_gnl_return_and_exit(ERROR_MESSSAGE_03, &line_by_line, &fd);
 	}// ✅ All heap blocks were freed -- no leaks are possible
 	length_line = ft_strlen(line_by_line);
 	int line_counter = 0;
@@ -91,12 +91,12 @@ game	build_map(char *path)
 // ------------------------------------------------------------------------------------ Check if all lines are equal in size (= rectangular map) ✅
 		if (((line_by_line != NULL)) && (ft_strlen(line_by_line) != length_line))
 		{
-			free_gnl_return_and_exit(ERROR_MESSSAGE_8, &line_by_line, &fd);
+			free_gnl_return_and_exit(ERROR_MESSSAGE_05, &line_by_line, &fd);
 		}// ✅ All heap blocks were freed -- no leaks are possible
 	}
 	if ((length_line < 4) || (line_counter < 3))	// Taille minimum pour avoir autre chose que des murs
 	{
-		free_gnl_return_and_exit(ERROR_MESSSAGE_9, &line_by_line, &fd);									// ✅ Free
+		free_gnl_return_and_exit(ERROR_MESSSAGE_06, &line_by_line, &fd);									// ✅ Free
 	}// ✅ All heap blocks were freed -- no leaks are possible
 	close(fd);										// Sinon ne lira pas suite
 // ---------------------------------------------------------------------------------------------------------------------- Alloc memory & fill it ✅
@@ -125,7 +125,7 @@ game	build_map(char *path)
 	my_game.bonus_string1 = NULL;
 	my_game.bonus_string2 = NULL;
 
-	if(!(my_game.window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, OK_MESSSAGE_6, false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️
+	if(!(my_game.window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, GAME_NAME, false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️
 	{
 		clean_and_exit(&my_game);	// free_game_content function not necessary (tested)
 		// Note: 32 bytes definitely lost when mlx_init() fails.

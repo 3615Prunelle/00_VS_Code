@@ -1,6 +1,6 @@
 #include "so_long.h"
 
-// ------------------------------------------------------------ Render checklist - Draw everything in correct order ✅
+// -------- ⬇️ Draw everything in correct order ✅
 void		display_map(game *my_game)
 {
 	my_game->ground_image = path_to_image(my_game, my_game->window, PATH_GROUND);
@@ -22,11 +22,9 @@ void		display_map(game *my_game)
 	my_game->wall_image = path_to_image(my_game, my_game->window, PATH_WALL);
 
 	my_game->collectible_image = path_to_image(my_game, my_game->window, PATH_COLLECTIBLE);
-	// Add image to "stuff to free" + all other images ? Or not necessary anymore ?
 
 	my_game->escape_image = path_to_image(my_game, my_game->window, PATH_ESCAPE);
 
-	//print_map_fun(*my_game);
 	line = 0;
 	while (line < my_game->max_lines)
 	{
@@ -56,7 +54,7 @@ void		display_image(game *my_game, mlx_image_t *image, int colonne, int ligne)
 	}
 }
 
-// ----------------------- Centraliser le process de chargement de textures ✅ + Conversion en image ✅ + Error handling ✅ + Deal with memory ‼️
+// -------- ⬇️ Centraliser le process de chargement de textures ✅ + Conversion en image ✅ + Error handling ✅ + Deal with memory ‼️
 mlx_image_t	*path_to_image(game *my_game, mlx_t *game_window, char *path)
 {
 	// ------------------------------ Set up Texture buffer (texture = Image pas encore affichée, mais prête à l’être) ✅Ⓜ️🆓
@@ -95,7 +93,7 @@ void		key_actions(mlx_key_data_t keydata, void *param) // Je lui ai passé l'adr
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)	// Exit on ESC key
 	{
 		//mlx_close_window(my_game->window);							// previous option - maybe not necessary anymore
-		ft_printf(OK_MESSSAGE_5);
+		ft_printf(OK_MESSSAGE_03);
 		clean_and_exit(my_game);
 	}
 
