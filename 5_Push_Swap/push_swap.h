@@ -3,7 +3,8 @@
 # define PUSH_SWAP_H
 
 // ⚪ #define
-# define ARR_SIZE 8
+# define ARR_SIZE 4							// ‼️ Global Variable = Forbidden - Remove and update code when done testing
+# define ARR_SIZE_MAX 1000					// ‼️ Global Variable = Forbidden - Remove and update code when done testing
 
 // ⚪ #include (don't forget to put #include "current_project.h" in each file)
 # include <stdlib.h>
@@ -24,22 +25,23 @@ typedef struct s_list	linked_number;			// Alias for struct s_list to make the co
 typedef struct	two_stacks
 {
 	linked_number	*stack_a;
+	linked_number	*head_a;
 	linked_number	*stack_b;
+	linked_number	*head_b;
 }				two_stacks;
 
-// ⚪ Pre launch check functions
-
-// ⚪ Operations
-
-linked_number	*swap(linked_number *stack);
-two_stacks		*swap_a_and_b(linked_number *stack_a, linked_number *stack_b);
-void			push_a(linked_number *stack_a, linked_number *stack_b);
+// ⚪ Check & Test functions
+void			verif(char *fonction, two_stacks *a_and_b);
+bool			is_number_repeat(int array[]);
 
 // ⚪ Helpers
 linked_number	*create_list(int array[]);
 
-// ⚪ Test
-void			verif(char *fonction, linked_number *stack);
+// ⚪ Operations
+two_stacks		*swap_a(two_stacks *a_and_b);
+two_stacks		*swap_b(two_stacks	*a_and_b);
+two_stacks		*swap_a_and_b(two_stacks *a_and_b);
+two_stacks		*push_a(two_stacks *a_and_b);
 
 // ⚪ Clean up functions
 

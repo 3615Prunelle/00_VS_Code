@@ -15,12 +15,6 @@
 🟠 mlx_key_hook() appelle ma fonction key_actions (faite sur la base d'une callback function : mlx_keyfun) chaque fois qu’une touche est pressée.
 ‼️ MLX42 NB : 2 forbidden functions mlx_put_pixel  and mlx_resize_image
 
-ft_printf("Error\n>> Please invite Diplo to the game !\n");
-ft_printf("Error\n>> No friends allowed! Sorry-not-sorry\n");
-ft_printf("Error\n>> Corn-Quest cancelled - No way to escape.\n");
-ft_printf("Error\n>> Corn-Quest cancelled - Too many escapes.\n");
-ft_printf("Error\n>> Corn-Quest cancelled - Nothing to collect !\n\n");
-
 is_ = bool
 get_ = récupérer un élément ou une position
 */
@@ -35,8 +29,6 @@ int		main(int	argc, char **argv)
 	if (!(check_everything(my_game)))						// Attention, on passe my_game donc une copie sera faite = aucune info ne reste
 	{
 		clean_and_exit(&my_game);							// free_game_content ne va pas car MLX a malloc l'image du player dans build_map
-		//free_game_content_no_exit("Try again !\n", &my_game);				// ‼️‼️‼️ Check if memory leaks
-		//exit(1);
 	}
 
 	display_map(&my_game);												// Set up de l'affichage de la carte (real display dans mlx_loop)
@@ -46,11 +38,10 @@ int		main(int	argc, char **argv)
 // ------------------------------------------------------------------------- Quit in a clean way when clic on cross. Check if MEM LEAKS ‼️
 	mlx_close_hook(my_game.window, clean_and_exit, &my_game);
 
+	ft_printf(OK_MESSSAGE_4);
 	mlx_loop(my_game.window);		// ‼️Keep at the end - Starts to render to window with all requested elements, until shutdown is requested
-
 // ----------------------------------------------------------------------------------------------------------------------------------- Clean up ✅
-	//clean_and_exit(stuff_to_free);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
-	free_game_content_no_exit("Pass in free_game_content_no_exit function\n", &my_game);
+	clean_and_exit(&my_game);			// In case ESC pressed or if everything goes correctly and the exit is naturally happening when all collectibles are reached ?
 	return(0);
 }
 
@@ -70,7 +61,7 @@ game	build_map(char *path)
 	{
 		free(extension);
 		free(compare);
-		ft_printf ("Error\n>> Map file extension must be .ber\n\n");	// Ou utiliser strerror & perror ?
+		ft_printf (ERROR_MESSSAGE_5);	// Ou utiliser strerror & perror ?
 		exit (1);													// ✅ All heap blocks were freed -- no leaks are possible
 	}
 	free(extension);												// ✅ Free
@@ -81,14 +72,14 @@ game	build_map(char *path)
 
 	if((!fd) || (fd < 0))
 	{
-		ft_printf ("Error\n>> Map missing OLALA NICHT GUT\n\n");
+		ft_printf (ERROR_MESSSAGE_6);
 		exit (1);													// ✅ All heap blocks were freed -- no leaks are possible
 	}
 // ----------------------------------------------------------------------------------------- Deal with the map itself first / Get the size of it ✅
 	line_by_line = get_next_line(fd);					// 🆓 GNL aloue la memoire a line_by_line
 	if (!line_by_line)
 	{
-		free_gnl_return_and_exit("Error\n>> Map empty or not displayable oO\n", &line_by_line, &fd);
+		free_gnl_return_and_exit(ERROR_MESSSAGE_7, &line_by_line, &fd);
 	}// ✅ All heap blocks were freed -- no leaks are possible
 	length_line = ft_strlen(line_by_line);
 	int line_counter = 0;
@@ -100,12 +91,12 @@ game	build_map(char *path)
 // ------------------------------------------------------------------------------------ Check if all lines are equal in size (= rectangular map) ✅
 		if (((line_by_line != NULL)) && (ft_strlen(line_by_line) != length_line))
 		{
-			free_gnl_return_and_exit("Error\n>> Sorry, your funky map isn't valid, please make it rectangular !\n", &line_by_line, &fd);
+			free_gnl_return_and_exit(ERROR_MESSSAGE_8, &line_by_line, &fd);
 		}// ✅ All heap blocks were freed -- no leaks are possible
 	}
 	if ((length_line < 4) || (line_counter < 3))	// Taille minimum pour avoir autre chose que des murs
 	{
-		free_gnl_return_and_exit("Error\n>> Map too small, no space to play :(\n", &line_by_line, &fd);									// ✅ Free
+		free_gnl_return_and_exit(ERROR_MESSSAGE_9, &line_by_line, &fd);									// ✅ Free
 	}// ✅ All heap blocks were freed -- no leaks are possible
 	close(fd);										// Sinon ne lira pas suite
 // ---------------------------------------------------------------------------------------------------------------------- Alloc memory & fill it ✅
@@ -126,7 +117,7 @@ game	build_map(char *path)
 
 	my_game.escape_position = get_tile_position(my_game, ESCAPE);
 
-	my_game.ground_image = NULL;		// Pour éviter valeurs poubelle et segfaults quand passage dans free_game_content_no_exit
+	my_game.ground_image = NULL;		// Pour éviter valeurs poubelle et segfaults quand passage dans free_game_content
 	my_game.wall_image = NULL;
 	my_game.player_image = NULL;
 	my_game.collectible_image = NULL;
@@ -134,10 +125,9 @@ game	build_map(char *path)
 	my_game.bonus_string1 = NULL;
 	my_game.bonus_string2 = NULL;
 
-	if(!(my_game.window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, "Space Invader Diplo Corn Quest", false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️
+	if(!(my_game.window = mlx_init(TILE_SIZE*(my_game.max_columns-1), TILE_SIZE*my_game.max_lines, OK_MESSSAGE_6, false)))	// Connection to the graphical system - MLX MALLOC DONE HERE ‼️
 	{
-		free_game_content_no_exit("Error in the window allocation\n", &my_game);
-		exit(1);
+		clean_and_exit(&my_game);	// free_game_content function not necessary (tested)
 		// Note: 32 bytes definitely lost when mlx_init() fails.
 		// This is an internal MLX42/GLFW allocation and can't be freed manually.
 		// mlx_terminate(my_game.window); // SURTOUT PAS, car rien n'a été alloué via MLX42

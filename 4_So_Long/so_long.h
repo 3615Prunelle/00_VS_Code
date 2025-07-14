@@ -21,7 +21,7 @@
 # define PATH_PLAYER "./4_So_Long/ic_Player_Diplo.png"
 # define PATH_COLLECTIBLE "./4_So_Long/ic_Collectible_Corn.png"
 # define PATH_ESCAPE "./4_So_Long/ic_Escape_Bike.png"
-# define RIGHT	6								// !! Change that before eval, so the keys are the same as requested in the subject
+# define RIGHT	6
 # define LEFT	4
 # define UP		8
 # define DOWN	2
@@ -40,6 +40,32 @@
 # define ESCAPE			'E'
 # define EMPTY_SPACE	'0'
 # define CHECKED		'V'
+
+# define OK_MESSSAGE_1	"Non graphical check up done\n"
+# define OK_MESSSAGE_2	"Full clean done, about to exit\n"
+# define OK_MESSSAGE_3	"Game content is theorically free\n"
+# define OK_MESSSAGE_4	"Graphical check up done. You're good to play - Have fun !\n"
+# define OK_MESSSAGE_5	"Exit through escape key\n"
+# define OK_MESSSAGE_6	"Space Invader Diplo Corn Quest\n"
+# define OK_MESSSAGE_6	"Game content is free\n"
+
+# define ERROR_MESSSAGE_1	"Error\nYour funky map isn't valid, make sure there are walls all around !\n"
+# define ERROR_MESSSAGE_2	"Error\nSomething is missing - Pick & Choose : Player / Collectible / Exit\n"
+# define ERROR_MESSSAGE_3	"Error\nToo many ... - Pick & Choose : Players / Escapes\n"
+# define ERROR_MESSSAGE_4	"Error\nLooks like some elements can't be reached - Check the walls position !\n"
+# define ERROR_MESSSAGE_5	"Error\nMap file extension must be .ber\n"
+# define ERROR_MESSSAGE_6	"Error\nMap missing OLALA NICHT GUT\n"
+# define ERROR_MESSSAGE_7	"Error\nMap empty or not displayable\n"
+# define ERROR_MESSSAGE_8	"Error\nYour funky map isn't valid, please make it rectangular !\n"
+# define ERROR_MESSSAGE_9	"Error\nMap too small, no space to play :(\n"
+# define ERROR_MESSSAGE_10	"Error in the window allocation\n"
+# define ERROR_MESSSAGE_11	"Error in an image display\n"
+
+/* Please invite Diplo to the game !
+No friends allowed! Sorry-not-sorry
+Corn-Quest cancelled - No way to escape
+Corn-Quest cancelled - Too many escapes
+Corn-Quest cancelled - Nothing to collect ! */
 
 # define TILE_SIZE 72
 
@@ -106,7 +132,7 @@ void		key_actions(mlx_key_data_t keydata, void *param);
 void		bonus_counter(game my_game, int step_counter);
 
 // ⚪ Clean up functions - So sort / merge / check / set up / delete
-void		free_game_content_no_exit(char *error_message, game *any_game);		// pour free le game.content sans la partie graphique (si check_everything renvoie false)
+void		free_game_content(char *message, game *any_game, bool need_exit);		// pour free le game.content sans la partie graphique (si check_everything renvoie false)
 void		free_gnl_return_and_exit(char *error_message, char **line, int *fd);
 void		clean_and_exit(void *param);					// free everything et exit(1)
 

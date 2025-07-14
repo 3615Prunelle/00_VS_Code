@@ -5,8 +5,8 @@ bool	check_everything(game my_game)
 // ------------------------------------------------------------------------------------------------------------ Check if walls all around ✅
 	if (!are_walls_approved(my_game))
 	{
-		ft_printf("Error\n>> Sorry, your funky map isn't valid, please make sure there are walls all around !\n");
-		return (false);													// ✅ Valgrind ok, everything dealt with in the so_long function
+		ft_printf(ERROR_MESSSAGE_1);
+		return (false);
 	}
 // ---------------------------------------------------------------------------------- Check if all elements are here in the correct amount ✅
 	if((!is_element(my_game, PLAYER)) || (!is_element(my_game, ESCAPE)) || (!is_element(my_game, COLLECTIBLE)))
@@ -22,15 +22,14 @@ bool	check_everything(game my_game)
 
 	my_game.escape_position = get_tile_position(my_game, ESCAPE);
 
-	print_map_fun(my_game);
 	game	my_game_copy;							// Segfault si je ne le fais pas - Pourquoi ? (Initialement créé pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
 	my_game_copy = duplicate_game(my_game);			// Free done below ✅
 	if (!is_path_valid(player_position, my_game.escape_position, my_game_copy, collectibles_amount))
 	{
-		free_game_content_no_exit("Error\n>> Looks like some elements can't be reached - Check the walls position !\n", &my_game_copy); // ✅ Free
+		free_game_content(ERROR_MESSSAGE_4, &my_game_copy, false); // ✅ Free
 		return(false);
 	}
-	free_game_content_no_exit("Big check up done, you're good to play, have fun!\n", &my_game_copy);
+	free_game_content(OK_MESSSAGE_1, &my_game_copy, false);
 	return (true);
 }
 
@@ -105,12 +104,12 @@ bool	is_element(game my_game, char element)
 	}
 	if (element_counter == 0)
 	{
-		ft_printf("Error\n>> Something is missing - Pick & Choose : Player / Collectible / Exit\n");
+		ft_printf(ERROR_MESSSAGE_2);
 		return(false);
 	}
 	if ((element_counter > 1) && ((element == 'P') || (element == 'E')))
 	{
-		ft_printf("Error\n>> Too many ... - Pick & Choose : Players / Escapes\n");
+		ft_printf(ERROR_MESSSAGE_3);
 		return(false);
 	}
 	return (true);

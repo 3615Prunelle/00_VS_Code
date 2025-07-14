@@ -26,7 +26,7 @@ void		display_map(game *my_game)
 
 	my_game->escape_image = path_to_image(my_game, my_game->window, PATH_ESCAPE);
 
-	print_map_fun(*my_game);
+	//print_map_fun(*my_game);
 	line = 0;
 	while (line < my_game->max_lines)
 	{
@@ -51,7 +51,7 @@ void		display_image(game *my_game, mlx_image_t *image, int colonne, int ligne)
 {
 	if (mlx_image_to_window(my_game->window, image, colonne*TILE_SIZE, ligne*TILE_SIZE) == -1)	// Affiche une instance de l'image. Peut être utilisé à chaque fois qu'on veut display l'image à un endroit différent
 	{
-		ft_printf("Erreur lors de l'affichage de l'image\n");
+		ft_printf(ERROR_MESSSAGE_11);
 		clean_and_exit(my_game);
 	}
 }
@@ -95,7 +95,7 @@ void		key_actions(mlx_key_data_t keydata, void *param) // Je lui ai passé l'adr
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)	// Exit on ESC key
 	{
 		//mlx_close_window(my_game->window);							// previous option - maybe not necessary anymore
-		ft_printf("Exit through escape key\n");
+		ft_printf(OK_MESSSAGE_5);
 		clean_and_exit(my_game);
 	}
 

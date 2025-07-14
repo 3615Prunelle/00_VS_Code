@@ -11,11 +11,10 @@ void	free_gnl_return_and_exit(char *error_message, char **line, int *fd)
 
 	exit(1);				// exit sort du programme / return sort de la fonction
 }
-
-// -------------------------------------------------------------------------------------------- Edit & use when things get spicy ‼️
-void	free_game_content_no_exit(char *error_message, game *any_game)			// Pour free toutes les lignes de content (rien d'autre à free qui ne soit pas dans MLX42)
+// ---- ⬇️ Free toutes les lignes de content (avant fonctions MLX42 ou après leur clean up)
+void	free_game_content(char *message, game *any_game, bool need_exit)
 {
-	ft_printf("%s\n", error_message);
+	ft_printf("%s\n", message);
 
 	while (any_game->max_lines > 0)
 	{
@@ -26,14 +25,17 @@ void	free_game_content_no_exit(char *error_message, game *any_game)			// Pour fr
 	if(any_game->content)
 		free(any_game->content);			// Libère le tableau de pointeurs
 
-	// clean_and_exit(any_game);		// SURTOUT PAS (sinon infinite loop car s'appellent entre elles)
-	// exit(1);							// Nope - Because this function is also called when no error occurs
+	if(need_exit)
+	{
+		exit(1);		// Because this function is also called when no error occurs
+	}
+	ft_printf(OK_MESSSAGE_6);
 }
 
 // -------------------------------------------------------------------------------- Free everything MLX42 related when exit game ‼
 void	clean_and_exit(void *param)
 {
-	ft_printf("Pass in clean_and_exit function\n");
+	ft_printf(OK_MESSSAGE_2);
 
 	game *my_game;
 	my_game = param;
@@ -45,30 +47,23 @@ void	clean_and_exit(void *param)
 
 	if(my_game->ground_image)
 		mlx_delete_image(my_game->window, my_game->ground_image);
-
 	if(my_game->wall_image)
 		mlx_delete_image(my_game->window, my_game->wall_image);
-
 	if(my_game->player_image)
 		mlx_delete_image(my_game->window, my_game->player_image);
-
 	if(my_game->collectible_image)
 		mlx_delete_image(my_game->window, my_game->collectible_image);
-
 	if(my_game->escape_image)
 		mlx_delete_image(my_game->window, my_game->escape_image);
-
 	if(my_game->bonus_string1)
 		mlx_delete_image(my_game->window, my_game->bonus_string1);
-
 	if(my_game->bonus_string2)
 		mlx_delete_image(my_game->window, my_game->bonus_string2);
-
 	if(my_game->window)
 		mlx_terminate(my_game->window);												// Free game_window
 
-	free_game_content_no_exit("Game content is theorically free\n", my_game);		// Pour supprimer le game.content
-	// free(my_game);																// Pour supprimer la struct - Maybe not required (double free if commented out)
+	free_game_content(OK_MESSSAGE_3, my_game, false);		// Pour supprimer le game.content
+	// free(my_game);							// Pour supprimer la struct - Maybe not required
 	my_game = NULL;								// Nécessaire ?
 	exit(1);									// exit sort du programme / return sort de la fonction
 }
