@@ -21,7 +21,6 @@
 
 # include "../1_Libft/libft.h"
 
-//All the #define can also be placed here
 # define HEXA_MIN "0123456789abcdef"
 # define HEXA_MAJ "0123456789ABCDEF"
 

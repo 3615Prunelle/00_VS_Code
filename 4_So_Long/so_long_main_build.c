@@ -21,7 +21,7 @@ get_ = récupérer un élément ou une position
 
 int		main(int	argc, char **argv)
 {
-	char *path = PATH_MAP;									// changer pour argv[1] when done
+	char *path = argv[1];
 
 	game	my_game;
 	my_game = build_map(path);								// Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide) + upload image player
@@ -103,7 +103,7 @@ game	build_map(char *path)
 	my_game.content = ft_calloc((line_counter + 1), sizeof(char *));	// On alloue la première colonne uniquement (lignes done by GNL) ✅ FREE dans la fonction appelante (main)
 	if (!my_game.content)
 		exit(1);
-	fd = open(PATH_MAP, O_RDWR);
+	fd = open(path, O_RDWR);
 	my_game.content[0] = get_next_line(fd);
 	int i = 0;
 	while (my_game.content[i] != NULL)

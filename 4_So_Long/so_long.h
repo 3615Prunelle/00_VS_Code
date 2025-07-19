@@ -15,7 +15,6 @@
 # define SO_LONG_H
 
 // ⚪ #define
-# define PATH_MAP "./4_So_Long/mapSI.ber"
 # define PATH_GROUND "./4_So_Long/ic_Square_Purple.png"
 # define PATH_WALL "./4_So_Long/ic_Square_Black.png"
 # define PATH_PLAYER "./4_So_Long/ic_Player_Diplo.png"
@@ -41,7 +40,8 @@
 # define EMPTY_SPACE	'0'
 # define CHECKED		'V'
 
-# define GAME_NAME	"Space Invader Diplo Corn Quest\n"
+# define GAME_NAME	"Space Invader Diplo Corn Quest"
+
 # define OK_MESSSAGE_01	"Non graphical check up done\n"
 # define OK_MESSSAGE_02	"Graphical check up done. You're good to play - Have fun !\n"
 # define OK_MESSSAGE_03	"Exit through escape key\n"
@@ -61,12 +61,6 @@
 # define ERROR_MESSSAGE_10	"Error in the window allocation\n"
 # define ERROR_MESSSAGE_11	"Error in an image display\n"
 
-/* Please invite Diplo to the game !
-No friends allowed! Sorry-not-sorry
-Corn-Quest cancelled - No way to escape
-Corn-Quest cancelled - Too many escapes
-Corn-Quest cancelled - Nothing to collect ! */
-
 # define TILE_SIZE 72
 
 // ⚪ #include (don't forget to put #include "current_project.h" in each file)
@@ -79,11 +73,13 @@ Corn-Quest cancelled - Nothing to collect ! */
 
 # include <MLX42/MLX42.h>
 
-// ⚪ Include from other projects (put relative path to avoid issues from home computer)
+// ⚪ Include from other projects (put relative path to avoid issues from home computer or as #include<> if compiled)
 // ‼️ ‼️ ‼️ Mettre les.h ici + ‼️ Compiler et ajouter la ligne "-l[libname without the lib]" au dessus de "-lgetnextline" dans tasks.json
-#include "../1_Libft/libft.h"
-#include "../2_ft_printf/ft_printf.h"
-#include "../3_Get_Next_Line/get_next_line.h"
+#include <libft.h>
+#include <ft_printf.h>
+#include <get_next_line.h>
+
+// NOTE : mettre les dossiers 99 + 98 au lieu de ca ^ car ce projet dépend des .h + .a mais pas besoin du reste
 
 // ⚪ Structs
 typedef struct node

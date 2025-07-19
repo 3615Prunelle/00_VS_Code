@@ -66,3 +66,12 @@ int	specifiers_call(char c, va_list ptr_string)
 		j = c_specifier('%');
 	return (j);
 }
+
+// int	main(int argc, char **argv)
+// {
+// 	if(argc == 2)
+// 	{
+// 		ft_printf("Here's your string : %s\n", argv[1]);
+// 	}
+// 	return(0);
+// }

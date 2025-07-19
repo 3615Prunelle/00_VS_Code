@@ -24,7 +24,6 @@ new = node to insert before **lst
 
 What happens in that function : both nodes get linked. New being placed in front of **lst : new >> **lst, hence becoming the new head */
 
-#include <stdlib.h>
 #include "libft.h"
 
 void	ft_lstadd_front(t_list **lst, t_list *new)

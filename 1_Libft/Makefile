@@ -1,9 +1,10 @@
-# Name of the library
+# All notes are now in the Makefile template
 NAME = libft.a
-# Compiler and flags
+
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I.  # Include current directory for headers
-# Source files
+
+CFLAGS = -Wall -Wextra -Werror -I.
+
 SRCS =	ft_isalpha.c \
 		ft_isdigit.c \
 		ft_isalnum.c \
@@ -38,10 +39,9 @@ SRCS =	ft_isalpha.c \
 		ft_putstr_fd.c \
 		ft_putendl_fd.c \
 		ft_putnbr_fd.c
-# Object files
+
 OBJS = $(SRCS:.c=.o)
 
-# Bonus source files
 BONUS_SRCS =	ft_lstnew.c \
 				ft_lstadd_front.c \
 				ft_lstsize.c \
@@ -50,32 +50,31 @@ BONUS_SRCS =	ft_lstnew.c \
 				ft_lstdelone.c \
 				ft_lstclear.c \
 				ft_lstiter.c \
-				ft_lstmap.c
-# Object files for the bonus part
+				ft_lstmap.c \
+
 BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
-# Default rule to compile the library + automatic install "rule"
-all: $(NAME) install
-# Rule to create the static library
+all: $(NAME) bonus install
+
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
-# Compile bonus !!!!!!!!!!!!!!!!!!!!!!!!! Ne sont pas inclus dans commande 'make', comment updater ça ? !!!!!!!!!!!!
+
 bonus: $(OBJS) $(BONUS_OBJS)
 	ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
-# Rule to compile the source files into object files
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
-# Clean rule to remove object files
+
 clean:
 	rm -f $(OBJS) $(BONUS_OBJS)
-# Fclean rule to remove object files and the executable
+
 fclean: clean
 	rm -f $(NAME)
-# Rule to clean and recompile everything
+
 re: fclean all
-# Mettre à jour les dossiers lib&include avec tous les .a, et les .h quand je fais 'make install' (update : pas la peine car automatisé dans 'all' donc via commande 'make')
+
 install:
 	cp libft.h ../98_include
 	cp libft.a ../99_lib
-# Phony targets to prevent conflicts with files
+
 .PHONY: all clean fclean re bonus

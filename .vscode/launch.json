@@ -81,9 +81,11 @@ comment VS Code doit lancer et déboguer un programme C.*/
             "request": "launch",
             "program": "${workspaceRoot}/a.out",
             // "args": ["arg1", "arg2"],
+            "args": ["/home/sophie/Documents/00_VS_Code/4_So_Long/mapSI.ber"],
             "environment": [{ "name": "config", "value": "Debug" }],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "C/C++: cc build so_long"
+            // "preLaunchTask": "C/C++: cc build so_long"
+            "preLaunchTask": "Makefile"
         },
 //--------- Sum up : Config pour So_Long w/ MLX42 ------------------------------------------------------------------------------------- //
 		{
@@ -91,7 +93,11 @@ comment VS Code doit lancer et déboguer un programme C.*/
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceRoot}/a.out",
-			// "args": ["arg1", "arg2"],
+			//"args": ["arg1", "arg2"],
+			"args": ["90", "79"],
+			//"args": ["-100000 +02 10 +999 9999999"],
+			//"args": ["-2147483648", "2147483647", "-2147483649", "2147483648"],
+			//"args": ["-2147483648 2147483647 -2147483649 2147483648"],
 			"environment": [{ "name": "config", "value": "Debug" }],
 			"cwd": "${workspaceFolder}",
 			"preLaunchTask": "C/C++: cc build push_swap"

@@ -16,7 +16,6 @@ The job of this function is just to store the void *content in the node.
 No matter what type the content is, it’s meant to be generic.
 That’s the whole point of using void * as the required argument */
 
-#include <stdlib.h>
 #include "libft.h"
 
 t_list	*ft_lstnew(void *content)

@@ -3,36 +3,40 @@
 // ------------ ⬇️ Swap the first 2 elements at the top of stack a. Do nothing if there is only one element or none ✅
 two_stacks		*swap_a(two_stacks	*a_and_b)
 {
-	if((ft_lstsize(a_and_b->stack_a) == 0) || (ft_lstsize(a_and_b->stack_a) == 1))
-		return(NULL);
+	if((ft_lstsize(STACK_A) == 0) || (ft_lstsize(STACK_A) == 1))
+		return(a_and_b);
 
-	linked_number *temp;						// Malloc pas nécessaire car temp is used only here
-	temp = a_and_b->stack_a->next;				// ✅ Temp a les mêmes contenus que node 2
-	a_and_b->stack_a->next = temp->next;		// ✅ Pour que le next du futur node 2, soit node 3
-	temp->next = a_and_b->stack_a;				// ✅ Pour que temp next soit ex-head
-	ft_lstadd_front(&a_and_b->head_a, temp);	// temp vient en tête de liste
+	linked_number	*backup_node1;			// Will become new_node_2
+	backup_node1 = STACK_A;					// ‼️‼️ Don't use define here to avoid confusion
 
-	a_and_b->head_a = temp;
-// ---------------- Vérif ✅ ----------------------------------------------------------------------------------------- //
-	//verif("swap_a(inside)", a_and_b);
+	linked_number	*node2;					// Malloc pas nécessaire car node2 is used only here
+	node2 = STACK_A_NEXT;
+
+	// Next à changer pour node 3 avant toute opération
+	backup_node1->next = node2->next;
+
+	// ⬇️ addfront s'occupe de mettre le bon next pour le newfirstnode (node2) + update le ptr du stack (head)
+	ft_lstadd_front(&STACK_A, node2);		// node2 vient en tête de liste
+
 	return(a_and_b);
 }
 
 // ------------ ⬇️ Swap the first 2 elements at the top of stack b. Do nothing if there is only one element or none ✅
 two_stacks		*swap_b(two_stacks	*a_and_b)
 {
-	if((ft_lstsize(a_and_b->stack_b) == 0) || (ft_lstsize(a_and_b->stack_b) == 1))
-		return(NULL);
+	if((ft_lstsize(STACK_B) == 0) || (ft_lstsize(STACK_B) == 1))
+		return(a_and_b);
 
-	linked_number *temp;						// Malloc pas nécessaire car temp is used only here
-	temp = a_and_b->stack_b->next;				// ✅ Temp a les mêmes contenus que node 2
-	a_and_b->stack_b->next = temp->next;		// ✅ Pour que le next du futur node 2, soit node 3
-	temp->next = a_and_b->stack_b;				// ✅ Pour que temp next soit ex-head
-	ft_lstadd_front(&a_and_b->head_b, temp);	// temp vient en tête de liste
+	linked_number	*backup_node1;			// See all notes in swap_a function
+	backup_node1 = STACK_B;
 
-	a_and_b->head_b = temp;
-// ---------------- Vérif ✅ ----------------------------------------------------------------------------------------- //
-	//verif("swap_b(inside)", a_and_b);
+	linked_number	*node2;
+	node2 = STACK_B_NEXT;
+
+	backup_node1->next = node2->next;
+
+	ft_lstadd_front(&STACK_B, node2);
+
 	return(a_and_b);
 }
 
@@ -42,26 +46,23 @@ two_stacks		*swap_a_and_b(two_stacks *a_and_b)
 	a_and_b = swap_a(a_and_b);
 	a_and_b = swap_b(a_and_b);
 
-// ---------------- Vérif ✅ ------------------------------------------------------------------------------------------- //
-	//verif("Swap A&B (inside)", a_and_b);
 	return(a_and_b);
 }
 
 // ------------ ⬇️ Take the first element at the top of b and put it at the top of a. Do nothing if b is empty ✅
 two_stacks		*push_a(two_stacks *a_and_b)
 {
-	if(ft_lstsize(a_and_b->stack_b) == 0)
-		return(NULL);
+	if(ft_lstsize(STACK_B) == 0)
+		return(a_and_b);
 
-	// Update head b to stack b.next (do it before changing the position of stack b ?)
-	a_and_b->head_b = a_and_b->stack_b->next;
+	linked_number	*backup_node1b;
+	backup_node1b = STACK_B;
 
-	ft_lstadd_front(&a_and_b->head_a, a_and_b->stack_b);	// Head a pointer updated here ✅
-	// lstadd front makes head b the new head of stack a = NO NEED TO UPDATE HEAD A POINTER
-	// lstadd front updates next = NO NEED TO UPDATE THE NEXT ADDRESS
+//  ⬇️ Update B pointer because I don't use lstaddfront on this stack
+	STACK_B = backup_node1b->next;
 
-	// ---------------- Vérif ✅ ------------------------------------------------------------------------------------ //
-	//verif("push_a (inside)", a_and_b);
+//  ⬇️ Everything A-related wil be updated correctly
+	ft_lstadd_front(&STACK_A, backup_node1b);
 
 	return(a_and_b);
 }
@@ -69,15 +70,17 @@ two_stacks		*push_a(two_stacks *a_and_b)
 // ------------ ⬇️ Take the first element at the top of a and put it at the top of b. Do nothing if a is empty ✅
 two_stacks		*push_b(two_stacks *a_and_b)
 {
-	if(ft_lstsize(a_and_b->stack_a) == 0)
-		return(NULL);
+	if(ft_lstsize(STACK_A) == 0)
+		return(a_and_b);
 
-	a_and_b->head_a = a_and_b->stack_a->next;
+	linked_number	*backup_node1a;
+	backup_node1a = STACK_A;
 
-	ft_lstadd_front(&a_and_b->head_b, a_and_b->stack_a);
+//  ⬇️ Update A pointer because I don't use lstaddfront on this stack
+	STACK_A = backup_node1a->next;
 
-	// ---------------- Vérif ✅ ------------------------------------------------------------------------------------ //
-	verif("push_b (inside)", a_and_b);
+//  ⬇️ Everything B-related wil be updated correctly
+	ft_lstadd_front(&STACK_B, backup_node1a);
 
 	return(a_and_b);
 }
@@ -85,13 +88,20 @@ two_stacks		*push_b(two_stacks *a_and_b)
 // ------------ ⬇️ Shift up all elements of stack a by 1. The first element becomes the last one ✅
 two_stacks		*rotate_a(two_stacks *a_and_b)
 {
-	// At this point, head a = stack a
-	a_and_b->head_a = a_and_b->head_a->next;	// Head a correct ✅
+	if((STACK_A == NULL) || (STACK_A_NEXT == NULL))
+		return(a_and_b);
 
-	ft_lstadd_back(&a_and_b->head_a, a_and_b->stack_a);	// !! Doesn't set head a next to NULL
-	a_and_b->stack_a->next = NULL;	// Faire ça après l'avoir déplacé, sinon le reste de la liste est inacessible (TBC)
+	linked_number	*backup_node1;
+	backup_node1 = STACK_A;
 
-	a_and_b->stack_a = a_and_b->head_a;
+	linked_number	*backup_node2;
+	backup_node2 = STACK_A_NEXT;
+
+	STACK_A = backup_node2;
+
+	ft_lstadd_back(&STACK_A, backup_node1);
+
+	backup_node1->next = NULL;					// Always do that at the end
 
 	return(a_and_b);
 }
@@ -99,12 +109,20 @@ two_stacks		*rotate_a(two_stacks *a_and_b)
 // ------------ ⬇️ Shift up all elements of stack b by 1. The first element becomes the last one ✅
 two_stacks		*rotate_b(two_stacks *a_and_b)
 {
-	a_and_b->head_b = a_and_b->head_b->next;
+	if((STACK_B == NULL) || (STACK_B_NEXT == NULL))
+		return(a_and_b);
 
-	ft_lstadd_back(&a_and_b->head_b, a_and_b->stack_b);
-	a_and_b->stack_b->next = NULL;
+	linked_number	*backup_node1;
+	backup_node1 = STACK_B;
 
-	a_and_b->stack_b = a_and_b->head_b;
+	linked_number	*backup_node2;
+	backup_node2 = STACK_B_NEXT;
+
+	STACK_B = backup_node2;
+
+	ft_lstadd_back(&STACK_B, backup_node1);
+
+	backup_node1->next = NULL;					// Always do that at the end
 
 	return(a_and_b);
 }
@@ -118,43 +136,58 @@ two_stacks		*rotate_a_and_b(two_stacks *a_and_b)
 	return(a_and_b);
 }
 
-// ------------ ⬇️ Shift down all elements of stack a by 1. The last element becomes the first one ❌
+// ------------ ⬇️ Shift down all elements of stack a by 1. The last element becomes the first one ✅
 two_stacks		*reverse_rotate_a(two_stacks *a_and_b)
 {
-	linked_number	*last_node_stack_a;
-	last_node_stack_a = ft_lstlast(a_and_b->head_a);		// Back up last node
-
 	linked_number	*loop_ptr;
-	loop_ptr = a_and_b->head_a;
-	while (loop_ptr->next != NULL)							// Fetch l'avant dernier node
+	loop_ptr = STACK_A;
+
+	if((STACK_A == NULL) || (STACK_A_NEXT == NULL))
+		return(a_and_b);			// Condition à déplacer dans fonction appelante car elle s'applique à toutes les autres operations
+
+	while (loop_ptr->next->next != NULL)	// Fetch l'avant dernier node
 	{
 		loop_ptr = loop_ptr->next;
 	}
-	loop_ptr->next = NULL;									// Make it the last one
+	linked_number	*last_node;
+	last_node = loop_ptr->next;
+	loop_ptr->next = NULL;					// Make it the last one
 
-	a_and_b->head_a = last_node_stack_a;					// Update head pointer
-	last_node_stack_a->next = a_and_b->stack_a;				// Next is ex-first element of the list
-	a_and_b->stack_a = a_and_b->head_a;						// Update stack a so it matches head a
-
-	// Delete this when test ok
-	//ft_lstadd_front(&a_and_b->head_a, last_node_stack_a);	// Last become first, head a + next pointers updated
+	last_node->next = STACK_A;				// Next is ex-first element of the list
+	STACK_A = last_node;					// Update head pointer
 
 	return(a_and_b);
 }
 
-// ------------ ⬇️ Shift down all elements of stack b by 1. The last element becomes the first one ❌
+// ------------ ⬇️ Shift down all elements of stack b by 1. The last element becomes the first one ✅
 two_stacks		*reverse_rotate_b(two_stacks *a_and_b)
 {
+	linked_number	*loop_ptr;
+	loop_ptr = STACK_B;
+
+	if((STACK_B == NULL) || (STACK_B_NEXT == NULL))		// Si la linked list ne contient qu'un élément
+		return(a_and_b);					// Condition à déplacer dans fonction appelante car elle s'applique à toutes les autres operations
+
+	while (loop_ptr->next->next != NULL)	// Fetch l'avant dernier node
+	{
+		loop_ptr = loop_ptr->next;
+	}
+	linked_number	*last_node;
+	last_node = loop_ptr->next;
+	loop_ptr->next = NULL;					// Make it the last one
+
+	last_node->next = STACK_B;		// Next is ex-first element of the list
+	STACK_B = last_node;			// Update head pointer
+
+	return(a_and_b);
 
 }
 
-// ------------ ⬇️ rra and rrb at the same time ❌
+// ------------ ⬇️ rra and rrb at the same time ✅
 two_stacks		*reverse_rotate_a_and_b(two_stacks *a_and_b)
 {
 	a_and_b = reverse_rotate_a(a_and_b);
+	verif("rev rot a", a_and_b);
 	a_and_b = reverse_rotate_b(a_and_b);
 	return(a_and_b);
 }
-/*
-⬇️✅‼️⁉️Ⓜ️❓❌
-*/

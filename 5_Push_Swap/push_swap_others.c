@@ -1,18 +1,18 @@
 #include "push_swap.h"
 
-bool			is_number_repeat(int array[])
+bool			is_number_repeat(long int *numbers_array, int array_size)
 {
 	int i = 0;
 	int j;
 	int count_occurences;
 
-	while(i < ARR_SIZE)
+	while(i < array_size)
 	{
 		j = 0;
 		count_occurences = 0;			// Reset pour chaque nombre
-		while (j < ARR_SIZE)
+		while (j < array_size)
 		{
-			if(array[i] == array[j])
+			if(numbers_array[i] == numbers_array[j])
 			{
 				count_occurences++;
 					if(count_occurences > 1)
@@ -25,68 +25,105 @@ bool			is_number_repeat(int array[])
 	return(false);
 }
 
-linked_number	*create_list(int array[])
+linked_number	*create_list(linked_number *stack, long int array[], int array_size)
 {
-	linked_number *head;
-	head = malloc(sizeof(linked_number));	// ⁉️ Malloc nécessaire ?
-	if(!head)
-		return(NULL);
-	head = ft_lstnew(&array[0]);
-// ⬇️ NB : content est un pointeur, mais on veut print un int, donc il faut le caster ET le déréférencer
-//	printf("Just created Head	Number	%i	Next	%p\n", *(int *)(head->content), head->next);
+	stack = ft_lstnew(&array[0]);
+// ⬇️ NB pour print : content est un pointeur, mais on veut print un int, donc il faut le caster ET le déréférencer
+//	ft_printf("Just created Head	Number	%i	Next	%p\n", *(int *)(head->content), head->next);
 
 	linked_number *new;
 	int i = 1;
 
-	while (i < ARR_SIZE)
+	while (i < array_size)
 	{
-		new = ft_lstnew(&array[i]);		// On créée des nodes sans nom à la chaine
-		ft_lstadd_back(&head, new);
-//		printf("Just created Node %i	Number	%i	Next	%p\n", i, *(int *)(new->content), new->next);
+		new = ft_lstnew(&array[i]);		// On créée des nodes sans nom à la chaine + malloc du node (! pas du content)
+		ft_lstadd_back(&stack, new);
+//		ft_printf("Just created Node %i	Number	%i	Next	%p\n", i, *(int *)(new->content), new->next);
 		i++;
 	}
-	return(head);
+	return(stack);
 }
 
-void			clean_exit(two_stacks *a_and_b)
+
+void			clean_early_exit(char *message, bool exit_wanted)
 {
-/* 	if(a_and_b->head_a)
-		free(a_and_b->head_a);
-	if(a_and_b->head_b)
-		free(a_and_b->head_b); */		// This part might not be necessary because I don't malloc these pointers (should I ?)
-	if(a_and_b->stack_a)
-		free(a_and_b->stack_a);
-	if(a_and_b->stack_b)
-		free(a_and_b->stack_b);
+	if(exit_wanted)
+	{
+		ft_printf("%s\n", message);
+		exit(1);
+	}
+}
+// ------------ ⬇️ NB : Don't use ft_lstclear because it frees node + content (and no content was allocated)
+void			clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted)
+{
+	linked_number	*loop_pointer;
+	linked_number	*backup_next;
+
 	if(a_and_b)
+	{
+		loop_pointer = STACK_A;
+		while(loop_pointer != NULL)
+		{
+			backup_next = loop_pointer->next;
+			free(loop_pointer);
+			loop_pointer = backup_next;
+		}
+		STACK_A = NULL;
+	}
+	if(a_and_b)
+	{
+		loop_pointer = STACK_B;
+		while(loop_pointer != NULL)
+		{
+			backup_next = loop_pointer->next;
+			free(loop_pointer);
+			loop_pointer = backup_next;
+		}
+		STACK_B = NULL;
+	}
+	if(a_and_b)
+	{
 		free(a_and_b);
+		a_and_b = NULL;
+	}
+	if(exit_wanted)
+	{
+		ft_printf("%s\n", message);
+		exit(1);
+	}
 }
 
 void			verif(char *fonction, two_stacks *a_and_b)
 {
-	printf("\n*** Pass in %s ***\n", fonction);
+	ft_printf("\n\t*** Pass in %s ***\n", fonction);
 	int i = 0;
 	linked_number *loop_ptr;	// Trick pour ne pas avoir à nommer les nodes (car après head, ils n'ont pas de nom)
 
-	printf("\n	STACK A\n");
-	loop_ptr = a_and_b->head_a;
-	while (loop_ptr->next != NULL)
+	if(a_and_b)					// Avoids issues when stack is empty
 	{
-		printf("Node %i	Number	%i	Next	%i\n", i, *(int *)(loop_ptr->content), *(int *)(loop_ptr->next->content));
-		loop_ptr = loop_ptr->next;
-		i++;
+		ft_printf("\n\tSTACK A\n");
+		loop_ptr = STACK_A;
+		while (loop_ptr != NULL)
+		{
+			ft_printf("Node [%i]\t%i\t%p\tNext\t%p\n", i, *(int *)(loop_ptr->content), loop_ptr, loop_ptr->next);
+			loop_ptr = loop_ptr->next;
+			i++;
+		}
+		if(STACK_B != NULL)		// Avoids issues when stack is empty
+			ft_printf("Stack A pointer is currently number : %i\n", *(int*)(STACK_A_CONTENT));
 	}
-	printf("Head pointer is currently number : %i\n", *(int*)(a_and_b->head_a->content));
-	printf("Stack A pointer is currently number : %i\n", *(int*)(a_and_b->stack_a->content));
-	printf("\n	STACK B\n");
-	i = 0;
-	loop_ptr = a_and_b->head_b;
-	while (loop_ptr->next != NULL)
+	if(a_and_b)
 	{
-		printf("Node %i	Number	%i	Next	%i\n", i, *(int *)(loop_ptr->content), *(int *)(loop_ptr->next->content));
-		loop_ptr = loop_ptr->next;
-		i++;
+		ft_printf("\n\tSTACK B\n");
+		i = 0;
+		loop_ptr = STACK_B;
+		while (loop_ptr != NULL)
+		{
+			ft_printf("Node [%i]\t%i\t%p\tNext\t%p\n", i, *(int *)(loop_ptr->content), loop_ptr, loop_ptr->next);
+			loop_ptr = loop_ptr->next;
+			i++;
+		}
+		if(STACK_B != NULL)
+			ft_printf("Stack B pointer is currently number : %i\n", *(int*)(STACK_B_CONTENT));
 	}
-	printf("Head pointer is currently number : %i\n", *(int*)(a_and_b->head_b->content));
-	printf("Stack B pointer is currently number : %i\n", *(int*)(a_and_b->stack_b->content));
 }

@@ -22,7 +22,6 @@ Explication des clés principales :
 			"label": "C/C++: gcc build active file",
 			"command": "/usr/bin/gcc",						// Utilise gcc pour compiler le fichier C actuellement ouvert (${file})
 			"args": [
-				"-fdiagnostics-color=always",				//Colorise les diagnostics pour une meilleure lisibilité
 				"-g",										//Ajoute le flag -g pour inclure des informations de débogage
 				"${file}",
 				"-o",
@@ -77,7 +76,6 @@ Explication des clés principales :
 			"label": "C/C++: cc build active file",
 			"command": "/usr/bin/cc",				// Utilise cc (un alias pour gcc ou clang) pour compiler le fichier ouvert
 			"args": [
-				"-fdiagnostics-color=always",
 				"-g",
 				"${file}",
 				"-o",
@@ -104,7 +102,6 @@ Explication des clés principales :
 			"label": "C/C++: cc build active file bsd",
 			"command": "/usr/bin/cc",
 			"args": [
-				"-fdiagnostics-color=always",
 				"-g",
 				"${file}",
 				"-o",
@@ -134,7 +131,6 @@ Explication des clés principales :
 			"label": "My LibFt library",
 			"command": "/usr/bin/cc",
 			"args": [
-				"-fdiagnostics-color=always",
 				"-g",
 				"ft_*.c",							// Compile tous les fichiers ft_*.c
 				"-o",
@@ -144,7 +140,7 @@ Explication des clés principales :
 				// "-Werror",						// Traite les avertissements comme des erreurs
 				"-DLIBBSD_OVERLAY",
 				"-I/usr/include/bsd",				// Ajoute les headers bsd et bibliothèques bsd (idem ligne suivante)
-				"-lbsd",							// -l permet d'inclure une library
+				//"-lbsd",							// -l permet d'inclure une library
 				"-I${workspaceFolder}/libft",		// -I = Ajoute un nouveau répertoire à aller scanner pour chercher les include (les .h)
 				"-L${workspaceFolder}/libft",		// -L = Ajoute un répertoire à aller scanner pour aller chercher des librairy (.a ou .so)
 				//"-lft"							// Liaison avec libft.a (mais la ligne "-lft" est commentée)
@@ -167,7 +163,6 @@ Explication des clés principales :
 			"label": "C/C++: cc build get_next_line",
 			"command": "/usr/bin/cc",		// Utilise cc (un alias pour gcc ou clang) pour compiler le fichier ouvert
 			"args": [
-				"-fdiagnostics-color=always",
 				"-g",
 				"get_next_line.c", "get_next_line_utils.c", "main.c",	// Compile ces fichiers ensemble. (.h pris automatiquement en compte dans le header (include "GNL.h"))
 				//line dessous créée pour tester le bonus, décommenter la partie qui m'intéresse
@@ -199,7 +194,6 @@ Explication des clés principales :
 			"label": "C/C++: cc build so_long",
 			"command": "/usr/bin/cc",
 			"args": [
-				"-fdiagnostics-color=always",
 				"-g",
 				"so_long_main_build.c",		// Fichiers à compiler ensemble (les autres projets sont ajoutés différemment plus bas)
 				"so_long_graphics.c",
@@ -220,10 +214,7 @@ Explication des clés principales :
 				// "-Wextra",					// Active des avertissements supplémentaires
 				// "-Werror",					// Traite les avertissements comme des erreurs
 				"-lmlx42",						// Commandes necessaires pour utiliser MLX42 (this line + below)
-				"-ldl",
-				"-lglfw",
-				"-pthread",
-				"-lm",
+				"-lglfw",						// Goes with mlx42 lib
 				"-lgetnextline",				// A chaque nouveau .a/.h, penser à bien ajouter une ligne au dessus de celle-ci. Penser à compiler ce projet avant de tester dans VSCode
 				"-lftprintf",
 				"-lft"							// -lft = -l ft = -l (lib)ft = Liaison avec libft.a - A METTRE A LA FIN IMPERATIVEMENT Sinon bug de type 'undefined reference to ft_*'
@@ -246,11 +237,12 @@ Explication des clés principales :
 			"label": "C/C++: cc build push_swap",
 			"command": "/usr/bin/cc",
 			"args": [
-				"-fdiagnostics-color=always",
 				"-g",
-				"push_swap_temp_main.c",
+				"push_swap_main.c",
+				"push_swap_input_management.c",
 				"push_swap_operations.c",
 				"push_swap_others.c",
+				"push_swap_algorithms.c",
 // Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
 				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
 				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg

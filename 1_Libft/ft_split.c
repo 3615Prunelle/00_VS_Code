@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
 
 static void		ft_init(int *i, int *idx_fnl, int *sub_beg, int *is_new_word);
@@ -111,8 +110,8 @@ int	ft_count_str(const char *s, char c, size_t size_s)
 
 // int	main(void)
 // {
-// 	char	str0[] = "hello yo!";
-// 	char	c = ' ';
+// 	char	str0[] = "1hello11111you1wassup!1";
+// 	char	c = '1';
 
 // 	char **split1 = ft_split(str0, c);
 

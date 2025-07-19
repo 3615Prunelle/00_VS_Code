@@ -102,26 +102,26 @@ int		main(void)
 
 	if(is_number_repeat(a) || is_number_repeat(b))
 	{
-		printf("Duplicated number, edit and try again !\n");
+		ft_printf("Duplicated number, edit and try again !\n");
 		return(1);
 	}
 
 	int i = 0;
-	printf("\nIndex :		0	1	2	3	4	5	6	7\n");
-	printf("array_a :	");
+	ft_printf("\nIndex :		0	1	2	3	4	5	6	7\n");
+	ft_printf("array_a :	");
 	while (i < SIZE)
 	{
-		printf("%i	", a[i]);
+		ft_printf("%i	", a[i]);
 		i++;
 	}
 	i = 0;
-	printf("\narray_b :	");
+	ft_printf("\narray_b :	");
 	while (i < SIZE)
 	{
-		printf("%i	", b[i]);
+		ft_printf("%i	", b[i]);
 		i++;
 	}
-	printf("\n\n");
+	ft_printf("\n\n");
 	return(0);
 }
 
