@@ -1,15 +1,17 @@
 {
 	"files.associations": {
-	"stddef.h": "c",
-	"stdlib.h": "c",
-	"stdio.h": "c",
-	"bit": "c"
-	}
-
+		"stddef.h": "c",
+		"stdlib.h": "c",
+		"stdio.h": "c",
+		"bit": "c"
+	},
+		"files.exclude": {
+			"**/*.o": true	// Masquer tous les .o après chaque compilation
+	},
 	"editor.tabSize": 4,
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": false,
 	"editor.renderWhitespace": "all",
 	"files.trimTrailingWhitespace": true,
-	"files.insertFinalNewline": true,
+	"files.insertFinalNewline": true
 }

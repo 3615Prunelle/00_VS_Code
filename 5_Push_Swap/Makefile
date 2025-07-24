@@ -1,9 +1,15 @@
 # All notes are now in the Makefile template
+
+# PDF Instructions part : If your project allows you to use your libft,
+# you must copy its sources and its associated Makefile into a libft folder.
+# Your project’s Makefile must compile the library by using its Makefile, then compile the project.
+
 NAME = push_swap
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I ../98_include
+# Add -Wall -Wextra -Werror & run tests when almost done
+CFLAGS = -g -I ../98_include
 LFLAGS = -L ../99_lib -lftprintf -lft
 
 SRCS = 	push_swap_main.c \
@@ -17,9 +23,10 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
+	$(CC) $(OBJS) $(LFLAGS) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)

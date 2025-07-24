@@ -5,6 +5,9 @@
 #		Je peux donner les noms que je veux aux variables et aux règles
 #		Les règles clean, fclean, re et .PHONY doivent toujours être présentes
 #		Les règles sont appelées par make (I chose with one, default is first one)
+# VERY IMPORTANT : Vérifier l'ordre des flags/élements dans les commandes est très important et peut
+#	générer des grosses erreurs à la compilation même si juste 2 éléments sont inversés
+#	Par exemple, les objets doivent toujours précéder les -l pour que le linker voie ce qui doit être résolu.
 
 # Name of the executable (program, library, etc) to be created, with or without extension
 NAME =
@@ -13,6 +16,7 @@ NAME =
 CC = cc
 
 # Flags de compilation
+#	-g			Pour pouvoir débugger facilement (points d'arrêt dans VSCode, etc)
 #	-Wall		Active tous les avertissements de base
 #	-Wextra		Active des avertissements supplémentaires
 #	-Werror		Traite les avertissements comme des erreurs
@@ -21,9 +25,11 @@ CC = cc
 #	-I			Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
 #					!! Bien s'assurer de mettre TOUS les répertoires !!
 #				Mettre path relatif de chaque repo dans lequel on a un .h qui nous intéresse
-CFLAGS = -Wall -Wextra -Werror -I ../repo1
+CFLAGS = -g -Wall -Wextra -Werror -I ../repo1
 
 # Flags de linking (séparés des flags de compilation, pour une meilleure lisibilité)
+# Linking (avec un Linker) =  Dire au programme "Voilà où trouver tout ce que tu utilises"
+# NB : On ne met les $(LFLAGS) que dans les commandes de l'étape de linking (pour créer un exécutable final)
 #	-L			Ajoute un répertoire à aller scanner pour aller chercher des library nécessaires (.a ou .so)
 #					!! Bien s'assurer de mettre TOUS les répertoires les library citées après !!
 #					Ou alors, mettre toutes les library dans le même répertoire
@@ -73,22 +79,28 @@ BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 #		needs to be executed to create $(NAME), through the script 'ar rcs $(NAME) $(OBJS)'
 all: $(NAME) ruleX
 
-# First Script to create the static library (to customoze according to the kind of executable wanted)
+# First Script to create whetever I want to create (the command is customized according to the kind of executable wanted).
 #		$()		This variable is the target to create
+# Then, for example :
 #		ar		Command to create an archive (static library) : ***.a
 #		rcs		Remplace (r) ou créée (c), puis crée un sommaire (s) à mon programme pour que le linker (qui assemble l'exécutablel) trouve facilement quelle fonction est dans quel .o
 #				If (NAME) already exists, it updates the object files inside
+# NB : No command = Nothing will be created
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 # Another example
 	$(CC) -ggdb -o $@ $(OBJS) $(LFLAGS)
+# Another example (-o = output = telling the compiler which name to give to the excutable)
+	$(CC) $(CFLAGS) $(LFLAGS) $(OBJS) -o $(NAME)
 
 # Rule to compile the source files into object files
+# This rule is called automatically if/when a .o file is needed
 #	%	Pour définir des règles génériques applicables à plusieurs fichiers (équivalent de *.o *.c dans le shell)
-#	$<	Refers to the source file (***.c)
-#	$@	Refers to the target file (***.o) created earlier (variable 'OBJS = $(SRCS:.c=.o)')
+#	$<	Refers to the first dependance/prérequis of that rule (here : %.c)
+#	$^	Refers to all dependances/prérequis (not applicable here because only one dependency)
+#	$@	Refers to the target file of that rule (here : %.o)
 %.o: %.c
-	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Clean rule to delete only object files
 #	Removes (rm) without asking confirmation (f = force)

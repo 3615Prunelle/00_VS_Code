@@ -3,6 +3,7 @@ NAME = so_long
 
 CC = cc
 
+# Add -Wall -Wextra -Werror & run tests when almost done
 CFLAGS = -I ../98_include
 LFLAGS = -L ../99_lib -lmlx42 -lftprintf -lgetnextline -lglfw -lft #-lglfw goes with mlx42
 
@@ -17,10 +18,10 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) -g -o $@ $(OBJS) $(LFLAGS)
+	$(CC) -g -o $@ $(OBJS) $(CFLAGS) $(LFLAGS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)

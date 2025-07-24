@@ -1,8 +1,9 @@
 #include "push_swap.h"
 
 // ------------ ⬇️ Swap the first 2 elements at the top of stack a. Do nothing if there is only one element or none ✅
-two_stacks		*swap_a(two_stacks	*a_and_b)
+two_stacks		*swap_a(two_stacks *a_and_b, int *ops_counter)
 {
+	ft_printf("sa\n");
 	if((ft_lstsize(STACK_A) == 0) || (ft_lstsize(STACK_A) == 1))
 		return(a_and_b);
 
@@ -17,13 +18,14 @@ two_stacks		*swap_a(two_stacks	*a_and_b)
 
 	// ⬇️ addfront s'occupe de mettre le bon next pour le newfirstnode (node2) + update le ptr du stack (head)
 	ft_lstadd_front(&STACK_A, node2);		// node2 vient en tête de liste
-
+	(*ops_counter)++;
 	return(a_and_b);
 }
 
 // ------------ ⬇️ Swap the first 2 elements at the top of stack b. Do nothing if there is only one element or none ✅
-two_stacks		*swap_b(two_stacks	*a_and_b)
+two_stacks		*swap_b(two_stacks *a_and_b, int *ops_counter)
 {
+	ft_printf("sb\n");
 	if((ft_lstsize(STACK_B) == 0) || (ft_lstsize(STACK_B) == 1))
 		return(a_and_b);
 
@@ -36,22 +38,24 @@ two_stacks		*swap_b(two_stacks	*a_and_b)
 	backup_node1->next = node2->next;
 
 	ft_lstadd_front(&STACK_B, node2);
-
+	(*ops_counter)++;
 	return(a_and_b);
 }
 
 // ------------ ⬇️ sa and sb at the same time ✅
-two_stacks		*swap_a_and_b(two_stacks *a_and_b)
+two_stacks		*swap_a_and_b(two_stacks *a_and_b, int *ops_counter)
 {
-	a_and_b = swap_a(a_and_b);
-	a_and_b = swap_b(a_and_b);
-
+	ft_printf("ss\n");
+	a_and_b = swap_a(a_and_b, ops_counter);
+	a_and_b = swap_b(a_and_b, ops_counter);
+	(*ops_counter)++;
 	return(a_and_b);
 }
 
 // ------------ ⬇️ Take the first element at the top of b and put it at the top of a. Do nothing if b is empty ✅
-two_stacks		*push_a(two_stacks *a_and_b)
+two_stacks		*push_a(two_stacks *a_and_b, int *ops_counter)
 {
+	ft_printf("pa\n");
 	if(ft_lstsize(STACK_B) == 0)
 		return(a_and_b);
 
@@ -63,13 +67,14 @@ two_stacks		*push_a(two_stacks *a_and_b)
 
 //  ⬇️ Everything A-related wil be updated correctly
 	ft_lstadd_front(&STACK_A, backup_node1b);
-
+	(*ops_counter)++;
 	return(a_and_b);
 }
 
 // ------------ ⬇️ Take the first element at the top of a and put it at the top of b. Do nothing if a is empty ✅
-two_stacks		*push_b(two_stacks *a_and_b)
+two_stacks		*push_b(two_stacks *a_and_b, int *ops_counter)
 {
+	ft_printf("pb\n");
 	if(ft_lstsize(STACK_A) == 0)
 		return(a_and_b);
 
@@ -81,13 +86,14 @@ two_stacks		*push_b(two_stacks *a_and_b)
 
 //  ⬇️ Everything B-related wil be updated correctly
 	ft_lstadd_front(&STACK_B, backup_node1a);
-
+	(*ops_counter)++;
 	return(a_and_b);
 }
 
 // ------------ ⬇️ Shift up all elements of stack a by 1. The first element becomes the last one ✅
-two_stacks		*rotate_a(two_stacks *a_and_b)
+two_stacks		*rotate_a(two_stacks *a_and_b, int *ops_counter)
 {
+	ft_printf("ra\n");
 	if((STACK_A == NULL) || (STACK_A_NEXT == NULL))
 		return(a_and_b);
 
@@ -102,13 +108,14 @@ two_stacks		*rotate_a(two_stacks *a_and_b)
 	ft_lstadd_back(&STACK_A, backup_node1);
 
 	backup_node1->next = NULL;					// Always do that at the end
-
+	(*ops_counter)++;
 	return(a_and_b);
 }
 
 // ------------ ⬇️ Shift up all elements of stack b by 1. The first element becomes the last one ✅
-two_stacks		*rotate_b(two_stacks *a_and_b)
+two_stacks		*rotate_b(two_stacks *a_and_b, int *ops_counter)
 {
+	ft_printf("rb\n");
 	if((STACK_B == NULL) || (STACK_B_NEXT == NULL))
 		return(a_and_b);
 
@@ -123,22 +130,24 @@ two_stacks		*rotate_b(two_stacks *a_and_b)
 	ft_lstadd_back(&STACK_B, backup_node1);
 
 	backup_node1->next = NULL;					// Always do that at the end
-
+	(*ops_counter)++;
 	return(a_and_b);
 }
 
 // ------------ ⬇️ ra and rb at the same time ✅
-two_stacks		*rotate_a_and_b(two_stacks *a_and_b)
+two_stacks		*rotate_a_and_b(two_stacks *a_and_b, int *ops_counter)
 {
-	a_and_b = rotate_a(a_and_b);
-	a_and_b = rotate_b(a_and_b);
-
+	ft_printf("rr\n");
+	a_and_b = rotate_a(a_and_b, ops_counter);
+	a_and_b = rotate_b(a_and_b, ops_counter);
+	(*ops_counter)++;
 	return(a_and_b);
 }
 
 // ------------ ⬇️ Shift down all elements of stack a by 1. The last element becomes the first one ✅
-two_stacks		*reverse_rotate_a(two_stacks *a_and_b)
+two_stacks		*reverse_rotate_a(two_stacks *a_and_b, int *ops_counter)
 {
+	ft_printf("rra\n");
 	linked_number	*loop_ptr;
 	loop_ptr = STACK_A;
 
@@ -155,13 +164,14 @@ two_stacks		*reverse_rotate_a(two_stacks *a_and_b)
 
 	last_node->next = STACK_A;				// Next is ex-first element of the list
 	STACK_A = last_node;					// Update head pointer
-
+	(*ops_counter)++;
 	return(a_and_b);
 }
 
 // ------------ ⬇️ Shift down all elements of stack b by 1. The last element becomes the first one ✅
-two_stacks		*reverse_rotate_b(two_stacks *a_and_b)
+two_stacks		*reverse_rotate_b(two_stacks *a_and_b, int *ops_counter)
 {
+	ft_printf("rrb\n");
 	linked_number	*loop_ptr;
 	loop_ptr = STACK_B;
 
@@ -178,16 +188,17 @@ two_stacks		*reverse_rotate_b(two_stacks *a_and_b)
 
 	last_node->next = STACK_B;		// Next is ex-first element of the list
 	STACK_B = last_node;			// Update head pointer
-
+	(*ops_counter)++;
 	return(a_and_b);
 
 }
 
 // ------------ ⬇️ rra and rrb at the same time ✅
-two_stacks		*reverse_rotate_a_and_b(two_stacks *a_and_b)
+two_stacks		*reverse_rotate_a_and_b(two_stacks *a_and_b, int *ops_counter)
 {
-	a_and_b = reverse_rotate_a(a_and_b);
-	verif("rev rot a", a_and_b);
-	a_and_b = reverse_rotate_b(a_and_b);
+	ft_printf("rrr\n");
+	a_and_b = reverse_rotate_a(a_and_b, ops_counter);
+	a_and_b = reverse_rotate_b(a_and_b, ops_counter);
+	(*ops_counter)++;
 	return(a_and_b);
 }

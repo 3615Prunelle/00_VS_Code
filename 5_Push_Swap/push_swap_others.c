@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-bool			is_number_repeat(long int *numbers_array, int array_size)
+bool			is_number_repeat(int *numbers_array, int array_size)
 {
 	int i = 0;
 	int j;
@@ -25,25 +25,26 @@ bool			is_number_repeat(long int *numbers_array, int array_size)
 	return(false);
 }
 
-linked_number	*create_list(linked_number *stack, long int array[], int array_size)
+linked_number	*create_list(linked_number *stack, int *numbers_array, int array_size)
 {
-	stack = ft_lstnew(&array[0]);
+	stack = ft_lstnew(&numbers_array[0]);
 // ⬇️ NB pour print : content est un pointeur, mais on veut print un int, donc il faut le caster ET le déréférencer
-//	ft_printf("Just created Head	Number	%i	Next	%p\n", *(int *)(head->content), head->next);
+	// ft_printf("Just created Head	Number	%i	Next	%p\n", *(int *)(stack->content), stack->next);
 
 	linked_number *new;
 	int i = 1;
 
 	while (i < array_size)
 	{
-		new = ft_lstnew(&array[i]);		// On créée des nodes sans nom à la chaine + malloc du node (! pas du content)
+		new = ft_lstnew(&numbers_array[i]);		// On créée des nodes sans nom à la chaine + malloc du node (! pas du content)
 		ft_lstadd_back(&stack, new);
-//		ft_printf("Just created Node %i	Number	%i	Next	%p\n", i, *(int *)(new->content), new->next);
+		// ft_printf("Just created Node %i	Number	%i	Next	%p\n", i, *(int *)(new->content), new->next);
 		i++;
 	}
+	// ft_printf("Head	Number	%i	Next	%p\n", *(int *)(stack->content), stack->next);
+
 	return(stack);
 }
-
 
 void			clean_early_exit(char *message, bool exit_wanted)
 {
@@ -110,7 +111,7 @@ void			verif(char *fonction, two_stacks *a_and_b)
 			i++;
 		}
 		if(STACK_B != NULL)		// Avoids issues when stack is empty
-			ft_printf("Stack A pointer is currently number : %i\n", *(int*)(STACK_A_CONTENT));
+			ft_printf("Stack A pointer is currently number : %i\n", STACK_A_CONTENT);
 	}
 	if(a_and_b)
 	{
@@ -126,4 +127,36 @@ void			verif(char *fonction, two_stacks *a_and_b)
 		if(STACK_B != NULL)
 			ft_printf("Stack B pointer is currently number : %i\n", *(int*)(STACK_B_CONTENT));
 	}
+}
+void	print_sorted_stack(two_stacks *a_and_b)
+{
+	if(STACK_B)
+	{
+		ft_printf("Stack B is not empty\n");
+		return;
+	}
+	if(STACK_A)
+	{
+		while(STACK_A != NULL)
+		{
+			ft_printf("%i ", STACK_A_CONTENT);
+			STACK_A = STACK_A_NEXT;
+		}
+	}
+	ft_printf("\n\n");
+}
+
+char	*view_stack(linked_number *stack)
+{
+	char *string_finale = "";	// Evite le malloc / segfault
+	char *espace = " ";
+	char *conv_nombre;
+	while(stack != NULL)
+	{
+		conv_nombre = ft_itoa(*(int*)(stack->content));
+		string_finale = ft_strjoin(string_finale, conv_nombre);
+		string_finale = ft_strjoin(string_finale, espace);
+		stack = stack->next;
+	}
+	return(string_finale);
 }

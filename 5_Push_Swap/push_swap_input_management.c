@@ -37,16 +37,16 @@ int			count_numbers(char *s)
 	return(count);
 }
 // ---- ⬇️ NB : Take the array as a param instead of declaring & malloc'ing it in the function (avoids mem leaks)
-long int	*string_to_int_array(int count, char *s, long int *numbers_array)
+int			*string_to_int_array(char *s, int *numbers_array)
 {
 	char	**strings_array;
- 	strings_array = ft_split(s, ' ');
+ 	strings_array = ft_split(s, ' ');	// Met un \0 à la dernière array (TBC)
 
 	int i = 0;
 
 	while (strings_array[i] != NULL)
 	{
-		numbers_array[i] = ft_atol(strings_array[i]);
+		numbers_array[i] = (int)ft_atol(strings_array[i]);
 		i++;
 	}
 	return(numbers_array);
@@ -79,9 +79,9 @@ long int	ft_atol(char *s)
 	return (tot * sign);
 }
 
-bool		is_sorted(long int *numbers_array, int array_size)
+bool		is_sorted(int *numbers_array, int array_size)
 {
-	long int	lower_number;
+	int	lower_number;
 	lower_number = INT_MIN;
 
 	while((numbers_array) && (array_size > 0))

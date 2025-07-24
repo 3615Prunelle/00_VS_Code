@@ -79,28 +79,32 @@ comment VS Code doit lancer et déboguer un programme C.*/
             "name": "So_Long",								//Config 6
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/a.out",
+//            "program": "${workspaceRoot}/a.out",	// Chemin d'accès de l'exécutable créé automatiquement sans Makefile
+            "program": "${workspaceRoot}/4_So_Long/so_long",	// Chemin d'accès de l'exécutable créé par Makefile
             // "args": ["arg1", "arg2"],
             "args": ["/home/sophie/Documents/00_VS_Code/4_So_Long/mapSI.ber"],
             "environment": [{ "name": "config", "value": "Debug" }],
             "cwd": "${workspaceFolder}",
             // "preLaunchTask": "C/C++: cc build so_long"
-            "preLaunchTask": "Makefile"
+            "preLaunchTask": "Build with Makefile for So_Long"			// Choisir entre cette task ou celle dessus selon si le MakeFile est prêt
         },
 //--------- Sum up : Config pour So_Long w/ MLX42 ------------------------------------------------------------------------------------- //
 		{
 			"name": "Push_Swap",								//Config 7
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceRoot}/a.out",
+//            "program": "${workspaceRoot}/a.out",	// Chemin d'accès de l'exécutable créé automatiquement sans Makefile
+			"program": "${workspaceFolder}/5_Push_Swap/push_swap",	// Chemin d'accès de l'exécutable créé par Makefile
 			//"args": ["arg1", "arg2"],
-			"args": ["90", "79"],
+			"args": ["9 4 0"],
 			//"args": ["-100000 +02 10 +999 9999999"],
-			//"args": ["-2147483648", "2147483647", "-2147483649", "2147483648"],
-			//"args": ["-2147483648 2147483647 -2147483649 2147483648"],
+			// "args": ["-2147483648", "2147483647", "-2147483649", "2147483648"],
+			// "args": ["14747 10 132 999 0 7838 1 33 888 222 4"],
+			//"args": ["-2147483648 2147483647 -2147483649 2147483647"],
 			"environment": [{ "name": "config", "value": "Debug" }],
 			"cwd": "${workspaceFolder}",
-			"preLaunchTask": "C/C++: cc build push_swap"
+//			"preLaunchTask": "C/C++: cc build push_swap"
+			"preLaunchTask": "Build with Makefile for Push_Swap"
 		},
 //--------- Config pour Push_Swap ----------------------------------------------------------------------------------------------------- //
 	]
