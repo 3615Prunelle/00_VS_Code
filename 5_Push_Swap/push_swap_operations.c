@@ -4,11 +4,12 @@
 two_stacks		*swap_a(two_stacks *a_and_b, int *ops_counter)
 {
 	ft_printf("sa\n");
-	if((ft_lstsize(STACK_A) == 0) || (ft_lstsize(STACK_A) == 1))
+	// if((ft_lstsize(STACK_A) == 0) || (ft_lstsize(STACK_A) == 1))
+	if((STACK_A == NULL) || (ft_lstsize(STACK_A) == 1))
 		return(a_and_b);
 
 	linked_number	*backup_node1;			// Will become new_node_2
-	backup_node1 = STACK_A;					// ‼️‼️ Don't use define here to avoid confusion
+	backup_node1 = STACK_A;
 
 	linked_number	*node2;					// Malloc pas nécessaire car node2 is used only here
 	node2 = STACK_A_NEXT;
@@ -26,7 +27,8 @@ two_stacks		*swap_a(two_stacks *a_and_b, int *ops_counter)
 two_stacks		*swap_b(two_stacks *a_and_b, int *ops_counter)
 {
 	ft_printf("sb\n");
-	if((ft_lstsize(STACK_B) == 0) || (ft_lstsize(STACK_B) == 1))
+	// if((ft_lstsize(STACK_B) == 0) || (ft_lstsize(STACK_B) == 1))
+	if((STACK_B == NULL) || (ft_lstsize(STACK_B) == 1))
 		return(a_and_b);
 
 	linked_number	*backup_node1;			// See all notes in swap_a function
@@ -56,7 +58,7 @@ two_stacks		*swap_a_and_b(two_stacks *a_and_b, int *ops_counter)
 two_stacks		*push_a(two_stacks *a_and_b, int *ops_counter)
 {
 	ft_printf("pa\n");
-	if(ft_lstsize(STACK_B) == 0)
+	if(STACK_B == NULL) // ft_lstsize(STACK_B) == 0) donnait des memory leaks
 		return(a_and_b);
 
 	linked_number	*backup_node1b;
@@ -75,7 +77,7 @@ two_stacks		*push_a(two_stacks *a_and_b, int *ops_counter)
 two_stacks		*push_b(two_stacks *a_and_b, int *ops_counter)
 {
 	ft_printf("pb\n");
-	if(ft_lstsize(STACK_A) == 0)
+	if(STACK_A == NULL) // ft_lstsize(STACK_A) == 0) donnait des memory leaks
 		return(a_and_b);
 
 	linked_number	*backup_node1a;

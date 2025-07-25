@@ -14,9 +14,10 @@ LFLAGS = -L ../99_lib -lftprintf -lft
 
 SRCS = 	push_swap_main.c \
 		push_swap_input_management.c \
+		push_swap_check_and_exit.c \
 		push_swap_operations.c \
-		push_swap_others.c \
-		push_swap_algorithms.c
+		push_swap_algorithms.c \
+		push_swap_tools.c
 
 OBJS = $(SRCS:.c=.o)
 

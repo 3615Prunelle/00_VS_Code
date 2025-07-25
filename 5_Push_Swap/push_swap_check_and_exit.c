@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-bool			is_number_repeat(int *numbers_array, int array_size)
+bool			is_number_repeat(long int *numbers_array, int array_size)
 {
 	int i = 0;
 	int j;
@@ -25,7 +25,7 @@ bool			is_number_repeat(int *numbers_array, int array_size)
 	return(false);
 }
 
-linked_number	*create_list(linked_number *stack, int *numbers_array, int array_size)
+linked_number	*create_list(linked_number *stack, long int *numbers_array, int array_size)
 {
 	stack = ft_lstnew(&numbers_array[0]);
 // ⬇️ NB pour print : content est un pointeur, mais on veut print un int, donc il faut le caster ET le déréférencer
@@ -46,14 +46,18 @@ linked_number	*create_list(linked_number *stack, int *numbers_array, int array_s
 	return(stack);
 }
 
-void			clean_early_exit(char *message, bool exit_wanted)
+void			clean_early_exit(char *message, long int *numbers_array, bool exit_wanted)
 {
+	if(numbers_array)
+		free(numbers_array);
+
 	if(exit_wanted)
 	{
 		ft_printf("%s\n", message);
 		exit(1);
 	}
 }
+
 // ------------ ⬇️ NB : Don't use ft_lstclear because it frees node + content (and no content was allocated)
 void			clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted)
 {
@@ -62,26 +66,32 @@ void			clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted)
 
 	if(a_and_b)
 	{
-		loop_pointer = STACK_A;
-		while(loop_pointer != NULL)
+		if(STACK_A)
+		// if(a_and_b)
 		{
-			backup_next = loop_pointer->next;
-			free(loop_pointer);
-			loop_pointer = backup_next;
+			loop_pointer = STACK_A;
+			while(loop_pointer != NULL)
+			{
+				backup_next = loop_pointer->next;
+				free(loop_pointer);
+				loop_pointer = backup_next;
+			}
+			STACK_A = NULL;
 		}
-		STACK_A = NULL;
+		// if(STACK_B)			// No need, car stack b n'a (à priori) jamais été malloc'ée
+		// // if(a_and_b)
+		// {
+		// 	loop_pointer = STACK_B;
+		// 	while(loop_pointer != NULL)
+		// 	{
+		// 		backup_next = loop_pointer->next;
+		// 		free(loop_pointer);
+		// 		loop_pointer = backup_next;
+		// 	}
+		// 	STACK_B = NULL;
+		// }
 	}
-	if(a_and_b)
-	{
-		loop_pointer = STACK_B;
-		while(loop_pointer != NULL)
-		{
-			backup_next = loop_pointer->next;
-			free(loop_pointer);
-			loop_pointer = backup_next;
-		}
-		STACK_B = NULL;
-	}
+
 	if(a_and_b)
 	{
 		free(a_and_b);
@@ -128,7 +138,8 @@ void			verif(char *fonction, two_stacks *a_and_b)
 			ft_printf("Stack B pointer is currently number : %i\n", *(int*)(STACK_B_CONTENT));
 	}
 }
-void	print_sorted_stack(two_stacks *a_and_b)
+
+void			ex_print_sorted_stack(two_stacks *a_and_b)
 {
 	if(STACK_B)
 	{
@@ -146,17 +157,14 @@ void	print_sorted_stack(two_stacks *a_and_b)
 	ft_printf("\n\n");
 }
 
-char	*view_stack(linked_number *stack)
+void			print_sorted_stack(linked_number *stack)
 {
-	char *string_finale = "";	// Evite le malloc / segfault
-	char *espace = " ";
-	char *conv_nombre;
 	while(stack != NULL)
 	{
-		conv_nombre = ft_itoa(*(int*)(stack->content));
-		string_finale = ft_strjoin(string_finale, conv_nombre);
-		string_finale = ft_strjoin(string_finale, espace);
+		printf("%i ", *(int*)(stack->content));	// Use only for tests, ne marche pas avec mon ft_printf
+		fflush(stdout);
 		stack = stack->next;
 	}
-	return(string_finale);
+	ft_printf("\n\n");
 }
+

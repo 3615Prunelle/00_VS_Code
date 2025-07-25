@@ -3,7 +3,8 @@
 		"stddef.h": "c",
 		"stdlib.h": "c",
 		"stdio.h": "c",
-		"bit": "c"
+		"bit": "c",
+		"push_swap.h": "c"
 	},
 		"files.exclude": {
 			"**/*.o": true	// Masquer tous les .o après chaque compilation
