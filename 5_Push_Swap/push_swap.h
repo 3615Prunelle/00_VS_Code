@@ -15,7 +15,7 @@
 
 # define	STACK_A			a_and_b->stack_a
 # define	STACK_B			a_and_b->stack_b
-# define	STACK_A_CONTENT	*((int *)(a_and_b->stack_a->content))
+# define	STACK_A_CONTENT	*((long int*)(a_and_b->stack_a->content))
 # define	STACK_B_CONTENT	a_and_b->stack_b->content
 # define	STACK_A_NEXT	a_and_b->stack_a->next
 # define	STACK_B_NEXT	a_and_b->stack_b->next
@@ -55,11 +55,12 @@ typedef struct	two_stacks
 	linked_number	*stack_b;
 }				two_stacks;
 
-// ⚪ Input Management & Check
+// ⚪ Input Management & Check - Functions signatures
 bool			is_numerical_only(char *s);
 int				count_numbers(char *s);
 int				*string_to_int_array(char *s, long int *numbers_array);
 long int		ft_atol(char *s);
+char			*ltoa(long int li);
 bool			is_number_repeat(long int *numbers_array, int array_size);
 bool			is_sorted(long int *numbers_array, int array_size);
 int				ex_smallest_number(long int *numbers_array, two_stacks *a_and_b);
@@ -76,12 +77,15 @@ char			*view_stack(linked_number *stack);
 linked_number	*create_list(linked_number *stack, long int *numbers_array, int array_size);
 void			algorithm_selection(long int *numbers_array, int array_size);
 int				*list_to_array(int *new_array, linked_number *stack);
+two_stacks		*add_int_max(two_stacks *a_and_b);
+two_stacks		*substract_int_max(two_stacks *a_and_b);
 
 // ⚪ Algorithms
 void			sort_three(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter);
 void			sort_four(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter);
 void			sort_five(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter);
 void			sort_above_five(two_stacks *a_and_b, int *ops_counter);
+void			sort_above_five_new(two_stacks *a_and_b, int *ops_counter);
 
 // ⚪ Operations
 two_stacks		*swap_a(two_stacks *a_and_b, int *ops_counter);

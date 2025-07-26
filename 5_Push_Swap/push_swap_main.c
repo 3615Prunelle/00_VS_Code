@@ -63,7 +63,7 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (i < array_size)
 	{
-		if (((numbers_array[i]) < INT_MIN) || ((numbers_array[i]) > INT_MAX))
+		if (((numbers_array[i]) < (long int)INT_MIN) || ((numbers_array[i]) > (long int)INT_MAX))
 			clean_early_exit(ERROR_MESSSAGE_03, numbers_array, true);
 		i++;
 	}

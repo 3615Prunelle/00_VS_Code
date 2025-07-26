@@ -29,7 +29,7 @@ linked_number	*create_list(linked_number *stack, long int *numbers_array, int ar
 {
 	stack = ft_lstnew(&numbers_array[0]);
 // ⬇️ NB pour print : content est un pointeur, mais on veut print un int, donc il faut le caster ET le déréférencer
-	// ft_printf("Just created Head	Number	%i	Next	%p\n", *(int *)(stack->content), stack->next);
+	// printf("Just created Head	Number	%li	Next	%p\n", *(long int*)(stack->content), stack->next);
 
 	linked_number *new;
 	int i = 1;
@@ -38,10 +38,10 @@ linked_number	*create_list(linked_number *stack, long int *numbers_array, int ar
 	{
 		new = ft_lstnew(&numbers_array[i]);		// On créée des nodes sans nom à la chaine + malloc du node (! pas du content)
 		ft_lstadd_back(&stack, new);
-		// ft_printf("Just created Node %i	Number	%i	Next	%p\n", i, *(int *)(new->content), new->next);
+		// printf("Just created Node %li	Number	%li	Next	%p\n", i, *(long int*)(new->content), new->next);
 		i++;
 	}
-	// ft_printf("Head	Number	%i	Next	%p\n", *(int *)(stack->content), stack->next);
+	// printf("Head	Number	%li	Next	%p\n", *(long int*)(stack->content), stack->next);
 
 	return(stack);
 }
@@ -116,12 +116,12 @@ void			verif(char *fonction, two_stacks *a_and_b)
 		loop_ptr = STACK_A;
 		while (loop_ptr != NULL)
 		{
-			ft_printf("Node [%i]\t%i\t%p\tNext\t%p\n", i, *(int *)(loop_ptr->content), loop_ptr, loop_ptr->next);
+			printf("Node [%li]\t%li\t%p\tNext\t%p\n", i, *(long int*)(loop_ptr->content), loop_ptr, loop_ptr->next);
 			loop_ptr = loop_ptr->next;
 			i++;
 		}
 		if(STACK_B != NULL)		// Avoids issues when stack is empty
-			ft_printf("Stack A pointer is currently number : %i\n", STACK_A_CONTENT);
+			printf("Stack A pointer is currently number : %li\n", STACK_A_CONTENT);
 	}
 	if(a_and_b)
 	{
@@ -130,12 +130,12 @@ void			verif(char *fonction, two_stacks *a_and_b)
 		loop_ptr = STACK_B;
 		while (loop_ptr != NULL)
 		{
-			ft_printf("Node [%i]\t%i\t%p\tNext\t%p\n", i, *(int *)(loop_ptr->content), loop_ptr, loop_ptr->next);
+			printf("Node [%li]\t%li\t%p\tNext\t%p\n", i, *(long int*)(loop_ptr->content), loop_ptr, loop_ptr->next);
 			loop_ptr = loop_ptr->next;
 			i++;
 		}
 		if(STACK_B != NULL)
-			ft_printf("Stack B pointer is currently number : %i\n", *(int*)(STACK_B_CONTENT));
+			printf("Stack B pointer is currently number : %li\n", *(long int*)(STACK_B_CONTENT));
 	}
 }
 
@@ -150,7 +150,7 @@ void			ex_print_sorted_stack(two_stacks *a_and_b)
 	{
 		while(STACK_A != NULL)
 		{
-			ft_printf("%i ", STACK_A_CONTENT);
+			printf("%li ", STACK_A_CONTENT);
 			STACK_A = STACK_A_NEXT;
 		}
 	}
@@ -161,7 +161,7 @@ void			print_sorted_stack(linked_number *stack)
 {
 	while(stack != NULL)
 	{
-		printf("%i ", *(int*)(stack->content));	// Use only for tests, ne marche pas avec mon ft_printf
+		printf("%li ", *(long int*)(stack->content));	// Use only for tests, ne marche pas avec mon ft_printf
 		fflush(stdout);
 		stack = stack->next;
 	}

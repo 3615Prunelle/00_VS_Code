@@ -29,9 +29,9 @@ int		lowest_number_stack_index(linked_number *stack)
 
 	while (stack != NULL)
 	{
-		if(*(int*)(stack->content) < lowest_number)
+		if(*(long int*)(stack->content) < lowest_number)
 		{
-			lowest_number = *(int*)(stack->content);
+			lowest_number = *(long int*)(stack->content);
 			lowest_number_index = i;
 		}
 		i++;
@@ -48,9 +48,9 @@ int		highest_number_stack_index(linked_number *stack)
 
 	while (stack != NULL)
 	{
-		if(*(int*)(stack->content) > highest_number)
+		if(*(long int*)(stack->content) > highest_number)
 		{
-			highest_number = *(int*)(stack->content);
+			highest_number = *(long int*)(stack->content);
 			highest_number_index = i;
 		}
 		i++;
@@ -67,7 +67,7 @@ int		*list_to_array(int *new_array, linked_number *stack)
 
 	while(i < array_size)
 	{
-		new_array[i] = *((int *)(stack->content));
+		new_array[i] = *((long int*)(stack->content));
 		stack = stack->next;
 		i++;
 	}
@@ -114,11 +114,12 @@ void	algorithm_selection(long int *numbers_array, int array_size)
 	}
 	if(array_size > 5)
 	{
-		sort_above_five(a_and_b, ops_counter);
+		sort_above_five_new(a_and_b, ops_counter);
+//		sort_above_five(a_and_b, ops_counter);
 	}
 
 	print_sorted_stack(a_and_b->stack_a);
-	ft_printf("Operations counter : %i\n", *ops_counter);
+	printf("Operations counter : %li\n", *ops_counter);
 
 	// Ici, stack b == NULL, et on ne l'a pas malloc'é
 	clean_exit("NULL", a_and_b, false);		// Can only go here because a_and_b doesn't exist in main
@@ -134,10 +135,42 @@ char	*view_stack(linked_number *stack)
 	char *conv_nombre;
 	while(stack != NULL)
 	{
-		conv_nombre = ft_itoa(*(int*)(stack->content));
+		conv_nombre = ltoa(*(long int*)(stack->content));
 		string_finale = ft_strjoin(string_finale, conv_nombre);
 		string_finale = ft_strjoin(string_finale, espace);
 		stack = stack->next;
 	}
 	return(string_finale);
+}
+
+char	*ltoa(long int li)
+{ // But final et unique : être utilisée dans fonction de check view_stack avec extreme negs inputs
+	char *conversion;
+	long int li_copy = li;
+	int i = 0;
+	int length = 1;
+
+	if(li_copy < 0)
+	{
+		li_copy *= -1;
+		length++;
+	}
+	while (li_copy/10)
+	{
+		li_copy /= 10;
+		length++;
+	}
+	conversion = malloc(sizeof(char) * length+1);
+	if(li < 0)
+	{
+		li *= -1;
+		conversion[0] = '-';
+	}
+	while(li > 0)
+	{
+		conversion[length-1] = li % 10 + '0';
+		length--;
+		li /= 10;
+	}
+	return(conversion);
 }
