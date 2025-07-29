@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-bool		is_numerical_only(char *s)
+bool	is_numerical_only(char *s)
 {
 	int i = 0;
 
@@ -20,7 +20,7 @@ bool		is_numerical_only(char *s)
 	return(true);
 }
 
-int			count_numbers(char *s)
+int		count_numbers(char *s)
 {
 	int	count;
 	count = 0;
@@ -45,14 +45,14 @@ int			count_numbers(char *s)
 }
 
 // ---- ⬇️ NB : Take the array as a param instead of declaring & malloc'ing it in the function (avoids mem leaks)
-int			*string_to_int_array(char *s, long int *numbers_array)
+int		*string_to_int_array(char *s, int *numbers_array)
 {
 	char	**strings_array;
- 	strings_array = ft_split(s, ' ');	// Met un \0 à la dernière array
+ 	strings_array = ft_split(s, ' ');
 
 	int i = 0;
 
-	while (strings_array[i] != NULL)
+	while (strings_array[i] != NULL)	// Car ft_split a mis un \0 à la dernière array
 	{
 		numbers_array[i] = ft_atol(strings_array[i]);
 		i++;
@@ -68,11 +68,11 @@ int			*string_to_int_array(char *s, long int *numbers_array)
 	return(numbers_array);
 }
 
-long int	ft_atol(char *s)
+int		ft_atol(char *s)
 {
-	long int	i;
-	long int	tot;
-	long int	sign;
+	int	i;
+	int	tot;
+	int	sign;
 
 	i = 0;
 	tot = 0;
@@ -93,7 +93,7 @@ long int	ft_atol(char *s)
 	return (tot * sign);
 }
 
-bool		is_sorted(long int *numbers_array, int array_size)
+bool	is_sorted(int *numbers_array, int array_size)
 {
 	int	highest_number;
 	highest_number = INT_MIN;

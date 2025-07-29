@@ -15,10 +15,11 @@
 
 # define	STACK_A			a_and_b->stack_a
 # define	STACK_B			a_and_b->stack_b
-# define	STACK_A_CONTENT	*((long int*)(a_and_b->stack_a->content))
+# define	STACK_A_CONTENT	*((int*)(a_and_b->stack_a->content))
 # define	STACK_B_CONTENT	a_and_b->stack_b->content
 # define	STACK_A_NEXT	a_and_b->stack_a->next
 # define	STACK_B_NEXT	a_and_b->stack_b->next
+# define	STACK_A_INDEX	a_and_b->stack_a->index
 
 # define	SWAP_A		swap_a(a_and_b, ops_counter)
 # define	SWAP_B 		swap_b(a_and_b, ops_counter)
@@ -47,45 +48,57 @@
 #include <ft_printf.h>
 
 // ⚪ Structs
-typedef struct s_list	linked_number;			// Alias for struct s_list to make the code more understandable
+//typedef struct s_list	linked_node;			// Alias for struct s_list to make the code more understandable
+typedef struct	linked_node
+{
+	void					*content;
+	int						index;
+	struct linked_node	*next;
+}linked_node;
 
 typedef struct	two_stacks
 {
-	linked_number	*stack_a;
-	linked_number	*stack_b;
+	linked_node	*stack_a;
+	linked_node	*stack_b;
 }				two_stacks;
 
 // ⚪ Input Management & Check - Functions signatures
+int				*two_argv(char *string_input, int *numbers_array, int *array_size);
+int				*above_two_argv(char **strings_input, int argc, int *numbers_array, int *array_size);
+void			check_array(int *numbers_array, int array_size);
 bool			is_numerical_only(char *s);
 int				count_numbers(char *s);
-int				*string_to_int_array(char *s, long int *numbers_array);
-long int		ft_atol(char *s);
-char			*ltoa(long int li);
-bool			is_number_repeat(long int *numbers_array, int array_size);
-bool			is_sorted(long int *numbers_array, int array_size);
-int				ex_smallest_number(long int *numbers_array, two_stacks *a_and_b);
-int				lowest_number_stack_index(linked_number *stack);
-int				highest_number_stack_index(linked_number *stack);
+int				*string_to_int_array(char *s, int *numbers_array);
+int				ft_atol(char *s);
+bool			is_number_repeat(int *numbers_array, int array_size);
+bool			is_sorted(int *numbers_array, int array_size);
+int				ex_smallest_number(int *numbers_array, two_stacks *a_and_b);
+int				lowest_number_stack_index(linked_node *stack);
+int				highest_number_stack_index(linked_node *stack);
 
 // ⚪ Test functions
-void			verif(char *fonction, two_stacks *a_and_b);
-void			ex_print_sorted_stack(two_stacks *a_and_b);
-void			print_sorted_stack(linked_number *stack);
-char			*view_stack(linked_number *stack);
+void			print_sorted_stack(linked_node *stack);
+char			*view_stack(linked_node *stack);
 
 // ⚪ Helpers
-linked_number	*create_list(linked_number *stack, long int *numbers_array, int array_size);
-void			algorithm_selection(long int *numbers_array, int array_size);
-int				*list_to_array(int *new_array, linked_number *stack);
-two_stacks		*add_int_max(two_stacks *a_and_b);
-two_stacks		*substract_int_max(two_stacks *a_and_b);
+linked_node		*create_list(linked_node *stack, int *numbers_array, int array_size);
+void			struct_config(int *numbers_array, int array_size);
+two_stacks 		*algorithm_selection(two_stacks *a_and_b, int *array_size, int *ops_counter, int *numbers_array);
+int				*list_to_array(int *new_array, linked_node *stack);
+linked_node		*add_index(int *numbers_array, int array_size, linked_node *stack);
+
+// ⚪ Lst functions
+linked_node		*new_node(void *content);
+linked_node		*find_last_node(linked_node *lst);
+void			add_node_up(linked_node **lst, linked_node *new);
+void			add_node_down(linked_node **lst, linked_node *new);
+int				count_nodes(linked_node *lst);
 
 // ⚪ Algorithms
 void			sort_three(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter);
 void			sort_four(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter);
 void			sort_five(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter);
 void			sort_above_five(two_stacks *a_and_b, int *ops_counter);
-void			sort_above_five_new(two_stacks *a_and_b, int *ops_counter);
 
 // ⚪ Operations
 two_stacks		*swap_a(two_stacks *a_and_b, int *ops_counter);
@@ -101,6 +114,6 @@ two_stacks		*reverse_rotate_b(two_stacks *a_and_b, int *ops_counter);
 two_stacks		*reverse_rotate_a_and_b(two_stacks *a_and_b, int *ops_counter);
 
 // ⚪ Clean up functions
-void			clean_early_exit(char *message, long int *numbers_array, bool exit_wanted);
+void			clean_early_exit(char *message, int *numbers_array, bool exit_wanted);
 void			clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted);
 #endif

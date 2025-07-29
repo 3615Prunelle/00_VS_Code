@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-bool			is_number_repeat(long int *numbers_array, int array_size)
+bool		is_number_repeat(int *numbers_array, int array_size)
 {
 	int i = 0;
 	int j;
@@ -25,28 +25,28 @@ bool			is_number_repeat(long int *numbers_array, int array_size)
 	return(false);
 }
 
-linked_number	*create_list(linked_number *stack, long int *numbers_array, int array_size)
+linked_node	*create_list(linked_node *stack, int *numbers_array, int array_size)
 {
-	stack = ft_lstnew(&numbers_array[0]);
-// ⬇️ NB pour print : content est un pointeur, mais on veut print un int, donc il faut le caster ET le déréférencer
-	// printf("Just created Head	Number	%li	Next	%p\n", *(long int*)(stack->content), stack->next);
+	stack = new_node(&numbers_array[0]);
+// ⬇️ NB pour printf : content est un pointeur, mais on veut print un int, donc il faut le caster ET le déréférencer
+	// printf("Just created Head	Number	%i	Next	%p\n", *(int*)(stack->content), stack->next);
 
-	linked_number *new;
+	linked_node *new;
 	int i = 1;
 
 	while (i < array_size)
 	{
-		new = ft_lstnew(&numbers_array[i]);		// On créée des nodes sans nom à la chaine + malloc du node (! pas du content)
-		ft_lstadd_back(&stack, new);
-		// printf("Just created Node %li	Number	%li	Next	%p\n", i, *(long int*)(new->content), new->next);
+		new = new_node(&numbers_array[i]);		// On créée des nodes sans nom à la chaine + malloc du node (! pas du content)
+		add_node_down(&stack, new);
+		// printf("Just created Node %i	Number	%i	Next	%p\n", i, *(int*)(new->content), new->next);
 		i++;
 	}
-	// printf("Head	Number	%li	Next	%p\n", *(long int*)(stack->content), stack->next);
+	// printf("Head	Number	%i	Next	%p\n", *(int*)(stack->content), stack->next);
 
 	return(stack);
 }
 
-void			clean_early_exit(char *message, long int *numbers_array, bool exit_wanted)
+void		clean_early_exit(char *message, int *numbers_array, bool exit_wanted)
 {
 	if(numbers_array)
 		free(numbers_array);
@@ -59,10 +59,10 @@ void			clean_early_exit(char *message, long int *numbers_array, bool exit_wanted
 }
 
 // ------------ ⬇️ NB : Don't use ft_lstclear because it frees node + content (and no content was allocated)
-void			clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted)
+void		clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted)
 {
-	linked_number	*loop_pointer;
-	linked_number	*backup_next;
+	linked_node	*loop_pointer;
+	linked_node	*backup_next;
 
 	if(a_and_b)
 	{
@@ -104,64 +104,11 @@ void			clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted)
 	}
 }
 
-void			verif(char *fonction, two_stacks *a_and_b)
-{
-	ft_printf("\n\t*** Pass in %s ***\n", fonction);
-	int i = 0;
-	linked_number *loop_ptr;	// Trick pour ne pas avoir à nommer les nodes (car après head, ils n'ont pas de nom)
-
-	if(a_and_b)					// Avoids issues when stack is empty
-	{
-		ft_printf("\n\tSTACK A\n");
-		loop_ptr = STACK_A;
-		while (loop_ptr != NULL)
-		{
-			printf("Node [%li]\t%li\t%p\tNext\t%p\n", i, *(long int*)(loop_ptr->content), loop_ptr, loop_ptr->next);
-			loop_ptr = loop_ptr->next;
-			i++;
-		}
-		if(STACK_B != NULL)		// Avoids issues when stack is empty
-			printf("Stack A pointer is currently number : %li\n", STACK_A_CONTENT);
-	}
-	if(a_and_b)
-	{
-		ft_printf("\n\tSTACK B\n");
-		i = 0;
-		loop_ptr = STACK_B;
-		while (loop_ptr != NULL)
-		{
-			printf("Node [%li]\t%li\t%p\tNext\t%p\n", i, *(long int*)(loop_ptr->content), loop_ptr, loop_ptr->next);
-			loop_ptr = loop_ptr->next;
-			i++;
-		}
-		if(STACK_B != NULL)
-			printf("Stack B pointer is currently number : %li\n", *(long int*)(STACK_B_CONTENT));
-	}
-}
-
-void			ex_print_sorted_stack(two_stacks *a_and_b)
-{
-	if(STACK_B)
-	{
-		ft_printf("Stack B is not empty\n");
-		return;
-	}
-	if(STACK_A)
-	{
-		while(STACK_A != NULL)
-		{
-			printf("%li ", STACK_A_CONTENT);
-			STACK_A = STACK_A_NEXT;
-		}
-	}
-	ft_printf("\n\n");
-}
-
-void			print_sorted_stack(linked_number *stack)
+void		print_sorted_stack(linked_node *stack)
 {
 	while(stack != NULL)
 	{
-		printf("%li ", *(long int*)(stack->content));	// Use only for tests, ne marche pas avec mon ft_printf
+		printf("%i ", *(int*)(stack->content));	// Use only for tests, ne marche pas avec mon ft_printf
 		fflush(stdout);
 		stack = stack->next;
 	}

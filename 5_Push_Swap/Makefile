@@ -16,6 +16,7 @@ SRCS = 	push_swap_main.c \
 		push_swap_input_management.c \
 		push_swap_check_and_exit.c \
 		push_swap_operations.c \
+		push_swap_lst_functions.c \
 		push_swap_algorithms.c \
 		push_swap_tools.c
 

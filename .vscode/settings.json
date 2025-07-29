@@ -4,7 +4,8 @@
 		"stdlib.h": "c",
 		"stdio.h": "c",
 		"bit": "c",
-		"push_swap.h": "c"
+		"push_swap.h": "c",
+		"libft.h": "c"
 	},
 		"files.exclude": {
 			"**/*.o": true	// Masquer tous les .o après chaque compilation
