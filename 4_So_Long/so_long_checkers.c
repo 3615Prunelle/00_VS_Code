@@ -1,9 +1,9 @@
 #include "so_long.h"
 
-bool	check_everything(game my_game)
+bool	check_everything(game *my_game)	// Je passe un pointeur pour libérer la mémoire dans fonctions appelées si erreurs (gain de place norminette)
 {
 // ------------------------------------------------------------------------------------------------------------ Check if walls all around ✅
-	if (!are_walls_approved(my_game))
+	if (!are_walls_approved(*my_game)) // changer param pour my game si tests ok
 	{
 		ft_printf(ERROR_MESSSAGE_04);
 		return (false);
@@ -15,16 +15,16 @@ bool	check_everything(game my_game)
 	}
 // --------------------------------------------------------------------------------------- Check si path valide pour Escape + Collectibles ✅
 	tile	player_position;
-	player_position = get_tile_position(my_game, PLAYER);
+	player_position = get_tile_position(*my_game, PLAYER);
 
 	int collectibles_amount;
-	collectibles_amount = get_collectibles_left(my_game);
+	collectibles_amount = get_collectibles_left(*my_game);
 
-	my_game.escape_position = get_tile_position(my_game, ESCAPE);
+	my_game->escape_position = get_tile_position(*my_game, ESCAPE);
 
 	game	my_game_copy;							// Segfault si je ne le fais pas - Pourquoi ? (Initialement créé pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
-	my_game_copy = duplicate_game(my_game);			// Free done below ✅
-	if (!is_path_valid(player_position, my_game.escape_position, my_game_copy, collectibles_amount))
+	my_game_copy = duplicate_game(*my_game);			// Free done below ✅
+	if (!is_path_valid(player_position, my_game->escape_position, my_game_copy, collectibles_amount))
 	{
 		free_game_content(ERROR_MESSSAGE_09, &my_game_copy, false); // ✅ Free
 		return(false);
@@ -56,7 +56,7 @@ bool	are_walls_approved(game my_game)
 	}
 	return (true);
 }
-// ---- ⬇️  Chercher si un element existe, et retourner sa position ✅
+
 tile	get_tile_position(game my_game, char element)
 {
 	int y = 0;
@@ -79,41 +79,45 @@ tile	get_tile_position(game my_game, char element)
 		}
 		y++;
 	}
-
 	return (element_position);
 }
 
 // ---- ⬇️  Check qu'il y a seulement : 1 joueur + 1 escape / AU MOINS 1 collec ✅
-bool	is_element(game my_game, char element)
+bool	is_element(game *my_game, char element)
 {
-	int y = 0;
-	int	x = 0;
-	int element_counter = 0;
-	while (y < my_game.max_lines)
+	int	x;
+	int y;
+	int element_counter;
+
+	y = 0;
+	element_counter = 0;
+	while (y < my_game->max_lines)
 	{
 		x = 0;
-		while (x < my_game.max_columns)
+		while (x < my_game->max_columns)
 		{
-			if (my_game.content[y][x] == element)
-			{
+			if (my_game->content[y][x] == element)
 				(element_counter)++;
-			}
 			x++;
 		}
 		y++;
 	}
 	if (element_counter == 0)
 	{
-		ft_printf(ERROR_MESSSAGE_07);
-		return(false);
+		clean_and_exit(my_game);
+		// return(ft_printf(ERROR_MESSSAGE_07), false);
+		// ft_printf(ERROR_MESSSAGE_07);
+		// return(false);
 	}
 	if ((element_counter > 1) && ((element == 'P') || (element == 'E')))
 	{
-		ft_printf(ERROR_MESSSAGE_08);
-		return(false);
+		return(ft_printf(ERROR_MESSSAGE_08), false);
+		// ft_printf(ERROR_MESSSAGE_08);
+		// return(false);
 	}
 	return (true);
 }
+
 
 int		get_collectibles_left(game my_game) // Supprimer bool param ?
 {

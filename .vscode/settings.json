@@ -5,7 +5,9 @@
 		"stdio.h": "c",
 		"bit": "c",
 		"push_swap.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"limits.h": "c",
+		"ft_printf.h": "c"
 	},
 		"files.exclude": {
 			"**/*.o": true	// Masquer tous les .o après chaque compilation
@@ -15,5 +17,6 @@
 	"editor.detectIndentation": false,
 	"editor.renderWhitespace": "all",
 	"files.trimTrailingWhitespace": true,
-	"files.insertFinalNewline": true
+	"files.insertFinalNewline": true,
+	"cmake.sourceDirectory": "/home/sophie/Documents/00_VS_Code/MLX42"
 }

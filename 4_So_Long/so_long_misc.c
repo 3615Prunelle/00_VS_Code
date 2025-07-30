@@ -4,8 +4,8 @@ tile	target_position(game my_game, int move)
 {
 	tile	target;
 	tile player;
-	player = get_tile_position(my_game, PLAYER);
 
+	player = get_tile_position(my_game, PLAYER);
 	if (move == RIGHT)						// only the target reference is updated, not the player one (yet)
 	{
 		target.line = player.line;
@@ -30,15 +30,14 @@ tile	target_position(game my_game, int move)
 }
 
 // ---- ⬇️ Vérifier chaque possibilité de mouvement + Create counter ✅
-void	player_move(game my_game, int move)
+void	move_player_logic(game my_game, int move)
 {
-	tile player;
-	player = get_tile_position(my_game, PLAYER);
-
-	tile	target;
-	target = target_position(my_game, move);
-
 	static int	step_counter;
+	tile player;
+	tile	target;
+
+	player = get_tile_position(my_game, PLAYER);
+	target = target_position(my_game, move);
 // ----------------------------------------------------------------- Faire réapparaitre la sortie s'il reste des collectibles ✅
 	if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line) && (get_collectibles_left(my_game) > 0))
 	{
@@ -61,6 +60,15 @@ void	player_move(game my_game, int move)
 	return;
 }
 
+void	move_player_graphic(game *my_game)
+{
+	tile updated_player_position;
+
+	updated_player_position = get_tile_position(*my_game, PLAYER);
+	my_game->player_image->instances[0].x = updated_player_position.column * TILE_SIZE;		// Déplacement de l'image en prenant en compte l'échelle du jeu
+	my_game->player_image->instances[0].y = updated_player_position.line * TILE_SIZE;		// 1 case (dans représentation non graphique) = 72 pixels (rep visuelle)
+}
+
 bool	is_move_allowed(game my_game, tile target)
 {
 	if (TARGET_POSITION == '0' || TARGET_POSITION == 'C' || TARGET_POSITION == 'E')
@@ -70,13 +78,34 @@ bool	is_move_allowed(game my_game, tile target)
 	return (false);
 }
 
-// Will be deleted before submit
-void	print_map(game my_game)
+void	delete_collectible_instance(game *my_game, int collectibles_amount)
 {
-	for(int p = 0; p < my_game.max_lines; p++)
-		ft_printf("%s", my_game.content[p]);
-}
+	// -------------------------------------------------------------------------- If on collectible : delete collectible instance ✅
+	size_t	index;
 
+	index = 0;
+	while (index < my_game->collectible_image->count)
+	{
+		if (my_game->player_image->instances[0].x == my_game->collectible_image->instances[index].x
+			&& my_game->player_image->instances[0].y == my_game->collectible_image->instances[index].y)
+		{
+			my_game->collectible_image->instances[index].enabled = false;
+		}
+		index++;
+	}
+	// --------------------------------------------------------------------------- If on escape + collectibles fetched : exit game ✅
+	if (collectibles_amount == 0)
+	{
+		if (my_game->player_image->instances[0].x == my_game->escape_image->instances[0].x
+			&& my_game->player_image->instances[0].y == my_game->escape_image->instances[0].y)
+		{
+			my_game->escape_image->instances[0].enabled = false;
+			mlx_close_window(my_game->window);
+		}
+		index++;
+	}
+}
+// Will be deleted before submit
 void	print_map_fun(game my_game)
 {
 	for(int p = 0; p < my_game.max_lines; p++)

@@ -23,7 +23,9 @@ void	free_game_content(char *message, game *any_game, bool need_exit)
 	}
 
 	if(any_game->content)
+	{
 		free(any_game->content);			// Libère le tableau de pointeurs
+	}
 
 	if(need_exit)
 	{
@@ -61,9 +63,8 @@ void	clean_and_exit(void *param)
 		mlx_terminate(my_game->window);												// Free game_window
 
 	free_game_content(OK_MESSSAGE_05, my_game, false);		// Pour supprimer le game.content
-	//free(my_game);						// Pour supprimer la struct mais Aborted si commented out
-	my_game = NULL;							// Nécessaire ?
 
 	ft_printf(OK_MESSSAGE_06);
-	exit(1);									// exit sort du programme / return sort de la fonction
+	ft_printf("\nWhat does Queen Strerror have to say ? : [%s]\n", strerror(errno));
+	exit(1);
 }
