@@ -8,6 +8,7 @@
 # VERY IMPORTANT : Vérifier l'ordre des flags/élements dans les commandes est très important et peut
 #	générer des grosses erreurs à la compilation même si juste 2 éléments sont inversés
 #	Par exemple, les objets doivent toujours précéder les -l pour que le linker voie ce qui doit être résolu.
+#		$() or ${} are used to refer to a varable
 
 # Name of the executable (program, library, etc) to be created, with or without extension
 NAME =
@@ -17,6 +18,8 @@ CC = cc
 
 # Flags de compilation
 #	-g			Pour pouvoir débugger facilement (points d'arrêt dans VSCode, etc)
+#					Si le -g flag est placé ailleurs, s'assurer qu'il soit placé après les CFLAGS pour
+#					bien s’appliquer à la compilation de .c → .o.
 #	-Wall		Active tous les avertissements de base
 #	-Wextra		Active des avertissements supplémentaires
 #	-Werror		Traite les avertissements comme des erreurs

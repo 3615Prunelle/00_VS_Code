@@ -44,7 +44,6 @@ int		count_numbers(char *s)
 	return(count);
 }
 
-// ---- ⬇️ NB : Take the array as a param instead of declaring & malloc'ing it in the function (avoids mem leaks)
 int		*string_to_int_array(char *s, int *numbers_array)
 {
 	char	**strings_array;

@@ -1,33 +1,27 @@
 Installe l’extension
-Dans VS Code, cherche :
-Clang-Format (éditeur : LLVM)
+Clang-Format
+done
 
-Installe clang-format sur ta machine (si pas déjà fait) :
-
-bash
-Copy
-Edit
+Instal clang-format via shell :
 sudo apt install clang-format
+done
+
 Ajoute un fichier .clang-format à la racine de ton projet, ou dans ton $HOME si tu veux une config globale.
+done
 
-Tu peux commencer avec une config simple :
+The .clang-format file uses YAML format
+Commencer avec une config simple :
 
-yaml
-Copy
-Edit
 BasedOnStyle: LLVM
 IndentWidth: 4
 UseTab: Never
 ColumnLimit: 80
-Active le formatage auto dans VS Code :
 
+Active le formatage auto dans VS Code :
 Ouvre les settings (F1 → Preferences: Open Settings (JSON))
 
 Ajoute :
 
-json
-Copy
-Edit
 "[c]": {
     "editor.defaultFormatter": "xaver.clang-format",
     "editor.formatOnSave": true

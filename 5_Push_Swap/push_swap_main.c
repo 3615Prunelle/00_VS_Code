@@ -3,11 +3,10 @@
 int	main(int argc, char **argv)
 {
 	int i;
-	int	*array_size;
+	int	array_size;
 	int *numbers_array;
 
 	i = 0;
-	array_size = NULL;
 	numbers_array = NULL;
 	if(argc < 2)
 		clean_early_exit(ERROR_MESSSAGE_01, numbers_array, true);
@@ -20,7 +19,7 @@ int	main(int argc, char **argv)
 	{
 		numbers_array = above_two_argv(argv, argc, numbers_array, &array_size);
 	}
-	check_array(numbers_array, array_size);
+	check_array(numbers_array, &array_size);
 	return(0);
 }
 
@@ -66,22 +65,22 @@ int		*above_two_argv(char **strings_input, int argc, int *numbers_array, int *ar
 	return(numbers_array);
 }
 
-void	check_array(int *numbers_array, int array_size)
+void	check_array(int *numbers_array, int *array_size)
 {
 	int i;
 
 	i = 0;
-	while (i < array_size)
+	while (i < *array_size)
 	{
 		if (((numbers_array[i]) < INT_MIN) || ((numbers_array[i]) > INT_MAX))
 			clean_early_exit(ERROR_MESSSAGE_03, numbers_array, true);
 		i++;
 	}
 
-	if(is_number_repeat(numbers_array, array_size))
+	if(is_number_repeat(numbers_array, *array_size))
 		clean_early_exit(ERROR_MESSSAGE_04, numbers_array, true);
 
-	if(is_sorted(numbers_array, array_size))
+	if(is_sorted(numbers_array, *array_size))
 		clean_early_exit(ERROR_MESSSAGE_05, numbers_array, true);
 
 	struct_config(numbers_array, array_size);

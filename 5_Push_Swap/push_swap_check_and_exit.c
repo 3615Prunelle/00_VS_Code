@@ -25,24 +25,19 @@ bool		is_number_repeat(int *numbers_array, int array_size)
 	return(false);
 }
 
-linked_node	*create_list(linked_node *stack, int *numbers_array, int array_size)
+linked_node	*create_stack(linked_node *stack, int *numbers_array, int *array_size)
 {
 	stack = new_node(&numbers_array[0]);
-// ⬇️ NB pour printf : content est un pointeur, mais on veut print un int, donc il faut le caster ET le déréférencer
-	// printf("Just created Head	Number	%i	Next	%p\n", *(int*)(stack->content), stack->next);
 
 	linked_node *new;
 	int i = 1;
 
-	while (i < array_size)
+	while (i < *array_size)
 	{
 		new = new_node(&numbers_array[i]);		// On créée des nodes sans nom à la chaine + malloc du node (! pas du content)
 		add_node_down(&stack, new);
-		// printf("Just created Node %i	Number	%i	Next	%p\n", i, *(int*)(new->content), new->next);
 		i++;
 	}
-	// printf("Head	Number	%i	Next	%p\n", *(int*)(stack->content), stack->next);
-
 	return(stack);
 }
 
@@ -66,8 +61,7 @@ void		clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted)
 
 	if(a_and_b)
 	{
-		if(STACK_A)
-		// if(a_and_b)
+		if(STACK_A)		// No need for stack b, car il n'a (à priori) jamais été malloc'é
 		{
 			loop_pointer = STACK_A;
 			while(loop_pointer != NULL)
@@ -77,25 +71,9 @@ void		clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted)
 				loop_pointer = backup_next;
 			}
 			STACK_A = NULL;
+			free(a_and_b);
+			a_and_b = NULL;
 		}
-		// if(STACK_B)			// No need, car stack b n'a (à priori) jamais été malloc'ée
-		// // if(a_and_b)
-		// {
-		// 	loop_pointer = STACK_B;
-		// 	while(loop_pointer != NULL)
-		// 	{
-		// 		backup_next = loop_pointer->next;
-		// 		free(loop_pointer);
-		// 		loop_pointer = backup_next;
-		// 	}
-		// 	STACK_B = NULL;
-		// }
-	}
-
-	if(a_and_b)
-	{
-		free(a_and_b);
-		a_and_b = NULL;
 	}
 	if(exit_wanted)
 	{
@@ -114,4 +92,3 @@ void		print_sorted_stack(linked_node *stack)
 	}
 	ft_printf("\n\n");
 }
-
