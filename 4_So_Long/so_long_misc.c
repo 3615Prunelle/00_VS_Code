@@ -38,6 +38,10 @@ void	move_player_logic(game my_game, int move)
 
 	player = get_tile_position(my_game, PLAYER);
 	target = target_position(my_game, move);
+
+	my_game.player_image->instances->z = 44; // Change depth so player is above exit
+	my_game.escape_image->instances->z = 36;
+
 // ----------------------------------------------------------------- Faire réapparaitre la sortie s'il reste des collectibles ✅
 	if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line) && (get_collectibles_left(my_game) > 0))
 	{
@@ -62,11 +66,17 @@ void	move_player_logic(game my_game, int move)
 
 void	move_player_graphic(game *my_game)
 {
-	tile updated_player_position;
-
-	updated_player_position = get_tile_position(*my_game, PLAYER);
-	my_game->player_image->instances[0].x = updated_player_position.column * TILE_SIZE;		// Déplacement de l'image en prenant en compte l'échelle du jeu
-	my_game->player_image->instances[0].y = updated_player_position.line * TILE_SIZE;		// 1 case (dans représentation non graphique) = 72 pixels (rep visuelle)
+	// Sera -1 si player est sur la sortie et qu'il veut bouger dans un mur
+	tile updated_player_position = get_tile_position(*my_game, PLAYER);
+	if (updated_player_position.column != -1)
+	{
+		my_game->player_image->instances[0].x = updated_player_position.column * TILE_SIZE;		// Déplacement de l'image en prenant en compte l'échelle du jeu
+		my_game->player_image->instances[0].y = updated_player_position.line * TILE_SIZE;		// 1 case (dans représentation non graphique) = 72 pixels (rep visuelle)
+	}
+	else // update position player = -1 après avoir tenté exit, on a une segfault
+	{
+		my_game->content[my_game->escape_position.line][my_game->escape_position.column] = PLAYER;
+	}
 }
 
 bool	is_move_allowed(game my_game, tile target)
