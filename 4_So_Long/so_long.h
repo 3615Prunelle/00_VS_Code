@@ -122,7 +122,7 @@ bool		is_move_allowed(game my_game, tile target);
 void		move_player_logic(game my_game, int move);
 void		move_player_graphic(game *my_game);
 int			get_collectibles_left(game my_game);
-void		delete_collectible_instance(game *my_game, int collectibles_amount);
+void		delete_collectible_instance(game *my_game);
 
 
 // ⚪ MLX Helpers
@@ -130,6 +130,7 @@ game		build_map(int fd, char *path);
 mlx_image_t	*path_to_image(game *my_game, mlx_t *game_window, char *path);
 void		display_image(game *my_game, mlx_image_t *image, int colonne, int ligne);
 void		display_map(game *my_game);
+void		add_above_ground(game *my_game);
 void		key_actions(mlx_key_data_t keydata, void *param);
 void		bonus_counter(game my_game, int step_counter);
 

@@ -6,9 +6,10 @@ void		display_map(game *my_game)
 	my_game->ground_image = path_to_image(my_game, my_game->window, PATH_GROUND);
 
 	int column;
-	int line = 0;
+	int line;
 
-	while (line < my_game->max_lines)
+	line = 0;
+	while (line < my_game->max_lines) // display only ground
 	{
 		column = 0;
 		while (column < my_game->max_columns)
@@ -18,12 +19,16 @@ void		display_map(game *my_game)
 		}
 		line++;
 	}
-
 	my_game->wall_image = path_to_image(my_game, my_game->window, PATH_WALL);
-
 	my_game->collectible_image = path_to_image(my_game, my_game->window, PATH_COLLECTIBLE);
-
 	my_game->escape_image = path_to_image(my_game, my_game->window, PATH_ESCAPE);
+	add_above_ground(my_game);	// display rest
+}
+
+void		add_above_ground(game *my_game)
+{
+	int	line;
+	int column;
 
 	line = 0;
 	while (line < my_game->max_lines)
@@ -73,6 +78,7 @@ mlx_image_t	*path_to_image(game *my_game, mlx_t *game_window, char *path)
 	mlx_delete_texture(texture);	// ✅ Free dernière texture créée
 	return(image);
 }
+
 // Je passe l'adresse de my_game dans la fonction appelante car je dois respecter le "void param" que mlx_key_hook me demande
 void		key_actions(mlx_key_data_t keydata, void *param)
 {
@@ -80,10 +86,6 @@ void		key_actions(mlx_key_data_t keydata, void *param)
 	my_game = param;
 
 	int		move;
-	move = 0;
-
-	int		collectibles_amount;									// A chaque touche pressée, on check le nombre de collectibles restant
-	collectibles_amount = get_collectibles_left(*my_game);
 	if (!my_game || !my_game->player_image || my_game->player_image->count < 1)
 		return;		// Exit here = Valgrind OK ✅🆓
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)	// Exit on ESC key
@@ -104,9 +106,8 @@ void		key_actions(mlx_key_data_t keydata, void *param)
 		return;
 	move_player_logic(*my_game, move);	// Déplacement du joueur dans le fonctionnement interne du jeu
 	move_player_graphic(my_game);
-	delete_collectible_instance(my_game, collectibles_amount);
+	delete_collectible_instance(my_game);	// A chaque touche pressée, on check le nombre de collectibles restants
 }
-
 
 void		bonus_counter(game my_game, int step_counter)
 {

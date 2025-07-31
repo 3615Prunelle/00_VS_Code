@@ -43,10 +43,10 @@ void	move_player_logic(game my_game, int move)
 	my_game.escape_image->instances->z = 36;
 
 // ----------------------------------------------------------------- Faire réapparaitre la sortie s'il reste des collectibles ✅
-	if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line) && (get_collectibles_left(my_game) > 0))
-	{
-		ESCAPE_POSITION = 'E';	// ✅ Keeping the escape position somewhere or it will be deleted (forever) after pass in is_move_allowed
-	}
+	// if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line) && (get_collectibles_left(my_game) > 0))
+	// {
+	// 	ESCAPE_POSITION = 'E';	// ✅ Keeping the escape position somewhere or it will be deleted (forever) after pass in is_move_allowed
+	// }
 	if (is_move_allowed(my_game, target))
 	{
 		TARGET_POSITION = 'P';
@@ -61,6 +61,7 @@ void	move_player_logic(game my_game, int move)
 		bonus_counter(my_game, step_counter);
 		return;
 	}
+	print_map_fun(my_game);
 	return;
 }
 
@@ -88,13 +89,14 @@ bool	is_move_allowed(game my_game, tile target)
 	return (false);
 }
 
-void	delete_collectible_instance(game *my_game, int collectibles_amount)
+void	delete_collectible_instance(game *my_game)
 {
-	// -------------------------------------------------------------------------- If on collectible : delete collectible instance ✅
 	size_t	index;
+	int collectibles_amount;
 
 	index = 0;
-	while (index < my_game->collectible_image->count)
+	collectibles_amount = get_collectibles_left(*my_game);
+	while (index < my_game->collectible_image->count)	// If on collectible : delete collectible instance ✅
 	{
 		if (my_game->player_image->instances[0].x == my_game->collectible_image->instances[index].x
 			&& my_game->player_image->instances[0].y == my_game->collectible_image->instances[index].y)
@@ -103,8 +105,7 @@ void	delete_collectible_instance(game *my_game, int collectibles_amount)
 		}
 		index++;
 	}
-	// --------------------------------------------------------------------------- If on escape + collectibles fetched : exit game ✅
-	if (collectibles_amount == 0)
+	if (collectibles_amount == 0)						// If on escape + collectibles fetched : exit game ✅
 	{
 		if (my_game->player_image->instances[0].x == my_game->escape_image->instances[0].x
 			&& my_game->player_image->instances[0].y == my_game->escape_image->instances[0].y)
@@ -115,6 +116,7 @@ void	delete_collectible_instance(game *my_game, int collectibles_amount)
 		index++;
 	}
 }
+
 // Will be deleted before submit
 void	print_map_fun(game my_game)
 {
