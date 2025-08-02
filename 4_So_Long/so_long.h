@@ -10,11 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// ⚪ Name of new library defined here (so we can use #include "current_project.h" header)
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-// ⚪ #define
+// ⚪ #define - Yeah that's a lot, don't judge me.
 # define PATH_GROUND "./4_So_Long/ic_Square_Purple.png" // ‼️‼️‼️ Ne marche que via mon VSCode - Trouver une autre solution
 # define PATH_WALL "./4_So_Long/ic_Square_Black.png"	// En attendant, run Valgrind depuis 00_VSCode et mettre chemin d'accès :
 # define PATH_PLAYER "./4_So_Long/ic_Player_Diplo.png"	// valgrind ./4_So_Long/so_long /home/sophie/Documents/00_VS_Code/4_So_Long/mapSI.ber
@@ -24,7 +23,7 @@
 # define LEFT	4
 # define UP		8
 # define DOWN	2
-# define TILE_CHAR(MAP, ELEMENT)		(MAP)[(ELEMENT).line][(ELEMENT).column] // Donne le char présent sur une tile (ou le modifie)
+# define TILE_CHAR(MAP, ELEMENT)	(MAP)[(ELEMENT).line][(ELEMENT).column] // Donne le char présent sur une tile (ou le modifie)
 # define PLAYER_POSITION			my_game.content[player.line][player.column]
 # define TARGET_POSITION			my_game.content[target.line][target.column]
 # define ESCAPE_POSITION			my_game.content[my_game.escape_position.line][my_game.escape_position.column]
@@ -42,28 +41,25 @@
 
 # define GAME_NAME	"Space Invader Diplo Corn Quest"
 
-# define OK_MESSSAGE_01	"Non graphical check up done\n"
-# define OK_MESSSAGE_02	"Graphical check up done. You're good to play - Have fun !\n"
-# define OK_MESSSAGE_03	"Exit through escape key\n"
-# define OK_MESSSAGE_04	"Game content is free\n"
-# define OK_MESSSAGE_05	"About to pass in free_game_content before final exit\n"
-# define OK_MESSSAGE_06	"Full clean done, about to exit\n"
+# define OK_MESSSAGE_01	"Check up 1/2 done - Logic part is about to be free\n"
+# define OK_MESSSAGE_02	"Check up 2/2 done - You're good to play - Have fun !\n"
+# define OK_MESSSAGE_03	"Did you just dare press the escape key? Coward.\n"
+# define OK_MESSSAGE_05	"\nAnd ... Time to say goodbye !\n"
 
-# define ERROR_MESSSAGE_01	"Error\nMap missing OLALA NICHT GUT\n"
-# define ERROR_MESSSAGE_02	"Error\nMap file extension must be .ber\n"
-# define ERROR_MESSSAGE_03	"Error\nMap empty or not displayable\n"
-# define ERROR_MESSSAGE_04	"Error\nYour funky map isn't valid, make sure there are walls all around !\n"
-# define ERROR_MESSSAGE_05	"Error\nYour funky map isn't valid, please make it rectangular !\n"
-# define ERROR_MESSSAGE_06	"Error\nMap too small, no space to play :(\n"
-# define ERROR_MESSSAGE_07	"Error\nSomething is missing - Pick & Choose : Player / Collectible / Exit\n"
-# define ERROR_MESSSAGE_08	"Error\nToo many ... - Pick & Choose : Players / Escapes\n"
-# define ERROR_MESSSAGE_09	"Error\nLooks like some elements can't be reached - Check the walls position !\n"
-# define ERROR_MESSSAGE_10	"Error in the window allocation\n"
-# define ERROR_MESSSAGE_11	"Error in an image display\n"
+# define ERROR_MESSSAGE_01	"No map, no play !"
+# define ERROR_MESSSAGE_02	"Map file extension must be .ber"
+# define ERROR_MESSSAGE_03	"Error : [Map empty or not displayable]\n"
+# define ERROR_MESSSAGE_04	"Error : [Your funky map isn't valid, make sure there are walls all around !]\n"
+# define ERROR_MESSSAGE_05	"Error : [Your artistic map isn't valid, please make it rectangular !]\n"
+# define ERROR_MESSSAGE_06	"Error : [Map too small, no space to play :( ]\n"
+# define ERROR_MESSSAGE_07	"Error : [Something is missing - Pick & Choose : Player / Collectible / Exit]\n"
+# define ERROR_MESSSAGE_08	"Error : [Too many ... - Pick & Choose : Players / Escapes]\n"
+# define ERROR_MESSSAGE_09	"Error : [Looks like some elements can't be reached - Check the walls position !]\n"
+# define ERROR_MESSSAGE_10	"Error : [Something went wrong with an image display]\n"
 
 # define TILE_SIZE 72
 
-// ⚪ #include (don't forget to put #include "current_project.h" in each file)
+// ⚪ #include
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -73,8 +69,6 @@
 
 # include <MLX42/MLX42.h>
 
-// ⚪ Include from other projects (put relative path to avoid issues from home computer or as #include<> if compiled)
-// ‼️ ‼️ ‼️ Mettre les.h ici + ‼️ Compiler et ajouter la ligne "-l[libname without the lib]" au dessus de "-lgetnextline" dans tasks.json
 #include <libft.h>
 #include <ft_printf.h>
 #include <get_next_line.h>
@@ -146,7 +140,7 @@ void		bonus_counter(game my_game, int step_counter);
 
 // ⚪ Clean up functions - So sort / merge / check / set up / delete
 void		simple_print_exit(char *s);
-void		free_game_content(char *message, game *any_game, bool need_exit);		// pour free le game.content sans la partie graphique (si check_everything renvoie false)
+void		free_logic_part(char *message, game *any_game);		// pour free le game.content sans la partie graphique (si check_everything renvoie false)
 void		free_gnl_return_and_exit(char *error_message, char **line, int *fd);
 void		clean_and_exit(void *param);					// free everything et exit(1)
 

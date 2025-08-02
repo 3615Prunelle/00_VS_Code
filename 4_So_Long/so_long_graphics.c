@@ -72,7 +72,7 @@ void		display_image(game *my_game, mlx_image_t *image, int colonne, int ligne)
 {
 	if (mlx_image_to_window(my_game->window, image, colonne*TILE_SIZE, ligne*TILE_SIZE) == -1)	// Affiche une instance de l'image. Peut être utilisé à chaque fois qu'on veut display l'image à un endroit différent
 	{
-		ft_printf(ERROR_MESSSAGE_11);
+		ft_printf(ERROR_MESSSAGE_10);
 		clean_and_exit(my_game);	// Exit here = Valgrind OK ✅🆓
 	}
 }
@@ -104,11 +104,11 @@ void		key_actions(mlx_key_data_t keydata, void *param)
 	my_game = param;
 
 	int		move;
+	move = 0;			// Don't remove otherwise Valgrind complains about uninitialized value
 	if (!my_game || !my_game->player_image || my_game->player_image->count < 1)
 		return;		// Exit here = Valgrind OK ✅🆓
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)	// Exit on ESC key
 	{
-		mlx_close_window(my_game->window);		// can be removed if tester not happy, Valgrind check ok for both options
 		ft_printf(OK_MESSSAGE_03);
 		clean_and_exit(my_game);	// Exit here = Valgrind OK ✅🆓
 	}
@@ -120,7 +120,7 @@ void		key_actions(mlx_key_data_t keydata, void *param)
 		move = UP;
 	if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
 		move = DOWN;
-	if (!move)
+	if (!move)			// Don't remove otherwise Valgrind complains about uninitialized value
 		return;
 	move_player_logic(*my_game, move);	// Déplacement du joueur dans le fonctionnement interne du jeu
 	move_player_graphic(my_game);

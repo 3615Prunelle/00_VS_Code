@@ -32,10 +32,8 @@ int		main(int argc, char **argv)
 		game	my_game;
 		my_game = build_map(fd, path);					// Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide) + upload image player
 
-		if (!(check_everything(&my_game)))				// Attention, on passe my_game donc une copie sera faite = aucune info ne reste
-		{
-			clean_and_exit(&my_game);					// free_game_content ne va pas car MLX a malloc l'image du player dans build_map
-		}
+		if (!(check_everything(&my_game)))
+			clean_and_exit(&my_game);					// free_logic_part ne va pas car MLX a malloc l'image du player dans build_map
 
 		display_map(&my_game);							// Set up de l'affichage de la carte (real display dans mlx_loop)
 
@@ -64,8 +62,7 @@ int		check_input_get_fd(char *path)
 	{
 		free(extension);
 		free(compare);
-		ft_printf (ERROR_MESSSAGE_02);	// Ou utiliser strerror & perror ?
-		exit (1);													// Exit here = Valgrind OK ✅🆓
+		simple_print_exit(ERROR_MESSSAGE_02);		// Exit here = Valgrind OK ✅🆓
 	}
 	free(extension);
 	free(compare);
@@ -75,14 +72,13 @@ int		check_input_get_fd(char *path)
 
 	if((!fd) || (fd < 0))
 	{
-		ft_printf (ERROR_MESSSAGE_01);
-		exit (1);													// Exit here = Valgrind OK ✅🆓
+		simple_print_exit(ERROR_MESSSAGE_01);		// Exit here = Valgrind OK ✅🆓
 	}
 	return(fd);
 }
 void	set_structs_pointers_to_null(game *my_game)
 {
-	my_game->ground_image = NULL;		// Pour éviter valeurs poubelle et segfaults quand passage dans free_game_content
+	my_game->ground_image = NULL;		// Pour éviter valeurs poubelle et segfaults quand passage dans free_logic_part
 	my_game->wall_image = NULL;
 	my_game->player_image = NULL;
 	my_game->collectible_image = NULL;
@@ -117,13 +113,6 @@ void	get_map_size(int fd, game *my_game)
 	my_game->max_lines = line_counter;
 	my_game->max_columns = length_line;
 	close(fd);										// Sinon ne lira pas suite
-}
-
-void		simple_print_exit(char *s)
-{
-	// if things get too spicy, add a call to the other clean up functions ?
-	ft_printf("Error : [%s]\n", s);
-	exit(1);
 }
 
 game	build_map(int fd, char *path)

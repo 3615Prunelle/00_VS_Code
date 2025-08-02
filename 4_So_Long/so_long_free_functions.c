@@ -1,5 +1,11 @@
 #include "so_long.h"
 
+void		simple_print_exit(char *s)
+{
+	ft_printf("Error : [%s]\n", s);
+	exit(1);
+}
+
 void	free_gnl_return_and_exit(char *error_message, char **line, int *fd)
 {
 	ft_printf("%s\n", error_message);
@@ -12,9 +18,9 @@ void	free_gnl_return_and_exit(char *error_message, char **line, int *fd)
 	exit(1);				// exit sort du programme / return sort de la fonction
 }
 // ---- ⬇️ Free toutes les lignes de content (avant fonctions MLX42 ou après leur clean up)
-void	free_game_content(char *message, game *any_game, bool need_exit)
+void	free_logic_part(char *message, game *any_game)
 {
-	ft_printf("%s\n", message);
+	ft_printf("%s", message);
 
 	while (any_game->max_lines > 0)
 	{
@@ -26,25 +32,16 @@ void	free_game_content(char *message, game *any_game, bool need_exit)
 	{
 		free(any_game->content);			// Libère le tableau de pointeurs
 	}
-
-	if(need_exit)
-	{
-		exit(1);		// Because this function is also called when no error occurs
-	}
-	ft_printf(OK_MESSSAGE_04);
 }
 
 // ---- ⬇️ Free everything MLX42 related when exit game ‼
 void	clean_and_exit(void *param)
 {
 	game *my_game;
-	my_game = param;
 
+	my_game = param;
 	if (!my_game)
 		return;
-// ‼️ If anything else is allocated : Add it here
-// ‼️ If anything was allocated by me (rather than MLX) : Use free (rather than a MLX delete function)
-
 	if(my_game->ground_image)
 		mlx_delete_image(my_game->window, my_game->ground_image);
 	if(my_game->wall_image)
@@ -61,10 +58,7 @@ void	clean_and_exit(void *param)
 		mlx_delete_image(my_game->window, my_game->bonus_string2);
 	if(my_game->window)
 		mlx_terminate(my_game->window);												// Free game_window
-
-	free_game_content(OK_MESSSAGE_05, my_game, false);		// Pour supprimer le game.content
-
-	ft_printf(OK_MESSSAGE_06);
-	ft_printf("\nWhat does Queen Strerror have to say ? : [%s]\n", strerror(errno));
+	free_logic_part(OK_MESSSAGE_05, my_game);		// Pour supprimer le game.content
+	ft_printf("... Unless Queen Strerror has something to say ? : [%s]\n\n", strerror(errno));
 	exit(1);
 }

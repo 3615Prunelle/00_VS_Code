@@ -33,8 +33,8 @@ tile	target_position(game my_game, int move)
 void	move_player_logic(game my_game, int move)
 {
 	static int	step_counter;
-	tile player;
-	tile	target;
+	tile		player;
+	tile		target;
 
 	player = get_tile_position(my_game, PLAYER);
 	target = target_position(my_game, move);

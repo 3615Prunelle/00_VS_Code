@@ -22,14 +22,14 @@ bool	check_everything(game *my_game)	// Je passe un pointeur pour libérer la m�
 
 	my_game->escape_position = get_tile_position(*my_game, ESCAPE);
 
-	game	my_game_copy;							// Segfault si je ne le fais pas - Pourquoi ? (Initialement créé pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
-	my_game_copy = duplicate_game(*my_game);			// Free done below ✅
+	game	my_game_copy;						// Segfault si je ne le fais pas - Pourquoi ? (Initialement créé pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
+	my_game_copy = duplicate_game(*my_game);	// Free done below ✅
 	if (!is_path_valid(player_position, my_game->escape_position, my_game_copy, collectibles_amount))
 	{
-		free_game_content(ERROR_MESSSAGE_09, &my_game_copy, false); // ✅ Free
+		free_logic_part(ERROR_MESSSAGE_09, &my_game_copy); // ✅ Free
 		return(false);
 	}
-	free_game_content(OK_MESSSAGE_01, &my_game_copy, false);
+	free_logic_part(OK_MESSSAGE_01, &my_game_copy);
 	return (true);
 }
 
@@ -103,18 +103,9 @@ bool	is_element(game *my_game, char element)
 		y++;
 	}
 	if (element_counter == 0)
-	{
-		clean_and_exit(my_game);
-		// return(ft_printf(ERROR_MESSSAGE_07), false);
-		// ft_printf(ERROR_MESSSAGE_07);
-		// return(false);
-	}
+		return(ft_printf(ERROR_MESSSAGE_07), false);
 	if ((element_counter > 1) && ((element == 'P') || (element == 'E')))
-	{
 		return(ft_printf(ERROR_MESSSAGE_08), false);
-		// ft_printf(ERROR_MESSSAGE_08);
-		// return(false);
-	}
 	return (true);
 }
 
@@ -187,14 +178,14 @@ four_moves	moves_options_set_up(tile player_position)
 // ---- ⬇️  Verif validité du path ✅
 bool	is_path_valid(tile player_position, tile destination_position, game my_game_copy, int total_collectibles)
 {
-	static int	collectibles_amount;
+	static int	collectibles_counter;
 	static int	escape_found;
 	four_moves	all_directions;
 // ---------------------------------------------------------------------------------------------  Verifie que start est dans le rectangle ✅
 	if ((player_position.line < 0) || (player_position.column < 0) || (player_position.line > my_game_copy.max_lines) || (player_position.column > my_game_copy.max_columns))
 		return (false);
 	if (TILE_CHAR(my_game_copy.content, player_position) == COLLECTIBLE)
-		collectibles_amount++;
+		collectibles_counter++;
 // -------------------------------------------------------------------------- Est-ce que player est sur la destination (escape/collectible) ✅
 	if (player_position.line == destination_position.line && (player_position.column == destination_position.column))
 		escape_found = 1;	/* Ne rien return pour l'instant car on doit etre surs que tous les collectibles sont trouvés */
@@ -206,7 +197,7 @@ bool	is_path_valid(tile player_position, tile destination_position, game my_game
 		return (false);
 // ----------------------------------------------------------------------------------------- Sauvegarder visite de la case (marquer un V) ✅
 	TILE_CHAR(my_game_copy.content, player_position) = CHECKED;
-	if ((collectibles_amount == total_collectibles) && (escape_found == 1))
+	if ((collectibles_counter == total_collectibles) && (escape_found == 1))
 		return (true);
 	all_directions = moves_options_set_up(player_position);
 // --------------------------------------------------------------------------------------- Aller en haut puis gauche puis bas puis droite ✅

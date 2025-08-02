@@ -18,5 +18,8 @@
 	"editor.renderWhitespace": "all",
 	"files.trimTrailingWhitespace": true,
 	"files.insertFinalNewline": true,
-	"cmake.sourceDirectory": "/home/sophie/Documents/00_VS_Code/MLX42"
+	"cmake.sourceDirectory": "/home/sophie/Documents/00_VS_Code/MLX42",
+	"[c]": {
+		"editor.defaultFormatter": "keyhr.42-c-format"
+	}
 }
