@@ -166,11 +166,30 @@ game	duplicate_game(game my_game)
 	}
 	return (my_game_copy);
 }
+four_moves	moves_options_set_up(tile player_position)
+{
+	four_moves	all_directions;
+
+	all_directions.player_up.line = player_position.line - 1;
+	all_directions.player_up.column = player_position.column;
+
+	all_directions.player_left.line = player_position.line;
+	all_directions.player_left.column = player_position.column - 1;
+
+	all_directions.player_down.line = player_position.line + 1;
+	all_directions.player_down.column = player_position.column;
+
+	all_directions.player_right.line = player_position.line;
+	all_directions.player_right.column = player_position.column + 1;
+
+	return(all_directions);
+}
 // ---- ⬇️  Verif validité du path ✅
 bool	is_path_valid(tile player_position, tile destination_position, game my_game_copy, int total_collectibles)
 {
-	static int collectibles_amount;
-	static int escape_found;
+	static int	collectibles_amount;
+	static int	escape_found;
+	four_moves	all_directions;
 // ---------------------------------------------------------------------------------------------  Verifie que start est dans le rectangle ✅
 	if ((player_position.line < 0) || (player_position.column < 0) || (player_position.line > my_game_copy.max_lines) || (player_position.column > my_game_copy.max_columns))
 		return (false);
@@ -189,18 +208,15 @@ bool	is_path_valid(tile player_position, tile destination_position, game my_game
 	TILE_CHAR(my_game_copy.content, player_position) = CHECKED;
 	if ((collectibles_amount == total_collectibles) && (escape_found == 1))
 		return (true);
-	tile	player_up = {player_position.line - 1, player_position.column};
-	tile	player_left = {player_position.line, player_position.column - 1};
-	tile	player_down = {player_position.line + 1, player_position.column};
-	tile	player_right = {player_position.line, player_position.column + 1};
+	all_directions = moves_options_set_up(player_position);
 // --------------------------------------------------------------------------------------- Aller en haut puis gauche puis bas puis droite ✅
-	if (is_path_valid(player_up, destination_position, my_game_copy, total_collectibles))
+	if (is_path_valid(all_directions.player_up, destination_position, my_game_copy, total_collectibles))
 		return (true);
-	if (is_path_valid(player_left, destination_position, my_game_copy, total_collectibles))
+	if (is_path_valid(all_directions.player_left, destination_position, my_game_copy, total_collectibles))
 		return (true);
-	if (is_path_valid(player_down, destination_position, my_game_copy, total_collectibles))
+	if (is_path_valid(all_directions.player_down, destination_position, my_game_copy, total_collectibles))
 		return (true);
-	if (is_path_valid(player_right, destination_position, my_game_copy, total_collectibles))
+	if (is_path_valid(all_directions.player_right, destination_position, my_game_copy, total_collectibles))
 		return (true);
 	return (false);
 }

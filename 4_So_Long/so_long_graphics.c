@@ -22,10 +22,11 @@ void		display_map(game *my_game)
 	my_game->wall_image = path_to_image(my_game, my_game->window, PATH_WALL);
 	my_game->collectible_image = path_to_image(my_game, my_game->window, PATH_COLLECTIBLE);
 	my_game->escape_image = path_to_image(my_game, my_game->window, PATH_ESCAPE);
-	add_above_ground(my_game);	// display rest
+	add_1CE_images(my_game);
+	add_P_image(my_game);	// added separately, otherwise conflicts with depth
 }
 
-void		add_above_ground(game *my_game)
+void		add_1CE_images(game *my_game)
 {
 	int	line;
 	int column;
@@ -42,7 +43,24 @@ void		add_above_ground(game *my_game)
 				display_image(my_game, my_game->collectible_image, column, line);
 			else if (my_game->content[line][column] == 'E')
 				display_image(my_game, my_game->escape_image, column, line);
-			else if (my_game->content[line][column] == 'P')
+			column++;
+		}
+		line++;
+	}
+}
+
+void		add_P_image(game *my_game)
+{
+	int	line;
+	int column;
+
+	line = 0;
+	while (line < my_game->max_lines)
+	{
+		column = 0;
+		while (my_game->content[line][column] != '\n')
+		{
+			if (my_game->content[line][column] == 'P')
 				display_image(my_game, my_game->player_image, column, line);
 			column++;
 		}

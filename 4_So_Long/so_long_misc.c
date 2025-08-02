@@ -39,14 +39,6 @@ void	move_player_logic(game my_game, int move)
 	player = get_tile_position(my_game, PLAYER);
 	target = target_position(my_game, move);
 
-	my_game.player_image->instances->z = 44; // Change depth so player is above exit
-	my_game.escape_image->instances->z = 36;
-
-// ----------------------------------------------------------------- Faire réapparaitre la sortie s'il reste des collectibles ✅
-	// if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line) && (get_collectibles_left(my_game) > 0))
-	// {
-	// 	ESCAPE_POSITION = 'E';	// ✅ Keeping the escape position somewhere or it will be deleted (forever) after pass in is_move_allowed
-	// }
 	if (is_move_allowed(my_game, target))
 	{
 		TARGET_POSITION = 'P';
@@ -61,7 +53,7 @@ void	move_player_logic(game my_game, int move)
 		bonus_counter(my_game, step_counter);
 		return;
 	}
-	print_map_fun(my_game);
+	//print_map_fun(my_game);
 	return;
 }
 

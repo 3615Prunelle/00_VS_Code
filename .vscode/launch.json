@@ -82,8 +82,9 @@ comment VS Code doit lancer et déboguer un programme C.*/
 //            "program": "${workspaceRoot}/a.out",	// Chemin d'accès de l'exécutable créé automatiquement sans Makefile
             "program": "${workspaceRoot}/4_So_Long/so_long",	// Chemin d'accès de l'exécutable créé par Makefile
             // "args": ["arg1", "arg2"],
-            // "args": ["/home/sophie/Documents/00_VS_Code/4_So_Long/mapSI.ber"],
-            "args": ["/home/sophie/Documents/00_VS_Code/4_So_Long/Maps/smallest_possible_map.ber"],
+            // "args": ["/home/sophie/Documents/00_VS_Code/4_So_Long/Maps/smallest_possible_map.ber"],
+            "args": ["/home/sophie/Documents/00_VS_Code/4_So_Long/mapSI.ber"],
+            // "args": ["/home/sophie/Documents/00_VS_Code/4_So_Long/Maps/double_S_I_map.ber"],
             "environment": [{ "name": "config", "value": "Debug" }],
             "cwd": "${workspaceFolder}",
             // "preLaunchTask": "C/C++: cc build so_long"

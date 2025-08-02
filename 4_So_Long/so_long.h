@@ -88,6 +88,14 @@ typedef struct node
 	int		column;
 } tile;
 
+typedef struct four_moves
+{
+	tile	player_up;
+	tile	player_left;
+	tile	player_down;
+	tile	player_right;
+} four_moves;
+
 typedef struct game		// Struct to pass many arguments to a function that can't be called twice or can only take a limited amount of arguments
 {
 	int			max_lines;
@@ -112,6 +120,7 @@ void		set_structs_pointers_to_null(game *my_game);
 bool		check_everything(game *my_game);
 bool		are_walls_approved(game my_game);
 bool		is_path_valid(tile player_position, tile destination_position, game my_game_copy, int total_collectibles);
+four_moves	moves_options_set_up(tile player_position);
 bool		is_element(game *my_game, char element);
 game		duplicate_game(game my_game);				// Maybe not needed, check when all the rest is sorted (and before dealing with memory)
 
@@ -130,7 +139,8 @@ game		build_map(int fd, char *path);
 mlx_image_t	*path_to_image(game *my_game, mlx_t *game_window, char *path);
 void		display_image(game *my_game, mlx_image_t *image, int colonne, int ligne);
 void		display_map(game *my_game);
-void		add_above_ground(game *my_game);
+void		add_1CE_images(game *my_game);
+void		add_P_image(game *my_game);
 void		key_actions(mlx_key_data_t keydata, void *param);
 void		bonus_counter(game my_game, int step_counter);
 
