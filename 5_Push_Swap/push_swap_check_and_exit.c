@@ -1,94 +1,110 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap_check_and_exit.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/03 17:45:21 by sophie            #+#    #+#             */
+/*   Updated: 2025/08/07 18:28:42 by sophie           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-bool		is_number_repeat(int *numbers_array, int array_size)
+bool	is_number_repeat(int *numbers_arr, int arr_size)
 {
-	int i = 0;
-	int j;
-	int count_occurences;
+	int	i;
+	int	j;
+	int	count_occurences;
 
-	while(i < array_size)
+	i = 0;
+	while (i < arr_size)
 	{
 		j = 0;
-		count_occurences = 0;			// Reset pour chaque nombre
-		while (j < array_size)
+		count_occurences = 0;
+		while (j < arr_size)
 		{
-			if(numbers_array[i] == numbers_array[j])
+			if (numbers_arr[i] == numbers_arr[j])
 			{
 				count_occurences++;
-					if(count_occurences > 1)
-						return(true);
+				if (count_occurences > 1)
+					return (true);
 			}
 			j++;
 		}
 		i++;
 	}
-	return(false);
+	return (false);
 }
 
-linked_node	*create_stack(linked_node *stack, int *numbers_array, int *array_size)
+// Ici on créée des nodes sans nom à la chaine+malloc du node (pas du content)
+t_node	*create_stack(t_node *stack, int *numbers_arr, int *arr_size)
 {
-	stack = new_node(&numbers_array[0]);
+	t_node	*new;
+	int		i;
 
-	linked_node *new;
-	int i = 1;
-
-	while (i < *array_size)
+	stack = new_node(&numbers_arr[0]);
+	i = 1;
+	while (i < *arr_size)
 	{
-		new = new_node(&numbers_array[i]);		// On créée des nodes sans nom à la chaine + malloc du node (! pas du content)
+		new = new_node(&numbers_arr[i]);
 		add_node_down(&stack, new);
 		i++;
 	}
-	return(stack);
+	return (stack);
 }
 
-void		clean_early_exit(char *message, int *numbers_array, bool exit_wanted)
+void	clean_early_exit(char *msg, int *numbers_arr, bool exit_wanted)
 {
-	if(numbers_array)
-		free(numbers_array);
+	int	fd;
 
-	if(exit_wanted)
+	fd = 2;
+	if (numbers_arr)
+		free(numbers_arr);
+	if (exit_wanted)
 	{
-		ft_printf("%s\n", message);
+		ft_fprintf(&fd, "%s\n", msg);
 		exit(1);
 	}
 }
 
-// ------------ ⬇️ NB : Don't use ft_lstclear because it frees node + content (and no content was allocated)
-void		clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted)
+// lstclear not used because it frees node+content (and no content was malloc)
+// No need to check for stack b, car il n'a (à priori) jamais été malloc'é
+void	clean_exit(char *msg, t_2stacks *a_b, bool exit_wanted)
 {
-	linked_node	*loop_pointer;
-	linked_node	*backup_next;
+	t_node	*loop_pointer;
+	t_node	*backup_next;
 
-	if(a_and_b)
+	if (a_b)
 	{
-		if(STACK_A)		// No need for stack b, car il n'a (à priori) jamais été malloc'é
+		if (a_b->stack_a)
 		{
-			loop_pointer = STACK_A;
-			while(loop_pointer != NULL)
+			loop_pointer = a_b->stack_a;
+			while (loop_pointer != NULL)
 			{
 				backup_next = loop_pointer->next;
 				free(loop_pointer);
 				loop_pointer = backup_next;
 			}
-			STACK_A = NULL;
-			free(a_and_b);
-			a_and_b = NULL;
+			a_b->stack_a = NULL;
+			free(a_b);
+			a_b = NULL;
 		}
 	}
-	if(exit_wanted)
+	if (exit_wanted)
 	{
-		ft_printf("%s\n", message);
+		ft_printf("%s\n", msg);
 		exit(1);
 	}
 }
 
-void		print_sorted_stack(linked_node *stack)
-{
-	while(stack != NULL)
-	{
-		printf("%i ", *(int*)(stack->content));	// Use only for tests, ne marche pas avec mon ft_printf
-		fflush(stdout);
-		stack = stack->next;
-	}
-	ft_printf("\n\n");
-}
+// void	print_sorted_stack(t_node *stack)
+// {
+// 	while (stack != NULL)
+// 	{
+// 		ft_printf("%i ", *(int *)(stack->content));
+// 		stack = stack->next;
+// 	}
+// 	ft_printf("\n\n");
+// }

@@ -1,12 +1,13 @@
 #include "so_long.h"
 
-tile	target_position(game my_game, int move)
+// Only the target reference is updated, not the player one (yet)
+tile	target_position(s_game game, int move)
 {
 	tile	target;
-	tile player;
+	tile	player;
 
-	player = get_tile_position(my_game, PLAYER);
-	if (move == RIGHT)						// only the target reference is updated, not the player one (yet)
+	player = get_tile_position(game, PLAYER);
+	if (move == RIGHT)
 	{
 		target.line = player.line;
 		target.column = player.column + 1;
@@ -26,119 +27,127 @@ tile	target_position(game my_game, int move)
 		target.line = player.line + 1;
 		target.column = player.column;
 	}
-	return(target);
+	return (target);
 }
 
-// ---- ⬇️ Vérifier chaque possibilité de mouvement + Create counter ✅
-void	move_player_logic(game my_game, int move)
+// Vérifier chaque possibilité de mouvement
+// Create counter
+// Update de la position du player
+// If need shell testing, use print_map_fun(game); here
+void	move_player_logic(s_game game, int move)
 {
 	static int	step_counter;
 	tile		player;
 	tile		target;
 
-	player = get_tile_position(my_game, PLAYER);
-	target = target_position(my_game, move);
-
-	if (is_move_allowed(my_game, target))
+	player = get_tile_position(game, PLAYER);
+	target = target_position(game, move);
+	if (is_move_allowed(game, target))
 	{
-		TARGET_POSITION = 'P';
-		if ((player.column == my_game.escape_position.column) && (player.line == my_game.escape_position.line))
+		TARGET = 'P';
+		if ((player.column == game.escape_pos.column)
+			&& (player.line == game.escape_pos.line))
 			PLAYER_POSITION = 'E';
 		else
 			PLAYER_POSITION = '0';
-
-		player.line = target.line;			// Update de la position du player
-		player.column = target.column;		// Idem
+		player.line = target.line;
+		player.column = target.column;
 		step_counter++;
-		bonus_counter(my_game, step_counter);
-		return;
+		bonus_counter(game, step_counter);
+		return ;
 	}
-	//print_map_fun(my_game);
-	return;
+	return ;
 }
 
-void	move_player_graphic(game *my_game)
+// Updated_player_pos sera -1 si P est sur la sortie et qu'il veut bouger dans un mur
+// Si pas -1 : Déplacement de l'image en prenant en compte l'échelle du jeu
+// 1 case (dans représentation non graphique) = 72 pixels (rep visuelle)
+// Else{} is to update position player (sinon -1 = segfault)
+void	move_player_graphic(s_game *game)
 {
-	// Sera -1 si player est sur la sortie et qu'il veut bouger dans un mur
-	tile updated_player_position = get_tile_position(*my_game, PLAYER);
-	if (updated_player_position.column != -1)
+	tile	updated_player_pos;
+
+	updated_player_pos = get_tile_position(*game, PLAYER);
+	if (updated_player_pos.column != -1)
 	{
-		my_game->player_image->instances[0].x = updated_player_position.column * TILE_SIZE;		// Déplacement de l'image en prenant en compte l'échelle du jeu
-		my_game->player_image->instances[0].y = updated_player_position.line * TILE_SIZE;		// 1 case (dans représentation non graphique) = 72 pixels (rep visuelle)
+		P_IMG_INSTANCE[0].x = updated_player_pos.column * TILE_SIZE;
+		P_IMG_INSTANCE[0].y = updated_player_pos.line * TILE_SIZE;
 	}
-	else // update position player = -1 après avoir tenté exit, on a une segfault
+	else
 	{
-		my_game->content[my_game->escape_position.line][my_game->escape_position.column] = PLAYER;
+		game->content[game->escape_pos.line][game->escape_pos.column] = PLAYER;
 	}
 }
 
-bool	is_move_allowed(game my_game, tile target)
+bool	is_move_allowed(s_game game, tile target)
 {
-	if (TARGET_POSITION == '0' || TARGET_POSITION == 'C' || TARGET_POSITION == 'E')
+	if (TARGET == '0' || TARGET == 'C' || TARGET == 'E')
 	{
-		return(true);
+		return (true);
 	}
 	return (false);
 }
 
-void	delete_collectible_instance(game *my_game)
+// While loop : If on collectible : delete collectible instance
+// If : if on escape + collectibles fetched : exit game
+void	delete_collectible_instance(s_game *game)
 {
 	size_t	index;
-	int collectibles_amount;
+	int		ctibles_amount;
 
 	index = 0;
-	collectibles_amount = get_collectibles_left(*my_game);
-	while (index < my_game->collectible_image->count)	// If on collectible : delete collectible instance ✅
+	ctibles_amount = get_collectibles_left(*game);
+	while (index < COLLECTIBLE_IMG->count)
 	{
-		if (my_game->player_image->instances[0].x == my_game->collectible_image->instances[index].x
-			&& my_game->player_image->instances[0].y == my_game->collectible_image->instances[index].y)
+		if (P_IMG_INSTANCE[0].x == C_IMG_INSTANCE[index].x
+			&& P_IMG_INSTANCE[0].y == C_IMG_INSTANCE[index].y)
 		{
-			my_game->collectible_image->instances[index].enabled = false;
+			C_IMG_INSTANCE[index].enabled = false;
 		}
 		index++;
 	}
-	if (collectibles_amount == 0)						// If on escape + collectibles fetched : exit game ✅
+	if (ctibles_amount == 0)
 	{
-		if (my_game->player_image->instances[0].x == my_game->escape_image->instances[0].x
-			&& my_game->player_image->instances[0].y == my_game->escape_image->instances[0].y)
+		if (P_IMG_INSTANCE[0].x == E_IMG_INSTANCE[0].x
+			&& P_IMG_INSTANCE[0].y == E_IMG_INSTANCE[0].y)
 		{
-			my_game->escape_image->instances[0].enabled = false;
-			mlx_close_window(my_game->window);
+			E_IMG_INSTANCE[0].enabled = false;
+			mlx_close_window(WINDOW);
 		}
 		index++;
 	}
 }
 
 // Will be deleted before submit
-void	print_map_fun(game my_game)
-{
-	for(int p = 0; p < my_game.max_lines; p++)
-	{
-		for (int i = 0; i < my_game.max_columns; i++)
-		{
-			switch (my_game.content[p][i])
-			{
-			case 'P':
-				ft_printf(EMOJI_PLAYER);
-				break;
-			case 'C':
-				ft_printf(EMOJI_COLLECTIBLE);
-				break;
-			case 'E':
-				ft_printf(EMOJI_ESCAPE);
-				break;
-			case '1':
-				ft_printf(EMOJI_WALL);
-				break;
-			case '0':
-				ft_printf(EMOJI_GROUND);
-				break;
-			case '\n':
-				ft_printf("\n");
-				break;
-			default:
-				break;
-			}
-		}
-	}
-}
+// void	print_map_fun(s_game game)
+// {
+// 	for (int p = 0; p < game.max_lines; p++)
+// 	{
+// 		for (int i = 0; i < game.max_columns; i++)
+// 		{
+// 			switch (game.content[p][i])
+// 			{
+// 			case 'P':
+// 				ft_printf(EMOJI_PLAYER);
+// 				break ;
+// 			case 'C':
+// 				ft_printf(EMOJI_COLLECTIBLE);
+// 				break ;
+// 			case 'E':
+// 				ft_printf(EMOJI_ESCAPE);
+// 				break ;
+// 			case '1':
+// 				ft_printf(EMOJI_WALL);
+// 				break ;
+// 			case '0':
+// 				ft_printf(EMOJI_GROUND);
+// 				break ;
+// 			case '\n':
+// 				ft_printf("\n");
+// 				break ;
+// 			default:
+// 				break ;
+// 			}
+// 		}
+// 	}
+// }

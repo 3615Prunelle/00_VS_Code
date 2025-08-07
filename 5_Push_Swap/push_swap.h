@@ -1,112 +1,107 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/03 15:47:23 by sophie            #+#    #+#             */
+/*   Updated: 2025/08/03 19:29:09 by sophie           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
 // ⚪ #define
-# define ERROR_MESSSAGE_01	"Error\nNo args (or not enough) have been provided\n"
-# define ERROR_MESSSAGE_02	"Error\nInvalid characters have been found - Try again !\n"
-# define ERROR_MESSSAGE_03	"Error\nAt least one number exceeds the int size\n"
-# define ERROR_MESSSAGE_04	"Error\nDuplicated number(s), edit and try again !\n"
-# define ERROR_MESSSAGE_05	"Nothing to do here - Numbers are already sorted\n"
-# define ERROR_MESSSAGE_06	"Error\nSomething went wront with Her Majesty Malloc\n"
-# define ERROR_MESSSAGE_07	"Error\n TBD \n"
-
-# define	STACK_A			a_and_b->stack_a
-# define	STACK_B			a_and_b->stack_b
-# define	STACK_A_CONTENT	*((int*)(a_and_b->stack_a->content))
-# define	STACK_B_CONTENT	a_and_b->stack_b->content
-# define	STACK_A_NEXT	a_and_b->stack_a->next
-# define	STACK_B_NEXT	a_and_b->stack_b->next
-# define	STACK_A_INDEX	a_and_b->stack_a->index
-
-# define	INDEX_MAX		count_nodes(a_and_b->stack_a)
-
-# define	SWAP_A			swap_a(a_and_b, ops_counter)
-# define	SWAP_B 			swap_b(a_and_b, ops_counter)
-# define	SWAP_AB			swap_a_and_b(a_and_b, ops_counter)
-# define	PUSH_A			push_a(a_and_b, ops_counter)
-# define	PUSH_B			push_b(a_and_b, ops_counter)
-# define	ROT_A			rotate_a(a_and_b, ops_counter)
-# define	ROT_B			rotate_b(a_and_b, ops_counter)
-# define	ROT_AB			rotate_a_and_b(a_and_b, ops_counter)
-# define	REVROT_A		reverse_rotate_a(a_and_b, ops_counter)
-# define	REVROT_B		reverse_rotate_b(a_and_b, ops_counter)
-# define	REVROT_AB		reverse_rotate_a_and_b(a_and_b, ops_counter)
+# define ERROR_MSG_01 "Error\nNo args (or not enough) have been provided\n"
+# define ERROR_MSG_02 "Error\nInvalid characters have been found - Try again\n"
+# define ERROR_MSG_03 "Error\nAt least one number exceeds the int size\n"
+# define ERROR_MSG_04 "Error\nDuplicated number(s), edit and try again !\n"
+# define ERROR_MSG_05 "Nothing to do here - Numbers are already sorted\n"
+# define ERROR_MSG_06 "Error\nSomething went wront with Her Majesty Malloc\n"
+# define ERROR_MSG_07 "Error\n TBD \n"
 
 // ⚪ #include
+# include <limits.h>
+# include <stdbool.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
-# include <stdbool.h>
-# include <limits.h>
 
 // ⚪ #include from other 42 projects
-#include <libft.h>
-#include <ft_printf.h>
+# include <ft_printf.h>
+# include <libft.h>
 
 // ⚪ Structs
-typedef struct	linked_node
+typedef struct node
 {
-	void					*content;
-	int						index;
-	struct linked_node	*next;
-}linked_node;
+	void		*content;
+	int			index;
+	struct node	*next;
+}				t_node;
 
-typedef struct	two_stacks
+typedef struct stacks
 {
-	linked_node	*stack_a;
-	linked_node	*stack_b;
-}				two_stacks;
+	t_node		*stack_a;
+	t_node		*stack_b;
+}				t_2stacks;
 
 // ⚪ Functions signatures - Pre_Stack Creation (Input Management & Check)
-int				*two_argv(char *string_input, int *numbers_array, int *array_size);
-int				*above_two_argv(char **strings_input, int argc, int *numbers_array, int *array_size);
+int				*two_argv(char *input, int *numbers_arr, int *arr_size);
+int				*above_two_argv(char **inputs, int argc, int *numbers_arr,
+					int *arr_size);
 int				ft_atol(char *s);
 int				count_numbers(char *s);
-int				*string_to_int_array(char *s, int *numbers_array);
+int				*string_to_int_array(char *s, int *numbers_arr);
 bool			is_numerical_only(char *s);
-void			check_array(int *numbers_array, int *array_size);
-bool			is_number_repeat(int *numbers_array, int array_size);
-bool			is_sorted(int *numbers_array, int array_size);
-int				lowest_number_stack_index(linked_node *stack);
-int				highest_number_stack_index(linked_node *stack);
+void			check_array(int *numbers_arr, int *arr_size);
+bool			is_number_repeat(int *numbers_arr, int arr_size);
+bool			is_sorted(int *numbers_arr, int arr_size);
+int				lowest_number_stack_index(t_node *stack);
+int				highest_nb_stack_index(t_node *stack);
 
 // ⚪ Post Stack Creation
-linked_node		*create_stack(linked_node *stack, int *numbers_array, int *array_size);
-void			struct_config(int *numbers_array, int *array_size);
-two_stacks 		*algorithm_selection(two_stacks *a_and_b, int *array_size, int *ops_counter, int *numbers_array);
-linked_node		*add_index(int *numbers_array, int *array_size, linked_node *stack);
+t_node			*create_stack(t_node *stack, int *numbers_arr, int *arr_size);
+void			struct_config(int *numbers_arr, int *arr_size);
+t_2stacks		*algorithm_selection(t_2stacks *a_b, int *arr_size,
+					int *ops_counter, int *numbers_arr);
+t_node			*add_index(int *numbers_arr, int *arr_size, t_node *stack);
 
 // ⚪ Lst functions
-linked_node		*new_node(void *content);
-linked_node		*find_last_node(linked_node *lst);
-void			add_node_up(linked_node **lst, linked_node *new);
-void			add_node_down(linked_node **lst, linked_node *new);
-int				count_nodes(linked_node *lst);
+t_node			*new_node(void *content);
+t_node			*find_last_node(t_node *lst);
+void			add_node_up(t_node **lst, t_node *new);
+void			add_node_down(t_node **lst, t_node *new);
+int				count_nodes(t_node *lst);
 
 // ⚪ Algorithms
-void			sort_three(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter);
-void			sort_four(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter);
-void			sort_five(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter);
-void			sort_above_five(two_stacks *a_and_b, int *ops_counter, int *array_size, int highest_number);
+void			sort_three(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
+					int *ops_counter);
+void			sort_four(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
+					int *ops_counter);
+void			sort_five(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
+					int *ops_counter);
+void			sort_above_five(t_2stacks *a_b, int *ops_counter, int *arr_size,
+					int highest_nb);
 
 // ⚪ Operations
-two_stacks		*swap_a(two_stacks *a_and_b, int *ops_counter);
-two_stacks		*swap_b(two_stacks	*a_and_b, int *ops_counter);
-two_stacks		*swap_a_and_b(two_stacks *a_and_b, int *ops_counter);
-two_stacks		*push_a(two_stacks *a_and_b, int *ops_counter);
-two_stacks		*push_b(two_stacks *a_and_b, int *ops_counter);
-two_stacks		*rotate_a(two_stacks *a_and_b, int *ops_counter);
-two_stacks		*rotate_b(two_stacks *a_and_b, int *ops_counter);
-two_stacks		*rotate_a_and_b(two_stacks *a_and_b, int *ops_counter);
-two_stacks		*reverse_rotate_a(two_stacks *a_and_b, int *ops_counter);
-two_stacks		*reverse_rotate_b(two_stacks *a_and_b, int *ops_counter);
-two_stacks		*reverse_rotate_a_and_b(two_stacks *a_and_b, int *ops_counter);
+t_2stacks		*swap_a(t_2stacks *a_b, int *ops_counter);
+// t_2stacks		*swap_b(t_2stacks *a_b, int *ops_counter);
+// t_2stacks		*swap_a_b(t_2stacks *a_b, int *ops_counter);
+t_2stacks		*push_a(t_2stacks *a_b, int *ops_counter);
+t_2stacks		*push_b(t_2stacks *a_b, int *ops_counter);
+t_2stacks		*rotate_a(t_2stacks *a_b, int *ops_counter);
+// t_2stacks		*rotate_b(t_2stacks *a_b, int *ops_counter);
+// t_2stacks		*rotate_a_b(t_2stacks *a_b, int *ops_counter);
+t_2stacks		*reverse_rotate_a(t_2stacks *a_b, int *ops_counter);
+// t_2stacks		*reverse_rotate_b(t_2stacks *a_b, int *ops_counter);
+// t_2stacks		*reverse_rotate_a_b(t_2stacks *a_b, int *ops_counter);
 
 // ⚪ Clean up functions
-void			clean_early_exit(char *message, int *numbers_array, bool exit_wanted);
-void			clean_exit(char *message, two_stacks *a_and_b, bool exit_wanted);
+void			clean_early_exit(char *msg, int *numbers_arr, bool exit_wanted);
+void			clean_exit(char *msg, t_2stacks *a_b, bool exit_wanted);
 
 // ⚪ Test functions
-void			print_sorted_stack(linked_node *stack);
-char			*view_stack(linked_node *stack);
+// void			print_sorted_stack(t_node *stack);
 #endif

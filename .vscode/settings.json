@@ -7,7 +7,9 @@
 		"push_swap.h": "c",
 		"libft.h": "c",
 		"limits.h": "c",
-		"ft_printf.h": "c"
+		"ft_printf.h": "c",
+		"so_long.h": "c",
+		"stdbool.h": "c"
 	},
 		"files.exclude": {
 			"**/*.o": true	// Masquer tous les .o après chaque compilation

@@ -3,8 +3,8 @@ NAME = libftprintf.a
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I. -I ./98_include
-LFLAGS = -L ./99_lib -lft
+CFLAGS = -Wall -Wextra -Werror -I. -I ../98_include
+LFLAGS = -L ../99_lib -lft
 
 SRCS = 	ft_printf_common_specifiers.c \
 		ft_printf_hexa_specifiers.c \

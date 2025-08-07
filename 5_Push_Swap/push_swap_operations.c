@@ -1,206 +1,186 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap_operations.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/03 17:20:00 by sophie            #+#    #+#             */
+/*   Updated: 2025/08/03 18:04:21 by sophie           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-// ------------ ⬇️ Swap the first 2 elements at the top of stack a. Do nothing if there is only one element or none ✅
-two_stacks		*swap_a(two_stacks *a_and_b, int *ops_counter)
+// Malloc node2 pas nécessaire car used only here
+// Toujours updater next avant toute opération
+// addfront update next pour le newfirstnode (node2) + ptr du stack (head)
+t_2stacks	*swap_a(t_2stacks *a_b, int *ops_counter)
 {
+	t_node	*backup_node1;
+	t_node	*node2;
+
 	ft_printf("sa\n");
-	// if((count_nodes(STACK_A) == 0) || (count_nodes(STACK_A) == 1))
-	if((STACK_A == NULL) || (count_nodes(STACK_A) == 1))
-		return(a_and_b);
-
-	linked_node	*backup_node1;			// Will become new_node_2
-	backup_node1 = STACK_A;
-
-	linked_node	*node2;					// Malloc pas nécessaire car node2 is used only here
-	node2 = STACK_A_NEXT;
-
-	// Next à changer pour node 3 avant toute opération
+	if ((a_b->stack_a == NULL) || (count_nodes(a_b->stack_a) == 1))
+		return (a_b);
+	backup_node1 = a_b->stack_a;
+	node2 = a_b->stack_a->next;
 	backup_node1->next = node2->next;
-
-	// ⬇️ addfront s'occupe de mettre le bon next pour le newfirstnode (node2) + update le ptr du stack (head)
-	add_node_up(&STACK_A, node2);		// node2 vient en tête de liste
+	add_node_up(&a_b->stack_a, node2);
 	(*ops_counter)++;
-	return(a_and_b);
+	return (a_b);
 }
 
-// ------------ ⬇️ Swap the first 2 elements at the top of stack b. Do nothing if there is only one element or none ✅
-two_stacks		*swap_b(two_stacks *a_and_b, int *ops_counter)
+// t_2stacks	*swap_b(t_2stacks *a_b, int *ops_counter)
+// {
+// 	t_node	*backup_node1;
+// 	t_node	*node2;
+
+// 	ft_printf("sb\n");
+// 	if ((a_b->stack_b == NULL) || (count_nodes(a_b->stack_b) == 1))
+// 		return (a_b);
+// 	backup_node1 = a_b->stack_b;
+// 	node2 = a_b->stack_b->next;
+// 	backup_node1->next = node2->next;
+// 	add_node_up(&a_b->stack_b, node2);
+// 	(*ops_counter)++;
+// 	return (a_b);
+// }
+
+// t_2stacks	*swap_a_b(t_2stacks *a_b, int *ops_counter)
+// {
+// 	ft_printf("ss\n");
+// 	a_b = swap_a(a_b, ops_counter);
+// 	a_b = swap_b(a_b, ops_counter);
+// 	(*ops_counter)++;
+// 	return (a_b);
+// }
+
+// NULL car count_nodes(a_b->stack_b) == 0 donnait des memory leaks
+t_2stacks	*push_a(t_2stacks *a_b, int *ops_counter)
 {
-	ft_printf("sb\n");
-	// if((count_nodes(STACK_B) == 0) || (count_nodes(STACK_B) == 1))
-	if((STACK_B == NULL) || (count_nodes(STACK_B) == 1))
-		return(a_and_b);
+	t_node	*backup_node1b;
 
-	linked_node	*backup_node1;			// See all notes in swap_a function
-	backup_node1 = STACK_B;
-
-	linked_node	*node2;
-	node2 = STACK_B_NEXT;
-
-	backup_node1->next = node2->next;
-
-	add_node_up(&STACK_B, node2);
-	(*ops_counter)++;
-	return(a_and_b);
-}
-
-// ------------ ⬇️ sa and sb at the same time ✅
-two_stacks		*swap_a_and_b(two_stacks *a_and_b, int *ops_counter)
-{
-	ft_printf("ss\n");
-	a_and_b = swap_a(a_and_b, ops_counter);
-	a_and_b = swap_b(a_and_b, ops_counter);
-	(*ops_counter)++;
-	return(a_and_b);
-}
-
-// ------------ ⬇️ Take the first element at the top of b and put it at the top of a. Do nothing if b is empty ✅
-two_stacks		*push_a(two_stacks *a_and_b, int *ops_counter)
-{
 	ft_printf("pa\n");
-	if(STACK_B == NULL) // count_nodes(STACK_B) == 0) donnait des memory leaks
-		return(a_and_b);
-
-	linked_node	*backup_node1b;
-	backup_node1b = STACK_B;
-
-//  ⬇️ Update B pointer because I don't use lstaddfront on this stack
-	STACK_B = backup_node1b->next;
-
-//  ⬇️ Everything A-related wil be updated correctly
-	add_node_up(&STACK_A, backup_node1b);
+	if (a_b->stack_b == NULL)
+		return (a_b);
+	backup_node1b = a_b->stack_b;
+	a_b->stack_b = backup_node1b->next;
+	add_node_up(&a_b->stack_a, backup_node1b);
 	(*ops_counter)++;
-	return(a_and_b);
+	return (a_b);
 }
 
-// ------------ ⬇️ Take the first element at the top of a and put it at the top of b. Do nothing if a is empty ✅
-two_stacks		*push_b(two_stacks *a_and_b, int *ops_counter)
+t_2stacks	*push_b(t_2stacks *a_b, int *ops_counter)
 {
+	t_node	*backup_node1a;
+
 	ft_printf("pb\n");
-	if(STACK_A == NULL) // count_nodes(STACK_A) == 0) donnait des memory leaks
-		return(a_and_b);
-
-	linked_node	*backup_node1a;
-	backup_node1a = STACK_A;
-
-//  ⬇️ Update A pointer because I don't use lstaddfront on this stack
-	STACK_A = backup_node1a->next;
-
-//  ⬇️ Everything B-related wil be updated correctly
-	add_node_up(&STACK_B, backup_node1a);
+	if (a_b->stack_a == NULL)
+		return (a_b);
+	backup_node1a = a_b->stack_a;
+	a_b->stack_a = backup_node1a->next;
+	add_node_up(&a_b->stack_b, backup_node1a);
 	(*ops_counter)++;
-	return(a_and_b);
+	return (a_b);
 }
 
-// ------------ ⬇️ Shift up all elements of stack a by 1. The first element becomes the last one ✅
-two_stacks		*rotate_a(two_stacks *a_and_b, int *ops_counter)
+// The first element becomes the last one
+t_2stacks	*rotate_a(t_2stacks *a_b, int *ops_counter)
 {
+	t_node	*backup_node1;
+	t_node	*backup_node2;
+
 	ft_printf("ra\n");
-	if((STACK_A == NULL) || (STACK_A_NEXT == NULL))
-		return(a_and_b);
-
-	linked_node	*backup_node1;
-	backup_node1 = STACK_A;
-
-	linked_node	*backup_node2;
-	backup_node2 = STACK_A_NEXT;
-
-	STACK_A = backup_node2;
-
-	add_node_down(&STACK_A, backup_node1);
-
-	backup_node1->next = NULL;					// Always do that at the end
+	if ((a_b->stack_a == NULL) || (a_b->stack_a->next == NULL))
+		return (a_b);
+	backup_node1 = a_b->stack_a;
+	backup_node2 = a_b->stack_a->next;
+	a_b->stack_a = backup_node2;
+	add_node_down(&a_b->stack_a, backup_node1);
+	backup_node1->next = NULL;
 	(*ops_counter)++;
-	return(a_and_b);
+	return (a_b);
 }
 
-// ------------ ⬇️ Shift up all elements of stack b by 1. The first element becomes the last one ✅
-two_stacks		*rotate_b(two_stacks *a_and_b, int *ops_counter)
+// // The first element becomes the last one
+// t_2stacks	*rotate_b(t_2stacks *a_b, int *ops_counter)
+// {
+// 	t_node	*backup_node1;
+// 	t_node	*backup_node2;
+
+// 	ft_printf("rb\n");
+// 	if ((a_b->stack_b == NULL) || (a_b->stack_b->next == NULL))
+// 		return (a_b);
+// 	backup_node1 = a_b->stack_b;
+// 	backup_node2 = a_b->stack_b->next;
+// 	a_b->stack_b = backup_node2;
+// 	add_node_down(&a_b->stack_b, backup_node1);
+// 	backup_node1->next = NULL;
+// 	(*ops_counter)++;
+// 	return (a_b);
+// }
+
+// // ra and rb at the same time
+// t_2stacks	*rotate_a_b(t_2stacks *a_b, int *ops_counter)
+// {
+// 	ft_printf("rr\n");
+// 	a_b = rotate_a(a_b, ops_counter);
+// 	a_b = rotate_b(a_b, ops_counter);
+// 	(*ops_counter)++;
+// 	return (a_b);
+// }
+
+// Last element becomes the first one
+// Condition d'arrêt next->next = avant dernier node
+t_2stacks	*reverse_rotate_a(t_2stacks *a_b, int *ops_counter)
 {
-	ft_printf("rb\n");
-	if((STACK_B == NULL) || (STACK_B_NEXT == NULL))
-		return(a_and_b);
+	t_node	*loop_ptr;
+	t_node	*last_node;
 
-	linked_node	*backup_node1;
-	backup_node1 = STACK_B;
-
-	linked_node	*backup_node2;
-	backup_node2 = STACK_B_NEXT;
-
-	STACK_B = backup_node2;
-
-	add_node_down(&STACK_B, backup_node1);
-
-	backup_node1->next = NULL;					// Always do that at the end
-	(*ops_counter)++;
-	return(a_and_b);
-}
-
-// ------------ ⬇️ ra and rb at the same time ✅
-two_stacks		*rotate_a_and_b(two_stacks *a_and_b, int *ops_counter)
-{
-	ft_printf("rr\n");
-	a_and_b = rotate_a(a_and_b, ops_counter);
-	a_and_b = rotate_b(a_and_b, ops_counter);
-	(*ops_counter)++;
-	return(a_and_b);
-}
-
-// ------------ ⬇️ Shift down all elements of stack a by 1. The last element becomes the first one ✅
-two_stacks		*reverse_rotate_a(two_stacks *a_and_b, int *ops_counter)
-{
 	ft_printf("rra\n");
-	linked_node	*loop_ptr;
-	loop_ptr = STACK_A;
-
-	if((STACK_A == NULL) || (STACK_A_NEXT == NULL))
-		return(a_and_b);			// Condition à déplacer dans fonction appelante car elle s'applique à toutes les autres operations
-
-	while (loop_ptr->next->next != NULL)	// Fetch l'avant dernier node
+	loop_ptr = a_b->stack_a;
+	if ((a_b->stack_a == NULL) || (a_b->stack_a->next == NULL))
+		return (a_b);
+	while (loop_ptr->next->next != NULL)
 	{
 		loop_ptr = loop_ptr->next;
 	}
-	linked_node	*last_node;
 	last_node = loop_ptr->next;
-	loop_ptr->next = NULL;					// Make it the last one
-
-	last_node->next = STACK_A;				// Next is ex-first element of the list
-	STACK_A = last_node;					// Update head pointer
+	loop_ptr->next = NULL;
+	last_node->next = a_b->stack_a;
+	a_b->stack_a = last_node;
 	(*ops_counter)++;
-	return(a_and_b);
+	return (a_b);
 }
 
-// ------------ ⬇️ Shift down all elements of stack b by 1. The last element becomes the first one ✅
-two_stacks		*reverse_rotate_b(two_stacks *a_and_b, int *ops_counter)
-{
-	ft_printf("rrb\n");
-	linked_node	*loop_ptr;
-	loop_ptr = STACK_B;
+// t_2stacks	*reverse_rotate_b(t_2stacks *a_b, int *ops_counter)
+// {
+// 	t_node	*loop_ptr;
+// 	t_node	*last_node;
 
-	if((STACK_B == NULL) || (STACK_B_NEXT == NULL))		// Si la linked list ne contient qu'un élément
-		return(a_and_b);					// Condition à déplacer dans fonction appelante car elle s'applique à toutes les autres operations
+// 	ft_printf("rrb\n");
+// 	loop_ptr = a_b->stack_b;
+// 	if ((a_b->stack_b == NULL) || (a_b->stack_b->next == NULL))
+// 		return (a_b);
+// 	while (loop_ptr->next->next != NULL)
+// 	{
+// 		loop_ptr = loop_ptr->next;
+// 	}
+// 	last_node = loop_ptr->next;
+// 	loop_ptr->next = NULL;
+// 	last_node->next = a_b->stack_b;
+// 	a_b->stack_b = last_node;
+// 	(*ops_counter)++;
+// 	return (a_b);
+// }
 
-	while (loop_ptr->next->next != NULL)	// Fetch l'avant dernier node
-	{
-		loop_ptr = loop_ptr->next;
-	}
-	linked_node	*last_node;
-	last_node = loop_ptr->next;
-	loop_ptr->next = NULL;					// Make it the last one
-
-	last_node->next = STACK_B;		// Next is ex-first element of the list
-	STACK_B = last_node;			// Update head pointer
-	(*ops_counter)++;
-	return(a_and_b);
-
-}
-
-// ------------ ⬇️ rra and rrb at the same time ✅
-two_stacks		*reverse_rotate_a_and_b(two_stacks *a_and_b, int *ops_counter)
-{
-	ft_printf("rrr\n");
-	a_and_b = reverse_rotate_a(a_and_b, ops_counter);
-	a_and_b = reverse_rotate_b(a_and_b, ops_counter);
-	(*ops_counter)++;
-	return(a_and_b);
-}
+// // rra and rrb at the same time
+// t_2stacks	*reverse_rotate_a_b(t_2stacks *a_b, int *ops_counter)
+// {
+// 	ft_printf("rrr\n");
+// 	a_b = reverse_rotate_a(a_b, ops_counter);
+// 	a_b = reverse_rotate_b(a_b, ops_counter);
+// 	(*ops_counter)++;
+// 	return (a_b);
+// }

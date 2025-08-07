@@ -1,109 +1,131 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap_algorithms.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/03 18:05:12 by sophie            #+#    #+#             */
+/*   Updated: 2025/08/03 18:20:27 by sophie           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-void	sort_three(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter)
+// Without highst_nb_idx==2 (numbers sorted) issues when called by sort_four
+void	sort_three(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
+		int *ops_counter)
 {
-	if(lowest_number_index == 0)
+	if (lowst_nb_idx == 0)
 	{
-		REVROT_A;
-		SWAP_A;
-		if(highest_number_index == 2) // Without this line, issues when called from sort_four (if numbers are sorted)
-			return;
-		REVROT_A;
+		reverse_rotate_a(a_b, ops_counter);
+		swap_a(a_b, ops_counter);
+		if (highst_nb_idx == 2)
+			return ;
+		reverse_rotate_a(a_b, ops_counter);
 	}
-	if(lowest_number_index == 1)
+	if (lowst_nb_idx == 1)
 	{
-		if(highest_number_index == 2)	// Et si le plus grand est déjà à la fin
-			SWAP_A;
+		if (highst_nb_idx == 2)
+			swap_a(a_b, ops_counter);
 		else
-			ROT_A;
+			rotate_a(a_b, ops_counter);
 	}
-	if(lowest_number_index == 2)
+	if (lowst_nb_idx == 2)
 	{
-		if(highest_number_index == 0)
+		if (highst_nb_idx == 0)
 		{
-			SWAP_A;
-			REVROT_A;
+			swap_a(a_b, ops_counter);
+			reverse_rotate_a(a_b, ops_counter);
 		}
 		else
-			REVROT_A;
+			reverse_rotate_a(a_b, ops_counter);
 	}
 }
-void	sort_four(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter)
+
+// If lowst_nb_idx position 0, only last push b necessary
+// push_b = mettre smallest dans stack b et trier le reste avec sort_three
+// updater lowest car un nombre en moins, va fausser résultats de sort_three
+void	sort_four(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
+		int *ops_counter)
 {
-	if(lowest_number_index == 1)	// if position 0, only last push b necessary
-	{
-		SWAP_A;
-	}
-	if(lowest_number_index == 2)
-	{
-		ROT_A;
-		ROT_A;
-	}
-	if(lowest_number_index == 3)
-	{
-		REVROT_A;
-	}
-	PUSH_B; // mettre smallest dans stack b et trier le reste avec sort_three
+	int	update_lowest;
+	int	update_highest;
 
-	int update_lowest; // updater car un nombre en moins, va fausser résultats de sort_three
-	update_lowest = lowest_number_stack_index(STACK_A);
-
-	int update_highest;
-	update_highest = highest_number_stack_index(STACK_A);
-
-	sort_three(update_lowest, update_highest, a_and_b, ops_counter);
-	PUSH_A;
-}
-void	sort_five(int lowest_number_index, int highest_number_index, two_stacks *a_and_b, int *ops_counter)
-{
-	if(lowest_number_index == 1)	// if position 0, only last push b necessary
-		SWAP_A;
-	if(lowest_number_index == 2)
+	if (lowst_nb_idx == 1)
 	{
-		ROT_A;
-		ROT_A;
+		swap_a(a_b, ops_counter);
 	}
-	if(lowest_number_index == 3)
+	if (lowst_nb_idx == 2)
 	{
-		REVROT_A;
-		REVROT_A;
+		rotate_a(a_b, ops_counter);
+		rotate_a(a_b, ops_counter);
 	}
-	if(lowest_number_index == 4)
-		REVROT_A;
-	PUSH_B; // mettre smallest dans stack b et trier le reste avec sort_three
-	int update_lowest; // updater car un nombre en moins, va fausser résultats de sort_three
-	update_lowest = lowest_number_stack_index(STACK_A);
-	int update_highest;
-	update_highest = highest_number_stack_index(STACK_A);
-	sort_four(update_lowest, update_highest, a_and_b, ops_counter);
-	PUSH_A;
-
+	if (lowst_nb_idx == 3)
+	{
+		reverse_rotate_a(a_b, ops_counter);
+	}
+	push_b(a_b, ops_counter);
+	update_lowest = lowest_number_stack_index(a_b->stack_a);
+	update_highest = highest_nb_stack_index(a_b->stack_a);
+	sort_three(update_lowest, update_highest, a_b, ops_counter);
+	push_a(a_b, ops_counter);
 }
 
-void	sort_above_five(two_stacks *a_and_b, int *ops_counter, int *array_size, int highest_number)
+// if lowst_nb_idx position 0, only last push b necessary
+void	sort_five(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
+		int *ops_counter)
 {
-	int i;
-	int bit_mask;
+	int	update_lowest;
+	int	update_highest;
+
+	if (lowst_nb_idx == 1)
+		swap_a(a_b, ops_counter);
+	if (lowst_nb_idx == 2)
+	{
+		rotate_a(a_b, ops_counter);
+		rotate_a(a_b, ops_counter);
+	}
+	if (lowst_nb_idx == 3)
+	{
+		reverse_rotate_a(a_b, ops_counter);
+		reverse_rotate_a(a_b, ops_counter);
+	}
+	if (lowst_nb_idx == 4)
+		reverse_rotate_a(a_b, ops_counter);
+	push_b(a_b, ops_counter);
+	update_lowest = lowest_number_stack_index(a_b->stack_a);
+	update_highest = highest_nb_stack_index(a_b->stack_a);
+	sort_four(update_lowest, update_highest, a_b, ops_counter);
+	push_a(a_b, ops_counter);
+}
+
+// a_b->stack_a->index & bit_mask = Transférer pairs dans stack b (last bit 0)
+void	sort_above_five(t_2stacks *a_b, int *ops_counter, int *arr_size,
+		int highest_nb)
+{
+	int	i;
+	int	bit_mask;
 
 	bit_mask = 1;
-	while(true)
+	while (true)
 	{
 		i = 0;
-		while ((STACK_A != NULL) && (i < *array_size))
+		while ((a_b->stack_a != NULL) && (i < *arr_size))
 		{
-			if(STACK_A_INDEX > highest_number)
-				highest_number = STACK_A_INDEX;
-			if(!(STACK_A_INDEX & bit_mask)) // Commencer à transférer les pairs dans stack b (last bit 0)
-				PUSH_B;
+			if (a_b->stack_a->index > highest_nb)
+				highest_nb = a_b->stack_a->index;
+			if (!(a_b->stack_a->index & bit_mask))
+				push_b(a_b, ops_counter);
 			else
-				ROT_A;
+				rotate_a(a_b, ops_counter);
 			i++;
 		}
-		while (STACK_B != NULL)
-			PUSH_A;
+		while (a_b->stack_b != NULL)
+			push_a(a_b, ops_counter);
 		bit_mask *= 2;
-		if(bit_mask > highest_number)
-			break;
+		if (bit_mask > highest_nb)
+			break ;
 	}
-	return;
+	return ;
 }

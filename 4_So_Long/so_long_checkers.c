@@ -1,55 +1,61 @@
 #include "so_long.h"
 
-bool	check_everything(game *my_game)	// Je passe un pointeur pour libérer la mémoire dans fonctions appelées si erreurs (gain de place norminette)
+// Je passe un pointeur en param pour libérer la mémoire dans fonctions appelées si erreurs (gain de place norminette)
+// 1st if : Check if walls all around ✅
+// 2nd if : Check if all elements are here in the correct amount ✅
+// game_copy créé pour ne pas dupliquer le jeu a chaque recursion dans path_valid
+bool	check_everything(s_game *game)
 {
-// ------------------------------------------------------------------------------------------------------------ Check if walls all around ✅
-	if (!are_walls_approved(*my_game)) // changer param pour my game si tests ok
+	tile	player_pos;
+	int		ctibles_amount;
+	s_game	game_copy;
+
+	if (!are_walls_approved(*game))
 	{
 		ft_printf(ERROR_MESSSAGE_04);
 		return (false);
 	}
-// ---------------------------------------------------------------------------------- Check if all elements are here in the correct amount ✅
-	if((!is_element(my_game, PLAYER)) || (!is_element(my_game, ESCAPE)) || (!is_element(my_game, COLLECTIBLE)))
+	if ((!is_element(game, PLAYER)) || (!is_element(game, ESCAPE))
+		|| (!is_element(game, COLLECTIBLE)))
 	{
-		return (false);		// Message d'erreur géré dans is_element
+		return (false);
 	}
-// --------------------------------------------------------------------------------------- Check si path valide pour Escape + Collectibles ✅
-	tile	player_position;
-	player_position = get_tile_position(*my_game, PLAYER);
-
-	int collectibles_amount;
-	collectibles_amount = get_collectibles_left(*my_game);
-
-	my_game->escape_position = get_tile_position(*my_game, ESCAPE);
-
-	game	my_game_copy;						// Segfault si je ne le fais pas - Pourquoi ? (Initialement créé pour ne pas dupliquer le jeu a chaque recursion dans path_valid (autre option : utiliser une static int ?)
-	my_game_copy = duplicate_game(*my_game);	// Free done below ✅
-	if (!is_path_valid(player_position, my_game->escape_position, my_game_copy, collectibles_amount))
+	player_pos = get_tile_position(*game, PLAYER);
+	ctibles_amount = get_collectibles_left(*game);
+	game->escape_pos = get_tile_position(*game, ESCAPE);
+	game_copy = duplicate_game(*game);
+	if (!is_path_valid(player_pos, game->escape_pos, game_copy, ctibles_amount))
 	{
-		free_logic_part(ERROR_MESSSAGE_09, &my_game_copy); // ✅ Free
-		return(false);
+		free_logic_part(ERROR_MESSSAGE_09, &game_copy);
+		return (false);
 	}
-	free_logic_part(OK_MESSSAGE_01, &my_game_copy);
+	free_logic_part(OK_MESSSAGE_01, &game_copy);
 	return (true);
 }
 
-bool	are_walls_approved(game my_game)
+// Step 1 : Verif de la 1ere & derniere ligne
+// Step 2 : Verif des lignes in between
+bool	are_walls_approved(s_game game)
 {
-	int i = 0;
-	int j = 0;
-// ------------------------- Verif de la 1ere & derniere ligne ----------------------------- //
-	while ((my_game.content[i][j] != '\n') && (my_game.content[my_game.max_lines - 1][j] != '\n'))
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while ((game.content[i][j] != '\n') && (game.content[game.max_lines
+			- 1][j] != '\n'))
 	{
-		if ((my_game.content[i][j] == '1') && (my_game.content[my_game.max_lines - 1][j] == '1'))
+		if ((game.content[i][j] == '1') && (game.content[game.max_lines
+				- 1][j] == '1'))
 			j++;
 		else
 			return (false);
 	}
 	i++;
-// ------------------------- Verif des lignes in between ----------------------------------- //
-	while (i < (my_game.max_lines - 1))	// lines = amount of lines but index lines is -1. Meaning that there are 5 lines, but line[5] is out of the allocated memory
+	while (i < (game.max_lines - 1))
 	{
-		if ((my_game.content[i][0] == '1') && (my_game.content[i][my_game.max_columns - 2] == '1')) // length -1 is \n so need to put length-2
+		if ((game.content[i][0] == '1') && (game.content[i][game.max_columns
+				- 2] == '1'))
 			i++;
 		else
 			return (false);
@@ -57,20 +63,23 @@ bool	are_walls_approved(game my_game)
 	return (true);
 }
 
-tile	get_tile_position(game my_game, char element)
+// Return -1 si element not found - Utile pour debug
+tile	get_tile_position(s_game game, char element)
 {
-	int y = 0;
-	int	x = 0;
+	int		y;
+	int		x;
 	tile	element_position;
-	element_position.line = -1;							// Return si element not found - Utile pour debug
-	element_position.column = -1;
 
-	while (y < my_game.max_lines)
+	y = 0;
+	x = 0;
+	element_position.line = -1;
+	element_position.column = -1;
+	while (y < game.max_lines)
 	{
 		x = 0;
-		while (x < my_game.max_columns)
+		while (x < game.max_columns)
 		{
-			if (my_game.content[y][x] == element)
+			if (game.content[y][x] == element)
 			{
 				element_position.line = y;
 				element_position.column = x;
@@ -82,132 +91,140 @@ tile	get_tile_position(game my_game, char element)
 	return (element_position);
 }
 
-// ---- ⬇️  Check qu'il y a seulement : 1 joueur + 1 escape / AU MOINS 1 collec ✅
-bool	is_element(game *my_game, char element)
+// Check qu'il y a seulement : 1 joueur + 1 escape / AU MOINS 1 collec ✅
+bool	is_element(s_game *game, char element)
 {
 	int	x;
-	int y;
-	int element_counter;
+	int	y;
+	int	element_counter;
 
 	y = 0;
 	element_counter = 0;
-	while (y < my_game->max_lines)
+	while (y < game->max_lines)
 	{
 		x = 0;
-		while (x < my_game->max_columns)
+		while (x < game->max_columns)
 		{
-			if (my_game->content[y][x] == element)
+			if (game->content[y][x] == element)
 				(element_counter)++;
 			x++;
 		}
 		y++;
 	}
 	if (element_counter == 0)
-		return(ft_printf(ERROR_MESSSAGE_07), false);
+		return (ft_printf(ERROR_MESSSAGE_07), false);
 	if ((element_counter > 1) && ((element == 'P') || (element == 'E')))
-		return(ft_printf(ERROR_MESSSAGE_08), false);
+		return (ft_printf(ERROR_MESSSAGE_08), false);
 	return (true);
 }
 
-
-int		get_collectibles_left(game my_game) // Supprimer bool param ?
+int	get_collectibles_left(s_game game)
 {
-	int	collectibles_amount;
-	collectibles_amount = 0;
+	int	ctibles_amount;
+	int	y;
+	int	x;
 
-	int y = 0;
-	int	x = 0;
-
-	while (y < my_game.max_lines)
+	ctibles_amount = 0;
+	y = 0;
+	x = 0;
+	while (y < game.max_lines)
 	{
 		x = 0;
-		while (x < my_game.max_columns)
+		while (x < game.max_columns)
 		{
-			if (my_game.content[y][x] == COLLECTIBLE)
+			if (game.content[y][x] == COLLECTIBLE)
 			{
-				collectibles_amount++;
+				ctibles_amount++;
 			}
 			x++;
 		}
 		y++;
 	}
-
-	return (collectibles_amount);
+	return (ctibles_amount);
 }
 
-game	duplicate_game(game my_game)
+// Copie de la map pour eviter de mettre de changer quoi ce que soit sur la map d'origine ✅
+// game_copy.content = NULL; car je ne peux pas return NULL
+// Calloc toutes les lignes car on utilise pas GNL cette fois (sinon segfault) ✅
+s_game	duplicate_game(s_game game)
 {
-// ----------------------------------------------- Copie de la map pour eviter de mettre de changer quoi ce que soit sur la map d'origine ✅
-	game	my_game_copy;
-	my_game_copy.max_columns = my_game.max_columns;
-	my_game_copy.max_lines = my_game.max_lines;
+	s_game	game_copy;
+	int		y;
 
-	my_game_copy.content = ft_calloc(my_game.max_lines, sizeof(char *));				// FREE dans fonction appelante ✅
-	if (!my_game_copy.content)
-		my_game_copy.content = NULL;													// Fait ca car je ne peux pas return NULL
-	int y = 0;
-	while (y < my_game.max_lines)
+	game_copy.max_columns = game.max_columns;
+	game_copy.max_lines = game.max_lines;
+	game_copy.content = ft_calloc(game.max_lines, sizeof(char *));
+	if (!game_copy.content)
+		game_copy.content = NULL;
+	y = 0;
+	while (y < game.max_lines)
 	{
-// ---------------------------------------------------------- Calloc toutes les lignes car on utilise pas GNL cette fois (sinon segfault) ✅
-		my_game_copy.content[y] = ft_calloc(my_game.max_columns, sizeof(char));			// FREE dans fonction appelante ✅
-		if (!my_game_copy.content[y])
-			my_game_copy.content = NULL;												// Fait ca car je ne peux pas return NULL
-		my_game_copy.content[y] = ft_memcpy(my_game_copy.content[y], my_game.content[y], (size_t)my_game.max_columns);
+		game_copy.content[y] = ft_calloc(game.max_columns, sizeof(char));
+		if (!game_copy.content[y])
+			game_copy.content = NULL;
+		game_copy.content[y] = ft_memcpy(game_copy.content[y], game.content[y],
+				(size_t)game.max_columns);
 		y++;
 	}
-	return (my_game_copy);
+	return (game_copy);
 }
-four_moves	moves_options_set_up(tile player_position)
+
+four_moves	moves_options_set_up(tile player_pos)
 {
-	four_moves	all_directions;
+	four_moves	player_go;
 
-	all_directions.player_up.line = player_position.line - 1;
-	all_directions.player_up.column = player_position.column;
-
-	all_directions.player_left.line = player_position.line;
-	all_directions.player_left.column = player_position.column - 1;
-
-	all_directions.player_down.line = player_position.line + 1;
-	all_directions.player_down.column = player_position.column;
-
-	all_directions.player_right.line = player_position.line;
-	all_directions.player_right.column = player_position.column + 1;
-
-	return(all_directions);
+	player_go.up.line = PLAYER_LINE - 1;
+	player_go.up.column = PLAYER_COLUMN;
+	player_go.left.line = PLAYER_LINE;
+	player_go.left.column = PLAYER_COLUMN - 1;
+	player_go.down.line = PLAYER_LINE + 1;
+	player_go.down.column = PLAYER_COLUMN;
+	player_go.right.line = PLAYER_LINE;
+	player_go.right.column = PLAYER_COLUMN + 1;
+	return (player_go);
 }
-// ---- ⬇️  Verif validité du path ✅
-bool	is_path_valid(tile player_position, tile destination_position, game my_game_copy, int total_collectibles)
+
+bool	path_pre_checks(s_game *game_copy, tile *player_pos)
 {
-	static int	collectibles_counter;
+	if ((PLAYER_LINE_PTR < 0) || (PLAYER_COLUMN_PTR < 0)
+		|| (PLAYER_LINE_PTR > MAX_GAME_LINES)
+		|| (PLAYER_COLUMN_PTR > MAX_GAME_COLUMNS))
+		return (false);
+	if (TILE_CHAR_PTR(game_copy->content, player_pos) == WALL)
+		return (false);
+	if (TILE_CHAR_PTR(game_copy->content, player_pos) == CHECKED)
+		return (false);
+	return (true);
+}
+// Step 1 : Verifie que Player est dans le rectangle
+// Step 2 : Vérif si player est sur la destination (= escape/collectible)
+// Step 3 : Vérif si on est sur un mur
+// Step 4 : Vérif si on est deja passé sur cette case
+// Step 5 : Sauvegarder visite de la case (marquer un V)
+bool	is_path_valid(tile player_pos, tile dest_pos, s_game game_copy,
+		int tot_ctibles)
+{
+	static int	ctibles_counter;
 	static int	escape_found;
-	four_moves	all_directions;
-// ---------------------------------------------------------------------------------------------  Verifie que start est dans le rectangle ✅
-	if ((player_position.line < 0) || (player_position.column < 0) || (player_position.line > my_game_copy.max_lines) || (player_position.column > my_game_copy.max_columns))
+	four_moves	player_go;
+
+	if (!path_pre_checks(&game_copy, &player_pos))
 		return (false);
-	if (TILE_CHAR(my_game_copy.content, player_position) == COLLECTIBLE)
-		collectibles_counter++;
-// -------------------------------------------------------------------------- Est-ce que player est sur la destination (escape/collectible) ✅
-	if (player_position.line == destination_position.line && (player_position.column == destination_position.column))
-		escape_found = 1;	/* Ne rien return pour l'instant car on doit etre surs que tous les collectibles sont trouvés */
-// ---------------------------------------------------------------------------------------------------------- Est-ce qu'on est sur un mur ✅
-	if (TILE_CHAR(my_game_copy.content, player_position) == WALL)
-		return (false);
-// ------------------------------------------------------------------------------------------- Est-ce qu'on est deja passé sur cette case ✅
-	if (TILE_CHAR(my_game_copy.content, player_position) == CHECKED)
-		return (false);
-// ----------------------------------------------------------------------------------------- Sauvegarder visite de la case (marquer un V) ✅
-	TILE_CHAR(my_game_copy.content, player_position) = CHECKED;
-	if ((collectibles_counter == total_collectibles) && (escape_found == 1))
+	if (TILE_CHAR(game_copy.content, player_pos) == COLLECTIBLE)
+		ctibles_counter++;
+	if (PLAYER_LINE == dest_pos.line && (PLAYER_COLUMN == dest_pos.column))
+		escape_found = 1;
+	TILE_CHAR(game_copy.content, player_pos) = CHECKED;
+	if ((ctibles_counter == tot_ctibles) && (escape_found == 1))
 		return (true);
-	all_directions = moves_options_set_up(player_position);
-// --------------------------------------------------------------------------------------- Aller en haut puis gauche puis bas puis droite ✅
-	if (is_path_valid(all_directions.player_up, destination_position, my_game_copy, total_collectibles))
+	player_go = moves_options_set_up(player_pos);
+	if (is_path_valid(player_go.up, dest_pos, game_copy, tot_ctibles))
 		return (true);
-	if (is_path_valid(all_directions.player_left, destination_position, my_game_copy, total_collectibles))
+	if (is_path_valid(player_go.left, dest_pos, game_copy, tot_ctibles))
 		return (true);
-	if (is_path_valid(all_directions.player_down, destination_position, my_game_copy, total_collectibles))
+	if (is_path_valid(player_go.down, dest_pos, game_copy, tot_ctibles))
 		return (true);
-	if (is_path_valid(all_directions.player_right, destination_position, my_game_copy, total_collectibles))
+	if (is_path_valid(player_go.right, dest_pos, game_copy, tot_ctibles))
 		return (true);
 	return (false);
 }

@@ -1,12 +1,12 @@
 #include "push_swap.h"
 
-linked_node	*new_node(void *content)
+t_node	*new_node(void *content)
 {
-	linked_node	*node;
+	t_node	*node;
 
 	if (!content)
 		return (NULL);
-	node = malloc (sizeof(linked_node));
+	node = malloc (sizeof(t_node));
 	if (!node)
 		return (NULL);
 	node->content = content;
@@ -15,9 +15,9 @@ linked_node	*new_node(void *content)
 	return (node);
 }
 
-linked_node	*find_last_node(linked_node *lst)
+t_node	*find_last_node(t_node *lst)
 {
-	linked_node	*last;
+	t_node	*last;
 	if (!lst)
 		return(NULL);
 	last = lst;
@@ -28,7 +28,7 @@ linked_node	*find_last_node(linked_node *lst)
 	return (last);
 }
 
-void		add_node_up(linked_node **lst, linked_node *new)
+void		add_node_up(t_node **lst, t_node *new)
 {
 	if(!lst || !new)
 		return;
@@ -36,9 +36,9 @@ void		add_node_up(linked_node **lst, linked_node *new)
 	*lst = new;
 }
 
-void		add_node_down(linked_node **lst, linked_node *new)
+void		add_node_down(t_node **lst, t_node *new)
 {
-	linked_node *last;
+	t_node *last;
 
 	if (!lst || !new)
 		return;
@@ -53,10 +53,10 @@ void		add_node_down(linked_node **lst, linked_node *new)
 	//new->next = NULL; // NOPE, because 'new' may not be the last node
 }
 
-int			count_nodes(linked_node *lst)
+int			count_nodes(t_node *lst)
 {
 	int		length;
-	linked_node	*travelling_ptr;
+	t_node	*travelling_ptr;
 
 	if (!lst)
 		return (0);

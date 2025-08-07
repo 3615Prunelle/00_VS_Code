@@ -1,133 +1,136 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap_tools.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/03 18:03:26 by sophie            #+#    #+#             */
+/*   Updated: 2025/08/03 19:29:28 by sophie           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-int			lowest_number_stack_index(linked_node *stack)
+int	lowest_number_stack_index(t_node *stack)
 {
-	int i = 0;
-	int lowest_number = INT_MAX;
-	int	lowest_number_index;
+	int	i;
+	int	lowest_number;
+	int	lowst_nb_idx;
 
+	i = 0;
+	lowest_number = INT_MAX;
 	while (stack != NULL)
 	{
-		if(*(int*)(stack->content) < lowest_number)
+		if (*(int *)(stack->content) < lowest_number)
 		{
-			lowest_number = *(int*)(stack->content);
-			lowest_number_index = i;
+			lowest_number = *(int *)(stack->content);
+			lowst_nb_idx = i;
 		}
 		i++;
 		stack = stack->next;
 	}
-	return(lowest_number_index);
+	return (lowst_nb_idx);
 }
 
-int			highest_number_stack_index(linked_node *stack)
+int	highest_nb_stack_index(t_node *stack)
 {
-	int i = 0;
-	int highest_number = INT_MIN;
-	int	highest_number_index;
+	int	i;
+	int	highest_nb;
+	int	highst_nb_idx;
 
+	i = 0;
+	highest_nb = INT_MIN;
 	while (stack != NULL)
 	{
-		if(*(int*)(stack->content) > highest_number)
+		if (*(int *)(stack->content) > highest_nb)
 		{
-			highest_number = *(int*)(stack->content);
-			highest_number_index = i;
+			highest_nb = *(int *)(stack->content);
+			highst_nb_idx = i;
 		}
 		i++;
 		stack = stack->next;
 	}
-	return(highest_number_index);
+	return (highst_nb_idx);
 }
 
-linked_node	*add_index(int *numbers_array, int *array_size, linked_node *stack)
+// Change int for int* in struct if errors
+t_node	*add_index(int *numbers_arr, int *arr_size, t_node *stack)
 {
-	int i = 0;
-	int j = 0;
-	int lower_numbers_counter = 0;
-	linked_node *stack_copy = stack;
+	int		i;
+	int		j;
+	int		lower_numbers_counter;
+	t_node	*stack_copy;
 
-	while (i < *array_size)
+	i = 0;
+	lower_numbers_counter = 0;
+	stack_copy = stack;
+	while (i < *arr_size)
 	{
 		j = 0;
 		lower_numbers_counter = 0;
-		while(j < *array_size)
+		while (j < *arr_size)
 		{
-			if(numbers_array[i] > numbers_array[j])
+			if (numbers_arr[i] > numbers_arr[j])
 			{
 				lower_numbers_counter++;
 			}
 			j++;
 		}
-		stack_copy->index = lower_numbers_counter;	// change int for int* in struct if errors
+		stack_copy->index = lower_numbers_counter;
 		stack_copy = stack_copy->next;
 		i++;
 	}
-	return(stack);
+	return (stack);
 }
 
-void		struct_config(int *numbers_array, int *array_size)
+// NULL Pour éviter erreurs dans Valgrind
+// comment print_sorted_stack when done
+// Avant de passer dans clean_exit, stack b == NULL, et on ne l'a pas malloc'é
+void	struct_config(int *numbers_arr, int *arr_size)
 {
-	int	ops_counter;
+	int			ops_counter;
+	t_2stacks	*a_b;
+
 	ops_counter = 0;
-
-	two_stacks *a_and_b;
-	a_and_b = malloc(sizeof(two_stacks));		// Ⓜ️
-	a_and_b->stack_a = NULL;
-	a_and_b->stack_b = NULL;					// Pour éviter erreurs dans Valgrind
-
-	if(!a_and_b)
-		clean_early_exit(ERROR_MESSSAGE_06, numbers_array, true);		// ✅ All heap blocks were freed -- no leaks are possible
-
-	STACK_A = create_stack(STACK_A, numbers_array, array_size);			// Ⓜ️ pour chaque node
-
-	a_and_b = algorithm_selection(a_and_b, array_size, &ops_counter, numbers_array);
-
-	// print_sorted_stack(a_and_b->stack_a);
-	// printf("Operations counter : %i\n", ops_counter);
-	// printf("Amount of numbers : %i\n", *array_size);
-
-	// Ici, stack b == NULL, et on ne l'a pas malloc'é
-	clean_exit("NULL", a_and_b, false);		// Can only go here because a_and_b doesn't exist in main
-	free(numbers_array);
-	return;
+	a_b = malloc(sizeof(t_2stacks));
+	a_b->stack_a = NULL;
+	a_b->stack_b = NULL;
+	if (!a_b)
+		clean_early_exit(ERROR_MSG_06, numbers_arr, true);
+	a_b->stack_a = create_stack(a_b->stack_a, numbers_arr, arr_size);
+	a_b = algorithm_selection(a_b, arr_size, &ops_counter, numbers_arr);
+	// print_sorted_stack(a_b->stack_a);
+	// ft_printf("Operations counter : %i\n", ops_counter);
+	// ft_printf("Amount of numbers : %i\n", *arr_size);
+	clean_exit("NULL", a_b, false);
+	free(numbers_arr);
+	return ;
 }
 
-two_stacks 	*algorithm_selection(two_stacks *a_and_b, int *array_size, int *ops_counter, int *numbers_array)
+// highest_nb donné en param pour gratter 2 lignes dans les fonctions appelées
+t_2stacks	*algorithm_selection(t_2stacks *a_b, int *arr_size,
+		int *ops_counter, int *numbers_arr)
 {
-	int lowest_number_index;
-	int highest_number_index;
-	int highest_number;
+	int	lowst_nb_idx;
+	int	highst_nb_idx;
+	int	highest_nb;
 
-	lowest_number_index = lowest_number_stack_index(STACK_A);
-	highest_number_index = highest_number_stack_index(STACK_A);
-	highest_number = INT_MIN;
-
-	if(*array_size == 2)
-		swap_a(a_and_b, ops_counter);
-	if(*array_size == 3)
-		sort_three(lowest_number_index, highest_number_index, a_and_b, ops_counter);
-	if(*array_size == 4)
-		sort_four(lowest_number_index, highest_number_index, a_and_b, ops_counter);
-	if(*array_size == 5)
-		sort_five(lowest_number_index, highest_number_index, a_and_b, ops_counter);
-	if(*array_size > 5)
+	lowst_nb_idx = lowest_number_stack_index(a_b->stack_a);
+	highst_nb_idx = highest_nb_stack_index(a_b->stack_a);
+	highest_nb = INT_MIN;
+	if (*arr_size == 2)
+		swap_a(a_b, ops_counter);
+	if (*arr_size == 3)
+		sort_three(lowst_nb_idx, highst_nb_idx, a_b, ops_counter);
+	if (*arr_size == 4)
+		sort_four(lowst_nb_idx, highst_nb_idx, a_b, ops_counter);
+	if (*arr_size == 5)
+		sort_five(lowst_nb_idx, highst_nb_idx, a_b, ops_counter);
+	if (*arr_size > 5)
 	{
-		add_index(numbers_array, array_size, STACK_A);
-		sort_above_five(a_and_b, ops_counter, array_size, highest_number); // highest_number donné en param pour gratter 2 lignes
+		add_index(numbers_arr, arr_size, a_b->stack_a);
+		sort_above_five(a_b, ops_counter, arr_size, highest_nb);
 	}
-	return(a_and_b);
-}
-
-char		*view_stack(linked_node *stack)
-{
-	char *string_finale = "";	// Evite le malloc / segfault
-	char *espace = " ";
-	char *conv_nombre;
-	while(stack != NULL)
-	{
-		conv_nombre = ft_itoa(*(int*)(stack->content));
-		string_finale = ft_strjoin(string_finale, conv_nombre);
-		string_finale = ft_strjoin(string_finale, espace);
-		stack = stack->next;
-	}
-	return(string_finale);
+	return (a_b);
 }

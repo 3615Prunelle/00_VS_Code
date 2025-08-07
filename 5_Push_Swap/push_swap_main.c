@@ -1,87 +1,98 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap_main.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/03 15:37:06 by sophie            #+#    #+#             */
+/*   Updated: 2025/08/07 18:28:55 by sophie           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
+// (argc == 2) means long string OR only one number
 int	main(int argc, char **argv)
 {
-	int i;
-	int	array_size;
-	int *numbers_array;
+	int	i;
+	int	arr_size;
+	int	*numbers_arr;
 
 	i = 0;
-	numbers_array = NULL;
-	if(argc < 2)
-		clean_early_exit(ERROR_MESSSAGE_01, numbers_array, true);
-
-	else if(argc == 2)			// long string OR only one number
+	numbers_arr = NULL;
+	if (argc < 2)
+		clean_early_exit(ERROR_MSG_01, numbers_arr, true);
+	else if (argc == 2)
 	{
-		numbers_array = two_argv(argv[1], numbers_array, &array_size);
+		numbers_arr = two_argv(argv[1], numbers_arr, &arr_size);
 	}
-	else if(argc > 2)
+	else if (argc > 2)
 	{
-		numbers_array = above_two_argv(argv, argc, numbers_array, &array_size);
+		numbers_arr = above_two_argv(argv, argc, numbers_arr, &arr_size);
 	}
-	check_array(numbers_array, &array_size);
-	return(0);
+	check_array(numbers_arr, &arr_size);
+	return (0);
 }
 
-int		*two_argv(char *string_input, int *numbers_array, int *array_size)
+int	*two_argv(char *input, int *numbers_arr, int *arr_size)
 {
-		if(is_numerical_only(string_input))
-		{
-			*array_size = count_numbers(string_input);						// Ⓜ️✅ (ft_split)
-			if(*array_size == 1)
-				clean_early_exit(ERROR_MESSSAGE_01, NULL, true);
-			numbers_array = malloc(sizeof(int) * *array_size);				// ‼️Ⓜ️✅‼️
-			numbers_array = string_to_int_array(string_input, numbers_array);
-		}
-		else
-			clean_early_exit(ERROR_MESSSAGE_02, NULL, true);				// Ⓜ️✅
-		return(numbers_array);
+	if (is_numerical_only(input))
+	{
+		*arr_size = count_numbers(input);
+		if (*arr_size == 1)
+			clean_early_exit(ERROR_MSG_01, NULL, true);
+		numbers_arr = malloc(sizeof(int) * *arr_size);
+		numbers_arr = string_to_int_array(input, numbers_arr);
+	}
+	else
+		clean_early_exit(ERROR_MSG_02, NULL, true);
+	return (numbers_arr);
 }
 
-int		*above_two_argv(char **strings_input, int argc, int *numbers_array, int *array_size)
+// i = 1 car un des args sera a.out donc on compte à partir du 1
+int	*above_two_argv(char **inputs, int argc, int *numbers_arr, int *arr_size)
 {
-	int i;
-	i = 1;							// Attention, un des args sera a.out, donc on compte à partir du 1
-	*array_size = 0;
-	while(argc > 1)					// Car on zappe le 1er param
+	int	i;
+
+	i = 1;
+	*arr_size = 0;
+	while (argc > 1)
 	{
-		if(is_numerical_only(strings_input[i]))
+		if (is_numerical_only(inputs[i]))
 		{
-			(*array_size)++;		// How many args numbers ?
+			(*arr_size)++;
 			argc--;
 			i++;
-			continue;
+			continue ;
 		}
 		else
-			clean_early_exit(ERROR_MESSSAGE_02, numbers_array, true);
+			clean_early_exit(ERROR_MSG_02, numbers_arr, true);
 	}
-	numbers_array = malloc(sizeof(int) * *array_size);
+	numbers_arr = malloc(sizeof(int) * *arr_size);
 	i = 0;
-	while (i < *array_size)
+	while (i < *arr_size)
 	{
-		numbers_array[i] = ft_atol(strings_input[i+1]);
+		numbers_arr[i] = ft_atol(inputs[i + 1]);
 		i++;
 	}
-	return(numbers_array);
+	return (numbers_arr);
 }
 
-void	check_array(int *numbers_array, int *array_size)
+void	check_array(int *numbers_arr, int *arr_size)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (i < *array_size)
+	while (i < *arr_size)
 	{
-		if (((numbers_array[i]) < INT_MIN) || ((numbers_array[i]) > INT_MAX))
-			clean_early_exit(ERROR_MESSSAGE_03, numbers_array, true);
+		if (((numbers_arr[i]) < INT_MIN) || ((numbers_arr[i]) > INT_MAX))
+			clean_early_exit(ERROR_MSG_03, numbers_arr, true);
 		i++;
 	}
-
-	if(is_number_repeat(numbers_array, *array_size))
-		clean_early_exit(ERROR_MESSSAGE_04, numbers_array, true);
-
-	if(is_sorted(numbers_array, *array_size))
-		clean_early_exit(ERROR_MESSSAGE_05, numbers_array, true);
-
-	struct_config(numbers_array, array_size);
+	if (is_number_repeat(numbers_arr, *arr_size))
+		clean_early_exit(ERROR_MSG_04, numbers_arr, true);
+	if (is_sorted(numbers_arr, *arr_size))
+		clean_early_exit(ERROR_MSG_05, numbers_arr, true);
+	struct_config(numbers_arr, arr_size);
 }
