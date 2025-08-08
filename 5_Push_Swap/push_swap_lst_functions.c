@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap_lst_functions.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/07 18:52:57 by sophie            #+#    #+#             */
+/*   Updated: 2025/08/07 18:52:59 by sophie           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 t_node	*new_node(void *content)
@@ -6,7 +18,7 @@ t_node	*new_node(void *content)
 
 	if (!content)
 		return (NULL);
-	node = malloc (sizeof(t_node));
+	node = malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
 	node->content = content;
@@ -18,8 +30,9 @@ t_node	*new_node(void *content)
 t_node	*find_last_node(t_node *lst)
 {
 	t_node	*last;
+
 	if (!lst)
-		return(NULL);
+		return (NULL);
 	last = lst;
 	while (last->next != NULL)
 	{
@@ -28,32 +41,30 @@ t_node	*find_last_node(t_node *lst)
 	return (last);
 }
 
-void		add_node_up(t_node **lst, t_node *new)
+void	add_node_up(t_node **lst, t_node *new)
 {
-	if(!lst || !new)
-		return;
+	if (!lst || !new)
+		return ;
 	new->next = *lst;
 	*lst = new;
 }
 
-void		add_node_down(t_node **lst, t_node *new)
+void	add_node_down(t_node **lst, t_node *new)
 {
-	t_node *last;
+	t_node	*last;
 
 	if (!lst || !new)
-		return;
+		return ;
 	if (!*lst)
 	{
 		*lst = new;
-		//new->next = NULL; // NOPE, because 'new' may not be the last node
-		return;
+		return ;
 	}
 	last = find_last_node(*lst);
 	last->next = new;
-	//new->next = NULL; // NOPE, because 'new' may not be the last node
 }
 
-int			count_nodes(t_node *lst)
+int	count_nodes(t_node *lst)
 {
 	int		length;
 	t_node	*travelling_ptr;

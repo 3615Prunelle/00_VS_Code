@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 15:37:06 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/07 18:28:55 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/08 12:32:29 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ int	main(int argc, char **argv)
 	i = 0;
 	numbers_arr = NULL;
 	if (argc < 2)
-		clean_early_exit(ERROR_MSG_01, numbers_arr, true);
+	{
+		clean_early_exit(ERROR_MSG, NULL);
+	}
 	else if (argc == 2)
 	{
 		numbers_arr = two_argv(argv[1], numbers_arr, &arr_size);
@@ -41,12 +43,14 @@ int	*two_argv(char *input, int *numbers_arr, int *arr_size)
 	{
 		*arr_size = count_numbers(input);
 		if (*arr_size == 1)
-			clean_early_exit(ERROR_MSG_01, NULL, true);
+			clean_early_exit(ERROR_MSG, NULL);
+			// clean_early_exit(ERROR_MSG_01, NULL);
 		numbers_arr = malloc(sizeof(int) * *arr_size);
 		numbers_arr = string_to_int_array(input, numbers_arr);
 	}
 	else
-		clean_early_exit(ERROR_MSG_02, NULL, true);
+		clean_early_exit(ERROR_MSG, NULL);
+		// clean_early_exit(ERROR_MSG_02, NULL);
 	return (numbers_arr);
 }
 
@@ -67,7 +71,8 @@ int	*above_two_argv(char **inputs, int argc, int *numbers_arr, int *arr_size)
 			continue ;
 		}
 		else
-			clean_early_exit(ERROR_MSG_02, numbers_arr, true);
+			clean_early_exit(ERROR_MSG, numbers_arr);
+			// clean_early_exit(ERROR_MSG_02, numbers_arr);
 	}
 	numbers_arr = malloc(sizeof(int) * *arr_size);
 	i = 0;
@@ -87,12 +92,15 @@ void	check_array(int *numbers_arr, int *arr_size)
 	while (i < *arr_size)
 	{
 		if (((numbers_arr[i]) < INT_MIN) || ((numbers_arr[i]) > INT_MAX))
-			clean_early_exit(ERROR_MSG_03, numbers_arr, true);
+			clean_early_exit(ERROR_MSG, numbers_arr);
+			// clean_early_exit(ERROR_MSG_03, numbers_arr);
 		i++;
 	}
 	if (is_number_repeat(numbers_arr, *arr_size))
-		clean_early_exit(ERROR_MSG_04, numbers_arr, true);
+		clean_early_exit(ERROR_MSG, numbers_arr);
+		// clean_early_exit(ERROR_MSG_04, numbers_arr);
 	if (is_sorted(numbers_arr, *arr_size))
-		clean_early_exit(ERROR_MSG_05, numbers_arr, true);
+		clean_early_exit(ERROR_MSG, numbers_arr);
+		// clean_early_exit(ERROR_MSG_05, numbers_arr);
 	struct_config(numbers_arr, arr_size);
 }

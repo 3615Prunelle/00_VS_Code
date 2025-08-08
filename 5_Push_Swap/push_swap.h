@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 15:47:23 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/03 19:29:09 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/08 13:29:15 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define PUSH_SWAP_H
 
 // ⚪ #define
-# define ERROR_MSG_01 "Error\nNo args (or not enough) have been provided\n"
-# define ERROR_MSG_02 "Error\nInvalid characters have been found - Try again\n"
-# define ERROR_MSG_03 "Error\nAt least one number exceeds the int size\n"
-# define ERROR_MSG_04 "Error\nDuplicated number(s), edit and try again !\n"
-# define ERROR_MSG_05 "Nothing to do here - Numbers are already sorted\n"
-# define ERROR_MSG_06 "Error\nSomething went wront with Her Majesty Malloc\n"
-# define ERROR_MSG_07 "Error\n TBD \n"
+# define ERROR_MSG "Error\n"
+// # define ERROR_MSG_01 "Error\nNot enough args have been provided\n"
+// # define ERROR_MSG_02 "Error\nInvalid characters have been found - Try again\n"
+// # define ERROR_MSG_03 "Error\nAt least one number exceeds the int size\n"
+// # define ERROR_MSG_04 "Error\nDuplicated number(s), edit and try again !\n"
+// # define ERROR_MSG_05 "Nothing to do here - Numbers are already sorted\n"
+// # define ERROR_MSG_06 "Error\nSomething went wront with Her Majesty Malloc\n"
 
 // ⚪ #include
 # include <limits.h>
@@ -99,8 +99,8 @@ t_2stacks		*reverse_rotate_a(t_2stacks *a_b, int *ops_counter);
 // t_2stacks		*reverse_rotate_a_b(t_2stacks *a_b, int *ops_counter);
 
 // ⚪ Clean up functions
-void			clean_early_exit(char *msg, int *numbers_arr, bool exit_wanted);
-void			clean_exit(char *msg, t_2stacks *a_b, bool exit_wanted);
+void			clean_early_exit(char *msg, int *numbers_arr);
+void			free_nodes(t_2stacks *a_b);
 
 // ⚪ Test functions
 // void			print_sorted_stack(t_node *stack);

@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:03:26 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/03 19:29:28 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/08 12:32:29 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@ t_node	*add_index(int *numbers_arr, int *arr_size, t_node *stack)
 // NULL Pour éviter erreurs dans Valgrind
 // comment print_sorted_stack when done
 // Avant de passer dans clean_exit, stack b == NULL, et on ne l'a pas malloc'é
+// Lignes à rajouter avant clean_exit si need tests
+	// print_sorted_stack(a_b->stack_a);
+	// ft_printf("Operations counter : %i\n", ops_counter);
+	// ft_printf("Amount of numbers : %i\n", *arr_size);
 void	struct_config(int *numbers_arr, int *arr_size)
 {
 	int			ops_counter;
@@ -97,13 +101,11 @@ void	struct_config(int *numbers_arr, int *arr_size)
 	a_b->stack_a = NULL;
 	a_b->stack_b = NULL;
 	if (!a_b)
-		clean_early_exit(ERROR_MSG_06, numbers_arr, true);
+		clean_early_exit(ERROR_MSG, numbers_arr);
+		// clean_early_exit(ERROR_MSG_06, numbers_arr);
 	a_b->stack_a = create_stack(a_b->stack_a, numbers_arr, arr_size);
 	a_b = algorithm_selection(a_b, arr_size, &ops_counter, numbers_arr);
-	// print_sorted_stack(a_b->stack_a);
-	// ft_printf("Operations counter : %i\n", ops_counter);
-	// ft_printf("Amount of numbers : %i\n", *arr_size);
-	clean_exit("NULL", a_b, false);
+	free_nodes(a_b);
 	free(numbers_arr);
 	return ;
 }

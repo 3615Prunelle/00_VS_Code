@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:05:12 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/03 18:20:27 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/08 13:07:49 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	sort_three(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
 	{
 		reverse_rotate_a(a_b, ops_counter);
 		swap_a(a_b, ops_counter);
-		if (highst_nb_idx == 2)
+		// if (highst_nb_idx == 2)
+		if (highest_nb_stack_index(a_b->stack_a) == 2)
 			return ;
 		reverse_rotate_a(a_b, ops_counter);
 	}

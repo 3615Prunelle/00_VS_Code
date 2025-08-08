@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 17:45:21 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/07 18:28:42 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/08 12:45:51 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,20 @@ t_node	*create_stack(t_node *stack, int *numbers_arr, int *arr_size)
 	return (stack);
 }
 
-void	clean_early_exit(char *msg, int *numbers_arr, bool exit_wanted)
+void	clean_early_exit(char *msg, int *numbers_arr)
 {
 	int	fd;
 
 	fd = 2;
 	if (numbers_arr)
 		free(numbers_arr);
-	if (exit_wanted)
-	{
-		ft_fprintf(&fd, "%s\n", msg);
-		exit(1);
-	}
+	ft_fprintf(&fd, "%s", msg);
+	exit(1);
 }
 
 // lstclear not used because it frees node+content (and no content was malloc)
 // No need to check for stack b, car il n'a (à priori) jamais été malloc'é
-void	clean_exit(char *msg, t_2stacks *a_b, bool exit_wanted)
+void	free_nodes(t_2stacks *a_b)
 {
 	t_node	*loop_pointer;
 	t_node	*backup_next;
@@ -91,11 +88,6 @@ void	clean_exit(char *msg, t_2stacks *a_b, bool exit_wanted)
 			free(a_b);
 			a_b = NULL;
 		}
-	}
-	if (exit_wanted)
-	{
-		ft_printf("%s\n", msg);
-		exit(1);
 	}
 }
 
