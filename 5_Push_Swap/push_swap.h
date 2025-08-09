@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 15:47:23 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/08 13:29:15 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/09 09:55:46 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 // ⚪ Structs
 typedef struct node
 {
-	void		*content;
+	void		*content;		// changer pour int* instead of void ?
 	int			index;
 	struct node	*next;
 }				t_node;
@@ -58,15 +58,14 @@ bool			is_numerical_only(char *s);
 void			check_array(int *numbers_arr, int *arr_size);
 bool			is_number_repeat(int *numbers_arr, int arr_size);
 bool			is_sorted(int *numbers_arr, int arr_size);
-int				lowest_number_stack_index(t_node *stack);
-int				highest_nb_stack_index(t_node *stack);
 
 // ⚪ Post Stack Creation
 t_node			*create_stack(t_node *stack, int *numbers_arr, int *arr_size);
 void			struct_config(int *numbers_arr, int *arr_size);
 t_2stacks		*algorithm_selection(t_2stacks *a_b, int *arr_size,
 					int *ops_counter, int *numbers_arr);
-t_node			*add_index(int *numbers_arr, int *arr_size, t_node *stack);
+t_node			*add_index_above5(int *numbers_arr, int *arr_size, t_node *stack);
+t_node			*add_update_index(t_node *stack);
 
 // ⚪ Lst functions
 t_node			*new_node(void *content);
@@ -76,12 +75,9 @@ void			add_node_down(t_node **lst, t_node *new);
 int				count_nodes(t_node *lst);
 
 // ⚪ Algorithms
-void			sort_three(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
-					int *ops_counter);
-void			sort_four(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
-					int *ops_counter);
-void			sort_five(int lowst_nb_idx, int highst_nb_idx, t_2stacks *a_b,
-					int *ops_counter);
+void			sort_three(t_2stacks *a_b, int *ops_counter);
+void			sort_four(t_2stacks *a_b, int *ops_counter);
+void			sort_five(t_2stacks *a_b, int *ops_counter);
 void			sort_above_five(t_2stacks *a_b, int *ops_counter, int *arr_size,
 					int highest_nb);
 

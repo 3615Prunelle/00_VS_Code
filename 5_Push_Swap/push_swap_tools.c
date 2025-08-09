@@ -6,56 +6,14 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:03:26 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/08 12:32:29 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/09 09:55:46 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	lowest_number_stack_index(t_node *stack)
-{
-	int	i;
-	int	lowest_number;
-	int	lowst_nb_idx;
-
-	i = 0;
-	lowest_number = INT_MAX;
-	while (stack != NULL)
-	{
-		if (*(int *)(stack->content) < lowest_number)
-		{
-			lowest_number = *(int *)(stack->content);
-			lowst_nb_idx = i;
-		}
-		i++;
-		stack = stack->next;
-	}
-	return (lowst_nb_idx);
-}
-
-int	highest_nb_stack_index(t_node *stack)
-{
-	int	i;
-	int	highest_nb;
-	int	highst_nb_idx;
-
-	i = 0;
-	highest_nb = INT_MIN;
-	while (stack != NULL)
-	{
-		if (*(int *)(stack->content) > highest_nb)
-		{
-			highest_nb = *(int *)(stack->content);
-			highst_nb_idx = i;
-		}
-		i++;
-		stack = stack->next;
-	}
-	return (highst_nb_idx);
-}
-
 // Change int for int* in struct if errors
-t_node	*add_index(int *numbers_arr, int *arr_size, t_node *stack)
+t_node	*add_index_above5(int *numbers_arr, int *arr_size, t_node *stack)
 {
 	int		i;
 	int		j;
@@ -114,24 +72,22 @@ void	struct_config(int *numbers_arr, int *arr_size)
 t_2stacks	*algorithm_selection(t_2stacks *a_b, int *arr_size,
 		int *ops_counter, int *numbers_arr)
 {
-	int	lowst_nb_idx;
-	int	highst_nb_idx;
 	int	highest_nb;
 
-	lowst_nb_idx = lowest_number_stack_index(a_b->stack_a);
-	highst_nb_idx = highest_nb_stack_index(a_b->stack_a);
+	add_update_index(a_b->stack_a);	// change name to add/update under 5
+
 	highest_nb = INT_MIN;
 	if (*arr_size == 2)
 		swap_a(a_b, ops_counter);
 	if (*arr_size == 3)
-		sort_three(lowst_nb_idx, highst_nb_idx, a_b, ops_counter);
+		sort_three(a_b, ops_counter);
 	if (*arr_size == 4)
-		sort_four(lowst_nb_idx, highst_nb_idx, a_b, ops_counter);
+		sort_four(a_b, ops_counter);
 	if (*arr_size == 5)
-		sort_five(lowst_nb_idx, highst_nb_idx, a_b, ops_counter);
+		sort_five(a_b, ops_counter);
 	if (*arr_size > 5)
 	{
-		add_index(numbers_arr, arr_size, a_b->stack_a);
+		add_index_above5(numbers_arr, arr_size, a_b->stack_a);
 		sort_above_five(a_b, ops_counter, arr_size, highest_nb);
 	}
 	return (a_b);
