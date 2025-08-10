@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 15:47:23 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/09 09:55:46 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/09 10:20:48 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,6 @@
 
 // ⚪ #define
 # define ERROR_MSG "Error\n"
-// # define ERROR_MSG_01 "Error\nNot enough args have been provided\n"
-// # define ERROR_MSG_02 "Error\nInvalid characters have been found - Try again\n"
-// # define ERROR_MSG_03 "Error\nAt least one number exceeds the int size\n"
-// # define ERROR_MSG_04 "Error\nDuplicated number(s), edit and try again !\n"
-// # define ERROR_MSG_05 "Nothing to do here - Numbers are already sorted\n"
-// # define ERROR_MSG_06 "Error\nSomething went wront with Her Majesty Malloc\n"
 
 // ⚪ #include
 # include <limits.h>
@@ -34,9 +28,10 @@
 # include <libft.h>
 
 // ⚪ Structs
+// changer void* pour int* instead of void ?
 typedef struct node
 {
-	void		*content;		// changer pour int* instead of void ?
+	void		*content;
 	int			index;
 	struct node	*next;
 }				t_node;
@@ -64,8 +59,9 @@ t_node			*create_stack(t_node *stack, int *numbers_arr, int *arr_size);
 void			struct_config(int *numbers_arr, int *arr_size);
 t_2stacks		*algorithm_selection(t_2stacks *a_b, int *arr_size,
 					int *ops_counter, int *numbers_arr);
-t_node			*add_index_above5(int *numbers_arr, int *arr_size, t_node *stack);
-t_node			*add_update_index(t_node *stack);
+t_node			*add_idx_above_5(int *numbers_arr, int *arr_size,
+					t_node *stack);
+t_node			*add_idx_till_5(t_node *stack);
 
 // ⚪ Lst functions
 t_node			*new_node(void *content);
@@ -75,10 +71,10 @@ void			add_node_down(t_node **lst, t_node *new);
 int				count_nodes(t_node *lst);
 
 // ⚪ Algorithms
-void			sort_three(t_2stacks *a_b, int *ops_counter);
-void			sort_four(t_2stacks *a_b, int *ops_counter);
-void			sort_five(t_2stacks *a_b, int *ops_counter);
-void			sort_above_five(t_2stacks *a_b, int *ops_counter, int *arr_size,
+void			sort_3(t_2stacks *a_b, int *ops_counter);
+void			sort_4(t_2stacks *a_b, int *ops_counter);
+void			sort_5(t_2stacks *a_b, int *ops_counter);
+void			sort_above_5(t_2stacks *a_b, int *ops_counter, int *arr_size,
 					int highest_nb);
 
 // ⚪ Operations

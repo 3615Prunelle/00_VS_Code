@@ -59,7 +59,7 @@ void	clean_and_exit(void *param)
 	if (WINDOW)
 		mlx_terminate(WINDOW);
 	free_logic_part(OK_MESSSAGE_05, game);
-	ft_printf("... Something to add, Queen Streeror ? : [%s]\n\n",
+	ft_printf("... Something to add, Queen Strerror ? : [%s]\n\n",
 		strerror(errno));
 	exit(1);
 }
