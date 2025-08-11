@@ -9,7 +9,8 @@
 		"limits.h": "c",
 		"ft_printf.h": "c",
 		"so_long.h": "c",
-		"stdbool.h": "c"
+		"stdbool.h": "c",
+		"mntk.h": "c"
 	},
 		"files.exclude": {
 			"**/*.o": true	// Masquer tous les .o après chaque compilation

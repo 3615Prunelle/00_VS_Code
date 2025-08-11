@@ -32,7 +32,7 @@ comment VS Code doit lancer et déboguer un programme C.*/
         },
 //--------- Sum up : Configuration classique pour exécuter et déboguer un programme C avec prise en charge de la console externe. ----- //
 		{
-            "name": "Fichier en cours d'édition",
+            "name": "Fichier en cours",
             "type": "cppdbg",											// Utilisation du debugger C/C++ de VS Code
             "request": "launch",										// Exécute le programme
             "program": "${workspaceRoot}/a.out",						// Programme lancé (l'exécutable compilé)
@@ -122,5 +122,23 @@ comment VS Code doit lancer et déboguer un programme C.*/
 			"preLaunchTask": "Build with Makefile for Push_Swap"
 		},
 //--------- Config pour Push_Swap ----------------------------------------------------------------------------------------------------- //
+		{
+			"name": "Minitalk",
+			"type": "cppdbg",
+			"request": "launch",
+           "program": "${workspaceRoot}/a.out",	// Chemin d'accès de l'exécutable créé automatiquement sans Makefile
+			// "program": "${workspaceFolder}/5_Push_Swap/server",	// Chemin d'accès de l'exécutable créé par Makefile
+			//"args": ["arg1", "arg2"],
+			"environment": [{ "name": "config", "value": "Debug" }],
+			"cwd": "${workspaceFolder}",
+			"MIMode": "gdb",
+			"setupCommands": [
+				{ "text": "handle SIGUSR1 nostop pass" },	// Indispensable pour débug dans VSCode, sinon erreur car gdb
+				{ "text": "handle SIGUSR2 nostop pass" }	// intercepte le signal avant mon programme ('interupt' ou autre erreur)
+			],
+			"preLaunchTask": "C/C++: cc build minitalk"
+			// "preLaunchTask": "Build with Makefile for Push_Swap"
+		},
+//--------- Config pour Minitalk (à finir) ----------------------------------------------------------------------------------------------------- //
 	]
 }

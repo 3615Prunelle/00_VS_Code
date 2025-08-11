@@ -330,6 +330,36 @@ Explication des clés principales :
 			"problemMatcher": []
 		},
 //--------- Sum up : Compil through Makefile pour Push_Swap --------------------------------------------------------------------- //
+		{
+			"label": "C/C++: cc build minitalk",
+			"type": "shell",
+			"command": "/usr/bin/cc",
+			"args": [
+				"-g",
+				"mntk_server_main.c",
+// Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
+				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
+				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
+				"-L${workspaceFolder}/6_Minitalk/",	// Pour la library du projet en cours
+				//"-DROUQUINETTE_DEBUG",		// Trick super badass si besoin
+				"-o",
+				"${workspaceFolder}/a.out",		// Génère un exécutable a.out dans le dossier du projet
+				// "-Wall",						// Active tous les avertissements de base
+				// "-Wextra",					// Active des avertissements supplémentaires
+				// "-Werror",					// Traite les avertissements comme des erreurs
+				"-lftprintf",					// A chaque nouveau .a/.h à utiliser, ajouter une ligne au dessus de celle-ci. Penser à compiler le projet avant de tester dans VSCode
+				"-lft"							// -lft = -l ft = -l (lib)ft = Liaison avec libft.a - A METTRE A LA FIN IMPERATIVEMENT Sinon bug de type 'undefined reference to ft_*'
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/6_Minitalk"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+//--------- Sum up : Compil test pour Minitalk --------------------------------------------------------------------- //
 ],
 	"version": "2.0.0"
 }
