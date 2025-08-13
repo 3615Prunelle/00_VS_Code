@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/06 00:00:17 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/12 13:19:19 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 // Main Functions
 void			ft_printf(const char *string, ...);
 void			ft_fprintf(int *fd, const char *string, ...);
-int				print_fd(int *fd, const char *string, va_list ptr_string);
+int				print_to_fd(int *fd, const char *string, va_list ptr_string);
 
 
 // Helpers

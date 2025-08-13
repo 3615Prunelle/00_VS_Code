@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mntk.h                                             :+:      :+:    :+:   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:41:59 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/10 21:23:27 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/12 15:35:18 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,35 @@
 
 
 // ⚪ #include
+// #define _POSIX_C_SOURCE 200809L	// Décommenter si 42 VS Code ne reconnait pas certaines variables/fonctions
+									// comme sigset_t ou sigaction. Autre option : activer _POSIX_C_SOURCE dans set up VSCode :
+									// Menu View → Command Palette
+									// Taper : C/C++: Edit Configurations (UI)
+									// Aller dans la section "Defines"
+									// Copier coller cette ligne : _POSIX_C_SOURCE=200809L
+									// Redémarrer VSCode
 #include <signal.h>
 #include <errno.h>	// Only for testing purposes (to see signal function error message if fails)
 #include <string.h>	// Only for testing purposes (to see signal function error message if fails)
 #include <unistd.h>	// Pour getpid, usleep (& others TBD)
-// #include <bool.h>
+#include <stdbool.h>
 
-// ⚪ Include from other projects (put relative path to avoid issues from home computer)
-// ‼️ Mettre les.h ici + ‼️ Compiler et ajouter la ligne "-l[libname without the lib]" au dessus de "-lgetnextline" dans tasks.json ou makefile
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// ⚪ Include from other projects
+// ‼️ Compiler et ajouter la ligne "-l[libname without the lib]" dans tasks.json ou makefile
 #include <libft.h>
-#include <printf.h>
+#include <ft_printf.h>
 
 // NOTE : mettre les dossiers 99 + 98 au lieu de ca ^ car ce projet dépend des .h + .a mais pas besoin du reste
 
 // ⚪ Structs
 
 // ⚪ Functions signatures - Part 1
+unsigned char	*string_to_bit(char *s);
+char			*bit_to_string(unsigned char *bin_array);
 
 // ⚪ Functions signatures - Part 2
 

@@ -6,14 +6,14 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:34:53 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/06 00:08:36 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/12 13:44:57 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 /* Version classique sans fd
-Quand elle est appelée, elle appelle print_fd et lui donne
+Quand elle est appelée, elle appelle print_to_fd et lui donne
 la sortie standard en param pour que tout marche comme avant
 NB : sortie standard = stdout = 1 (interchangeables) */
 void	ft_printf(const char *string, ...)
@@ -23,12 +23,12 @@ void	ft_printf(const char *string, ...)
 
 	fd = 1;
 	va_start (ptr_string, string);
-	print_fd(&fd, string, ptr_string);
+	print_to_fd(&fd, string, ptr_string);
 	va_end (ptr_string);
 }
 
 /* C'est cette fonction qui sera appelée, quand besoin d'afficher sur un fd (quasi-copie de l'officielle fprintf)
-Et elle appelle la fonction intermédiataire print_fd qui accepte un FD comme param
+Et elle appelle la fonction intermédiataire print_to_fd qui accepte un FD comme param
 Donc bien penser à lui donner (par ex fd 2 = sortie erreur, etc)
 TO DO : updater le .h avec ces deux nouvelles fonctions
 WHen done testing, use it in push_swap */
@@ -37,7 +37,7 @@ void	ft_fprintf(int *fd, const char *string, ...)
 	va_list		ptr_string;
 
 	va_start (ptr_string, string);
-	print_fd(fd ,string, ptr_string);
+	print_to_fd(fd ,string, ptr_string);
 	va_end (ptr_string);
 }
 
@@ -47,7 +47,7 @@ une autre sortie que 1 (fd 1 = sortie standard, qui était jusque là dans tous 
 NB : S'il s'agit d'une string simple sans %, je peux aussi utiliser ft_putstr_fd
 Le 1er paramètre (fd) peut donc désormais être 2 (sortie erreur standard = fd 2) par exemple.
 */
-int		print_fd(int *fd, const char *string, va_list ptr_string)
+int		print_to_fd(int *fd, const char *string, va_list ptr_string)
 {
 	int			i;
 	int			j;
@@ -96,11 +96,16 @@ int	specifiers_call(int *fd, char c, va_list ptr_string)
 	return (j);
 }
 
-// int	main(int argc, char **argv)
-// {
-// 	if(argc == 2)
-// 	{
-// 		ft_printf("Here's your string : %s\n", argv[1]);
-// 	}
-// 	return(0);
-// }
+int	main(void)
+{
+	ft_printf("Char :\t\t%c\n", 'Z');
+	ft_printf("String :\t\t%s\n", "Holà");
+	ft_printf("Pointer :\t\t%p\n", "Pouet");
+	ft_printf("Decimal :\t\t%d\n", -22);
+	ft_printf("Integer :\t\t%i\n", -33);
+	ft_printf("Unsigned int :\t\t%u\n", 44);
+	ft_printf("Hexadecimal lowercase:\t%x\n", 1000);
+	ft_printf("Hexadecimal uppercase :\t%X\n", 1000);
+	ft_printf("Percentage :\t%%\n");
+	return(0);
+}

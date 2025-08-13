@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mntk_client_main.c                                 :+:      :+:    :+:   */
+/*   minitalk_client_main.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:46:04 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/11 15:01:15 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/11 18:13:50 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mntk.h"
+#include "minitalk.h"
 
 int	main(int argc, char **argv)
 {
@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 	{
 		server_PID = ft_atoi(argv[1]);
 		string_to_send = ft_strdup(argv[2]);
-		printf("About to send message [%s] to server (PID [%i])\n", string_to_send, server_PID);
+		ft_printf("About to send message [%s] to server (PID [%i])\n", string_to_send, server_PID);
 
 		// appel de fonction (TO DO) qui va transformer la string en binaire (et la renvoyer)
 

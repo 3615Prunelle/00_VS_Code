@@ -276,8 +276,6 @@ Explication des clés principales :
 				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
 				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
 				"-L${workspaceFolder}/5_Push_Swap/",	// Pour la library du projet en cours
-
-				//"-DROUQUINETTE_DEBUG",		// Trick super badass si besoin
 				"-o",
 				"${workspaceFolder}/a.out",		// Génère un exécutable a.out dans le dossier du projet
 				// "-Wall",						// Active tous les avertissements de base
@@ -336,7 +334,9 @@ Explication des clés principales :
 			"command": "/usr/bin/cc",
 			"args": [
 				"-g",
-				"mntk_server_main.c",
+				"minitalk_server_main.c",
+				// "minitalk_client_main.c",
+				"minitalk_binary_conversions.c",
 // Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
 				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
 				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg

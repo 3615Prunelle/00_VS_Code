@@ -70,7 +70,6 @@ comment VS Code doit lancer et déboguer un programme C.*/
             "request": "launch",
             "program": "${workspaceRoot}/a.out",
             // "args": ["arg1", "arg2"],
-            "args": ["*** TEST ***"],
             "environment": [{ "name": "config", "value": "Debug" }],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "C: cc build ft_printf"	//Compile uniquement les fichiers relatifs a GNL

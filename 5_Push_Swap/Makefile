@@ -8,8 +8,7 @@ NAME = push_swap
 
 CC = cc
 
-# Add -Wall -Wextra -Werror & run tests when almost done
-CFLAGS = -g -I ../98_include
+CFLAGS = -Wall -Wextra -Werror -g -I ../98_include
 LFLAGS = -L ../99_lib -lftprintf -lft
 
 SRCS = 	push_swap_main.c \

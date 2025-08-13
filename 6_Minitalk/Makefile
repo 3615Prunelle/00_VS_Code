@@ -11,9 +11,9 @@
 #		$() or ${} are used to refer to a varable
 
 # Name of the executable (program, library, etc) to be created, with or without extension
-NAME =
+NAME = server
 
-# Compiler à utiliser
+# Compilateur à utiliser
 CC = cc
 
 # Flags de compilation
@@ -28,7 +28,7 @@ CC = cc
 #	-I			Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
 #					!! Bien s'assurer de mettre TOUS les répertoires !!
 #				Mettre path relatif de chaque repo dans lequel on a un .h qui nous intéresse
-CFLAGS = -g -Wall -Wextra -Werror -I ../repo1
+CFLAGS = -g -Wall -Wextra -Werror -I ../98_include
 
 # Flags de linking (séparés des flags de compilation, pour une meilleure lisibilité)
 # Linking (avec un Linker) =  Dire au programme "Voilà où trouver tout ce que tu utilises"
@@ -39,7 +39,7 @@ CFLAGS = -g -Wall -Wextra -Werror -I ../repo1
 #	-l			Ajoute une library spécifique (pas besoin d'écrire la partie 'lib', voire note ci dessous)
 #	-lft		= -l ft = -l (lib)ft = Liaison avec libft.a
 #					Toujours en dernier arg sinon problèmes type 'undefined reference to ft_*' (at least lors de la compilation dans VSCode via .json)
-LFLAGS = -L ../repo2 -llib1 -llib2 ../repo3 -llib3 -lft
+LFLAGS = -L ../99_lib -lftprinf -lft
 
 # On définit la variable des fichiers sources
 #	The \ at the end of each file is very important (except for the last file), and means all files are on the same line
@@ -80,13 +80,13 @@ BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 #	Sum up : This rule tells "make" that "all" depends on (NAME) (defined earlier), so it must be built first
 # 	Here, $(NAME) is a dependency, meaning that the bloc below this one (with $(NAME) as a target)
 #		needs to be executed to create $(NAME), through the script 'ar rcs $(NAME) $(OBJS)'
-all: $(NAME) ruleX
+all: $(NAME)
 
 # First Script to create whetever I want to create (the command is customized according to the kind of executable wanted).
 #		$()		This variable is the target to create
 # Then, for example :
 #		ar		Command to create an archive (static library) : ***.a
-#		rcs		Remplace (r) ou créée (c), puis crée un sommaire (s) à mon programme pour que le linker (qui assemble l'exécutablel) trouve facilement quelle fonction est dans quel .o
+#		rcs		Remplace (r) ou créée (c), puis crée un sommaire (s) à mon programme pour que le linker (qui assemble l'exécutable) trouve facilement quelle fonction est dans quel .o
 #				If (NAME) already exists, it updates the object files inside
 # NB : No command = Nothing will be created
 $(NAME): $(OBJS)
@@ -118,13 +118,6 @@ fclean: clean
 # Rule to delete .o and .a (fclean) and recompile everything (all)
 # Like all previous rules, to run this one, type 'make re' in the terminal
 re: fclean all
-
-# Mettre à jour les dossiers lib&include avec tous les .a, et les .h quand je fais 'make install'
-# Autre option : 	Cette action peut être automatisée si placée dans 'all' comme dépendance.
-#					Du coup elle serait automatiquement exécutée dans la commande 'make' principale
-install:
-	cp ft_printf.h ../98_include
-	cp libftprintf.a ../99_lib
 
 # Marks certain targets as "phony", meaning they aren’t real files but just names for rules
 # Prevents conflicts if files named all, clean, etc., exist
