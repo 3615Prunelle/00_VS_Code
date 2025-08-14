@@ -49,10 +49,9 @@ unsigned char	*string_to_bit(char *s)
 		}
 		i++;
 	}
-	bin_array[j] = '\0';
+	bin_array[j] = '\0';		// mettre un /n + 1 char en plus au lieu de 11111111
 
 	return(bin_array);
-	// 01001000 01100101 01101100 01101100 01101111
 }
 void 	print_char_from_8bits(unsigned char *bin_array) // change to void return after tests
 {

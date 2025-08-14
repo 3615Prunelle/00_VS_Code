@@ -2,6 +2,10 @@
 ⬇️✅‼️⁉️❓❌Ⓜ️🆓
 */
 
+
+‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ NEXT : Voir page Notion Minitalk ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
+‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️Ne pas faire de modifs sur le fichier client dans ce VSCode (autre branche)
+
 #include "minitalk.h"
 
 // faire.h séparé avec string to bin/bit et reverse et les tester en dehors du project
@@ -30,7 +34,7 @@ void	got_signal(int signum)
 		{
 			one_char[bit_count] = '0';
 		}
-		if (signum == 12)
+		else if (signum == 12)
 		{
 			one_char[bit_count] = '1';
 		}
@@ -40,7 +44,7 @@ void	got_signal(int signum)
 	{
 		if(ft_strncmp((char*)one_char, "11111111", 8) == 0)
 		{
-			usleep(10);
+			usleep(1000);
 			write(1, "\n", 1);
 			ft_printf("\t\tLa fin du hari-string\n");
 		}
