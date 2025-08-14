@@ -12,6 +12,9 @@
 
 #include "minitalk.h"
 
+‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ NEXT : Voir page Notion Minitalk ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
+‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ Branche Client à merge quand débug fini
+
 void	send_signal(int signum)
 {
 
@@ -44,12 +47,12 @@ int	main(int argc, char **argv)
 				if(bin_array[i] == '0')
 				{
 					kill(server_PID, SIGUSR1);
-					usleep(1);			// Pause entre chaque bit envoyé
+					usleep(1000);			// Pause entre chaque bit envoyé
 				}
-				if(bin_array[i] == '1')
+				else if(bin_array[i] == '1')
 				{
 					kill(server_PID, SIGUSR2);
-					usleep(1);			// Pause entre chaque bit envoyé
+					usleep(1000);			// Pause entre chaque bit envoyé
 				}
 				i++;
 				j++;
@@ -63,7 +66,7 @@ int	main(int argc, char **argv)
 			while(i < 8)
 			{
 				kill(server_PID, SIGUSR2);
-				usleep(1);
+				usleep(1000);
 				i++;
 			}
 			exit(0);

@@ -40,7 +40,7 @@ void	got_signal(int signum)
 	{
 		if(ft_strncmp((char*)one_char, "11111111", 8) == 0)
 		{
-			usleep(10);
+			usleep(1000);
 			write(1, "\n", 1);
 			ft_printf("\t\tLa fin du hari-string\n");
 		}
