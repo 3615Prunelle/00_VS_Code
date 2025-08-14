@@ -12,28 +12,63 @@
 
 #include "minitalk.h"
 
+void	send_signal(int signum)
+{
+
+}
+
+// Client sends a signal to server
 int	main(int argc, char **argv)
 {
-	// Send a signal to server
-	// Do it only when server is set up, so I can test & debug
-	// Open 2 VScode simultaneously to debug both processes
 	int		server_PID;
 	char	*string_to_send;
+	unsigned char *bin_array;
 
 	if(argc == 3)
 	{
 		server_PID = ft_atoi(argv[1]);
 		string_to_send = ft_strdup(argv[2]);
 		ft_printf("About to send message [%s] to server (PID [%i])\n", string_to_send, server_PID);
+		ft_printf("Client PID : %i\n", getpid());	// Change à chaque fois
 
-		// appel de fonction (TO DO) qui va transformer la string en binaire (et la renvoyer)
+		bin_array = string_to_bit(string_to_send);
+		ft_printf("Bin array : [%s]\n", (char *)bin_array);
 
-		// set up signaux SIGUSR1 et SIGUSR2 (1 et 0)
-		// USR1 = 10	USR2 = 12
-
-		// créer une boucle pour envoyer les signaux un par un avec la fonction kill
+		int i = 0;
+		int j = 0;
+		while (bin_array[i] != '\0')
+		{
+			j = 0;
+			while(j < 8)
+			{
+				if(bin_array[i] == '0')
+				{
+					kill(server_PID, SIGUSR1);
+					usleep(1);			// Pause entre chaque bit envoyé
+				}
+				if(bin_array[i] == '1')
+				{
+					kill(server_PID, SIGUSR2);
+					usleep(1);			// Pause entre chaque bit envoyé
+				}
+				i++;
+				j++;
+			}
+		}
+		// create a stop condition so the server knows it's over (8 x '1' ?)
+		// use kill ? but can't use another signal than SIGUSR1 or SIGUSR2
+		if (bin_array[i] == '\0')
+		{
+			i = 0;
+			while(i < 8)
+			{
+				kill(server_PID, SIGUSR2);
+				usleep(1);
+				i++;
+			}
+			exit(0);
+		}
+		// add a clean up function
 	}
-
-
 	return(0);
 }

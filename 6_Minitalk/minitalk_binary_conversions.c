@@ -54,15 +54,14 @@ unsigned char	*string_to_bit(char *s)
 	return(bin_array);
 	// 01001000 01100101 01101100 01101100 01101111
 }
-char			*bit_to_string(unsigned char *bin_array)
+void 	print_char_from_8bits(unsigned char *bin_array) // change to void return after tests
 {
 	int i = 0;
 	int j = 0;
 	int k;
 	int number_to_conv;
 	int bin_compare;
-	int length = strlen((char*)bin_array);
-	char *s = malloc(sizeof(char) * length / 8);
+	char c;
 
 	while (bin_array[j] != '\0')
 	{
@@ -79,11 +78,10 @@ char			*bit_to_string(unsigned char *bin_array)
 			k--;
 			bin_compare /= 2;
 		}
-		s[i] = number_to_conv;	// marche sans cast
-		write(1, &s[i], 1);		// VICTOIRE
+		c = number_to_conv;
+		write(1, &c, 1);			// VICTOIRE
 		i++;
 	}
-	return(s);
 }
 // int		main(void)
 // {
@@ -92,7 +90,7 @@ char			*bit_to_string(unsigned char *bin_array)
 // 	ft_printf("Binary of [%s] is :\t[%s]\n\n", s, (char*)bin_array);
 
 // 	// Reverse :
-// 	char	*s1 = bit_to_string(bin_array);
+// 	char	*s1 = print_char_from_8bits("print_char_from_8bits");
 // 	ft_printf("String from binary is :\t[%s]\n\n", s1);
 
 // 	free(bin_array);

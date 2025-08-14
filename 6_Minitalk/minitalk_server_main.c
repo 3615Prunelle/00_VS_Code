@@ -10,34 +10,45 @@ void	got_signal(int signum)
 {
 	//  typedef typeof(void (int))  *sighandler_t;
 	// sighandler_t; est une fonction qui renvoie void et prend un int en param
-	ft_printf("Got here - Signal : %i\n", signum);
+	// ft_printf("Got here - Signal : %i\n", signum);
 
-	static int		bit_count;
-	static unsigned char	*one_char;
+	static int				bit_count;
+	static unsigned char	*one_char;					// = 1 bit
 	if (bit_count == 0)
 	{
 		one_char = malloc(sizeof(unsigned char) * 8);	// ajouter if malloc fails + free
 	}
-
-	if (bit_count <= 8)
+	if (bit_count == 8)
+	{
+		bit_count = 0;
+		free(one_char);
+		one_char = malloc(sizeof(unsigned char) * 8);	// ajouter if malloc fails + free
+	}
+	if (bit_count < 8)
 	{
 		if (signum == 10)
 		{
-			one_char[bit_count] = '0';		// pas constant = n'est pas gardé entre de
-			// write(1, '0', 1);
-			ft_printf("In first loop\n");
+			one_char[bit_count] = '0';
 		}
 		if (signum == 12)
 		{
 			one_char[bit_count] = '1';
-			// write(1, '1', 1);
-			ft_printf("In second loop\n");
 		}
 		bit_count++;
 	}
-	if (bit_count == 8)
+	if (bit_count == 8)	// tous les 8 signaux, appel de fonction qui va convertir 8 bits en char, et les print
 	{
-		bit_to_string(one_char);
+		if(ft_strncmp((char*)one_char, "11111111", 8) == 0)
+		{
+			usleep(10);
+			write(1, "\n", 1);
+			ft_printf("\t\tLa fin du hari-string\n");
+		}
+		else
+		{
+			print_char_from_8bits(one_char);
+			// ft_printf("\t<<< Binary for that letter : [%s]\n", (char*)one_char);
+		}
 	}
 
 	// if (!(signum))	// Useless, find another way to exit
@@ -77,19 +88,14 @@ int		main(void)
 // arg 2 : action quand le signal arrive - adresse d’une structure struct sigaction définie au dessus
 // arg 3 : si on veut savoir quelle action était définie avant pour ce signal = pointeur vers une autre struct sigaction. Sinon, NULL
 // return : 0 if success, -1 +errno if error
-	ft_printf("Sigaction return : [%i]\n", sigaction_return);
-	ft_printf("Errno message : [%s]\n", strerror(errno));				// Pas autorisée, use only for testing
+//	ft_printf("Sigaction return : [%i]\n", sigaction_return);
+//	ft_printf("Errno message : [%s]\n", strerror(errno));				// Pas autorisée, use only for testing
 
 	while (1)		// if no loop, exit after the first signal received
 	{
 		pause();	// attendre un signal (returns a int, what to do with it ?) - Useless ?
-		ft_printf("Sigaction return : [%i]\n", sigaction_return);
-		ft_printf("Errno message : [%s]\n", strerror(errno));				// Pas autorisée, use only for testing
 	}
 
-	// comme les return des handlers doivent être void, trouver un moyen de print les 0 et 1 quelque part
-	//
-	// tous les 8 signaux, appeler une fonction qui va convertir 8 bits en char, et les print
 
 	return(0);
 }

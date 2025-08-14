@@ -122,10 +122,10 @@ comment VS Code doit lancer et déboguer un programme C.*/
 		},
 //--------- Config pour Push_Swap ----------------------------------------------------------------------------------------------------- //
 		{
-			"name": "Minitalk",
+			"name": "Minitalk Server",
 			"type": "cppdbg",
 			"request": "launch",
-           "program": "${workspaceRoot}/a.out",	// Chemin d'accès de l'exécutable créé automatiquement sans Makefile
+           "program": "${workspaceRoot}/6_Minitalk/server",	// Chemin d'accès de l'exécutable créé automatiquement sans Makefile
 			// "program": "${workspaceFolder}/5_Push_Swap/server",	// Chemin d'accès de l'exécutable créé par Makefile
 			//"args": ["arg1", "arg2"],
 			"environment": [{ "name": "config", "value": "Debug" }],
@@ -135,9 +135,28 @@ comment VS Code doit lancer et déboguer un programme C.*/
 				{ "text": "handle SIGUSR1 nostop pass" },	// Indispensable pour débug dans VSCode, sinon erreur car gdb
 				{ "text": "handle SIGUSR2 nostop pass" }	// intercepte le signal avant mon programme ('interupt' ou autre erreur)
 			],
-			"preLaunchTask": "C/C++: cc build minitalk"
-			// "preLaunchTask": "Build with Makefile for Push_Swap"
+			"preLaunchTask": "C/C++: cc build minitalk server"
+			// "preLaunchTask": "Build with Makefile for Minitalk Server"
 		},
-//--------- Config pour Minitalk (à finir) ----------------------------------------------------------------------------------------------------- //
+//--------- Config pour Minitalk Server ----------------------------------------------------------------------------------------------------- //
+		{
+			"name": "Minitalk Client",
+			"type": "cppdbg",
+			"request": "launch",
+           "program": "${workspaceRoot}/6_Minitalk/client",	// Chemin d'accès de l'exécutable créé automatiquement sans Makefile
+			// "program": "${workspaceFolder}/5_Push_Swap/server",	// Chemin d'accès de l'exécutable créé par Makefile
+			//"args": ["arg1", "arg2"],
+			"args": ["30511", "AZERTY"],
+			"environment": [{ "name": "config", "value": "Debug" }],
+			"cwd": "${workspaceFolder}",
+			"MIMode": "gdb",
+			"setupCommands": [
+				{ "text": "handle SIGUSR1 nostop pass" },	// Indispensable pour débug dans VSCode, sinon erreur car gdb
+				{ "text": "handle SIGUSR2 nostop pass" }	// intercepte le signal avant mon programme ('interupt' ou autre erreur)
+			],
+			"preLaunchTask": "C/C++: cc build minitalk client"
+			// "preLaunchTask": "Build with Makefile for Minitalk Client"
+		},
+//--------- Config pour Minitalk Client ----------------------------------------------------------------------------------------------------- //
 	]
 }

@@ -79,7 +79,7 @@ Explication des clés principales :
 				"-g",
 				"${file}",
 				"-o",
-				"${workspaceFolder}/a.out",			// Génère un exécutable a.out dans le dossier du projet
+				"${workspaceFolder}/a.out",			// Génère un exécutable a.out dans le dossier racine
 				// "-Wall",							// Active tous les avertissements de base
 				// "-Wextra",						// Active des avertissements supplémentaires
 				// "-Werror",						// Traite les avertissements comme des erreurs
@@ -166,7 +166,7 @@ Explication des clés principales :
 				"-g",
 				"ft_printf.c", "ft_printf_common_specifiers.c", "ft_printf_hexa_specifiers.c",
 				"-o",
-				"${workspaceFolder}/a.out",			//Génère un exécutable a.out dans le dossier du projet
+				"${workspaceFolder}/a.out",			//Génère un exécutable a.out dans le dossier racine
 				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
 				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
 				"-lft"							// Liaison avec libft.a (mais la ligne "-lft" est commentée)
@@ -200,7 +200,7 @@ Explication des clés principales :
 				"BUFFER_SIZE=10",
 				//"-DROUQUINETTE_DEBUG", // mis dans fonction instead, sinon main grisee
 				"-o",
-				"${workspaceFolder}/a.out",								//Génère un exécutable a.out dans le dossier du projet
+				"${workspaceFolder}/a.out",								//Génère un exécutable a.out dans le dossier racine
 				// "-Wall",												// Active tous les avertissements de base
 				// "-Wextra",											// Active des avertissements supplémentaires
 				// "-Werror",											// Traite les avertissements comme des erreurs
@@ -277,7 +277,7 @@ Explication des clés principales :
 				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
 				"-L${workspaceFolder}/5_Push_Swap/",	// Pour la library du projet en cours
 				"-o",
-				"${workspaceFolder}/a.out",		// Génère un exécutable a.out dans le dossier du projet
+				"${workspaceFolder}/a.out",		// Génère un exécutable a.out dans le dossier racine
 				// "-Wall",						// Active tous les avertissements de base
 				// "-Wextra",					// Active des avertissements supplémentaires
 				// "-Werror",					// Traite les avertissements comme des erreurs
@@ -329,13 +329,12 @@ Explication des clés principales :
 		},
 //--------- Sum up : Compil through Makefile pour Push_Swap --------------------------------------------------------------------- //
 		{
-			"label": "C/C++: cc build minitalk",
+			"label": "C/C++: cc build minitalk server",
 			"type": "shell",
 			"command": "/usr/bin/cc",
 			"args": [
 				"-g",
 				"minitalk_server_main.c",
-				// "minitalk_client_main.c",
 				"minitalk_binary_conversions.c",
 // Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
 				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
@@ -343,7 +342,7 @@ Explication des clés principales :
 				"-L${workspaceFolder}/6_Minitalk/",	// Pour la library du projet en cours
 				//"-DROUQUINETTE_DEBUG",		// Trick super badass si besoin
 				"-o",
-				"${workspaceFolder}/a.out",		// Génère un exécutable a.out dans le dossier du projet
+				"${workspaceFolder}/6_Minitalk/server",		// Path de l'exécutable
 				// "-Wall",						// Active tous les avertissements de base
 				// "-Wextra",					// Active des avertissements supplémentaires
 				// "-Werror",					// Traite les avertissements comme des erreurs
@@ -359,7 +358,38 @@ Explication des clés principales :
 			},
 			"problemMatcher": []
 		},
-//--------- Sum up : Compil test pour Minitalk --------------------------------------------------------------------- //
+//--------- Sum up : Compil pour Minitalk Server --------------------------------------------------------------------- //
+		{
+			"label": "C/C++: cc build minitalk client",
+			"type": "shell",
+			"command": "/usr/bin/cc",
+			"args": [
+				"-g",
+				"minitalk_client_main.c",
+				"minitalk_binary_conversions.c",
+// Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
+				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
+				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
+				"-L${workspaceFolder}/6_Minitalk/",	// Pour la library du projet en cours
+				//"-DROUQUINETTE_DEBUG",		// Trick super badass si besoin
+				"-o",
+				"${workspaceFolder}/6_Minitalk/client",		// Path de l'exécutable
+				// "-Wall",						// Active tous les avertissements de base
+				// "-Wextra",					// Active des avertissements supplémentaires
+				// "-Werror",					// Traite les avertissements comme des erreurs
+				"-lftprintf",					// A chaque nouveau .a/.h à utiliser, ajouter une ligne au dessus de celle-ci. Penser à compiler le projet avant de tester dans VSCode
+				"-lft"							// -lft = -l ft = -l (lib)ft = Liaison avec libft.a - A METTRE A LA FIN IMPERATIVEMENT Sinon bug de type 'undefined reference to ft_*'
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/6_Minitalk"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+//--------- Sum up : Compil pour Minitalk Client --------------------------------------------------------------------- //
 ],
 	"version": "2.0.0"
 }
