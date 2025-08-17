@@ -12,6 +12,7 @@
 
 #include "minitalk.h"
 
+// Si fonction trop longue, faire tech de Fab (voir page Minitalk Notion)
 unsigned char	*string_to_bit(char *s)
 {
 	// unsigned char = 1 byte/octet = 8 bits
@@ -20,7 +21,7 @@ unsigned char	*string_to_bit(char *s)
 
 	int length_string = strlen(s);
 
-	bin_array = malloc(sizeof(unsigned char) * length_string * 8);	// 8 car 8 bits par char
+	bin_array = malloc(sizeof(unsigned char) * (length_string+1) * 8);	// 8 car 8 bits par char - +1 car j'ajoute un \n à la fin
 
 	int i = 0;	// pour s
 	int j = 0;	// pour bin_array
@@ -49,7 +50,7 @@ unsigned char	*string_to_bit(char *s)
 		}
 		i++;
 	}
-	bin_array[j] = '\0';		// mettre un /n + 1 char en plus au lieu de 11111111
+	bin_array[j] = '\n';		// mettre un /n + 1 char en plus au lieu de 11111111
 
 	return(bin_array);
 }
@@ -82,17 +83,8 @@ void 	print_char_from_8bits(unsigned char *bin_array) // change to void return a
 		i++;
 	}
 }
-// int		main(void)
-// {
-// 	char	s[] = "Yiha !";
-// 	unsigned char *bin_array = string_to_bit(s);
-// 	ft_printf("Binary of [%s] is :\t[%s]\n\n", s, (char*)bin_array);
 
-// 	// Reverse :
-// 	char	*s1 = print_char_from_8bits("print_char_from_8bits");
-// 	ft_printf("String from binary is :\t[%s]\n\n", s1);
-
-// 	free(bin_array);
-// 	free(s1);
-// 	return(0);
-// }
+int	main(void)
+{
+	char *s = "Bonjour";
+}

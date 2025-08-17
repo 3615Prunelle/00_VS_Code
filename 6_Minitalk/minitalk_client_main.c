@@ -12,6 +12,9 @@
 
 #include "minitalk.h"
 
+// ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ NEXT : Voir page Notion Minitalk ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
+// ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ Branche Client à merge quand débug fini
+
 void	send_signal(int signum)
 {
 
@@ -31,8 +34,8 @@ int	main(int argc, char **argv)
 		ft_printf("About to send message [%s] to server (PID [%i])\n", string_to_send, server_PID);
 		ft_printf("Client PID : %i\n", getpid());	// Change à chaque fois
 
-		bin_array = string_to_bit(string_to_send);
-		ft_printf("Bin array : [%s]\n", (char *)bin_array);
+		bin_array = string_to_bit(string_to_send);		// Convertit toute la string, pas juste char par char
+		//ft_printf("Bin array : [%s]\n", (char *)bin_array);
 
 		int i = 0;
 		int j = 0;
@@ -44,12 +47,12 @@ int	main(int argc, char **argv)
 				if(bin_array[i] == '0')
 				{
 					kill(server_PID, SIGUSR1);
-					usleep(1);			// Pause entre chaque bit envoyé
+					usleep(9000);			// Pause entre chaque bit envoyé
 				}
-				if(bin_array[i] == '1')
+				else if(bin_array[i] == '1')
 				{
 					kill(server_PID, SIGUSR2);
-					usleep(1);			// Pause entre chaque bit envoyé
+					usleep(9000);			// Pause entre chaque bit envoyé
 				}
 				i++;
 				j++;
@@ -63,7 +66,7 @@ int	main(int argc, char **argv)
 			while(i < 8)
 			{
 				kill(server_PID, SIGUSR2);
-				usleep(1);
+				usleep(9000);
 				i++;
 			}
 			exit(0);

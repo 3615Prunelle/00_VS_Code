@@ -3,12 +3,10 @@
 */
 
 
-‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ NEXT : Voir page Notion Minitalk ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
-‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️Ne pas faire de modifs sur le fichier client dans ce VSCode (autre branche)
+// ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ NEXT : Voir page Notion Minitalk ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
+// ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️Ne pas faire de modifs sur le fichier client dans ce VSCode (autre branche)
 
 #include "minitalk.h"
-
-// faire.h séparé avec string to bin/bit et reverse et les tester en dehors du project
 
 void	got_signal(int signum)
 {
@@ -44,7 +42,7 @@ void	got_signal(int signum)
 	{
 		if(ft_strncmp((char*)one_char, "11111111", 8) == 0)
 		{
-			usleep(1000);
+			usleep(9000);
 			write(1, "\n", 1);
 			ft_printf("\t\tLa fin du hari-string\n");
 		}
@@ -54,12 +52,6 @@ void	got_signal(int signum)
 			// ft_printf("\t<<< Binary for that letter : [%s]\n", (char*)one_char);
 		}
 	}
-
-	// if (!(signum))	// Useless, find another way to exit
-	// {
-	// 	ft_printf("About to exit\n");
-	// 	exit(0);
-	// }
 }
 
 // Server expects a signal from client
