@@ -12,6 +12,27 @@
 
 #include "minitalk.h"
 
+bool	*char_to_binary(char c)
+{
+	bool *bool_array;
+	int bitmask = 1;		// N'évolue pas car on vérifie toujours le dernier bit (et on shift le binaire du char vers la droite)
+	bool_array = malloc (sizeof(bool) * 8);		// un bool = 1 bit, donc on ne peut pas mettre de \n dedans - Maybe pas besoin car \n a une valeur binaire
+	int i = 0;
+
+	// ft_printf("Char is %c - Its ASCII is %d\n", c, c);
+
+	while(i < 8)
+	{
+		if(c & bitmask)
+			bool_array[7-i] = 1;
+		else
+			bool_array[7-i] = 0;
+		i++;
+		c = c >> 1;
+	}
+	return(bool_array);
+}
+
 // Si fonction trop longue, faire tech de Fab (voir page Minitalk Notion)
 unsigned char	*string_to_bit(char *s)
 {
@@ -21,7 +42,7 @@ unsigned char	*string_to_bit(char *s)
 
 	int length_string = strlen(s);
 
-	bin_array = malloc(sizeof(unsigned char) * (length_string+1) * 8);	// 8 car 8 bits par char - +1 car j'ajoute un \n à la fin
+	bin_array = ft_calloc(sizeof(unsigned char), (length_string+1) * 8);	// 8 car 8 bits par char - +1 car j'ajoute un \n à la fin
 
 	int i = 0;	// pour s
 	int j = 0;	// pour bin_array
@@ -30,7 +51,7 @@ unsigned char	*string_to_bit(char *s)
 
 	while(s[i] != '\0')
 	{
-		conv = (int)s[i];	// convertir le char en int - cast surement pas nécessaire
+		conv = s[i];	// convertir le char en int
 
 		// convertir le int en binaire et stocker dans une string de unsigned chars
 		bin_compare = 128;
@@ -50,11 +71,11 @@ unsigned char	*string_to_bit(char *s)
 		}
 		i++;
 	}
-	bin_array[j] = '\n';		// mettre un /n + 1 char en plus au lieu de 11111111
-
+	bin_array[j] = '\n';		// Condition d'arrêt / exit du client + retour à la ligne du server - Mais n'est pas converti en binaire
+	bin_array[j+1] = '\0';
 	return(bin_array);
 }
-void 	print_char_from_8bits(unsigned char *bin_array) // change to void return after tests
+void 	print_char_from_8bits(unsigned char *bin_array)
 {
 	int i = 0;
 	int j = 0;
@@ -84,7 +105,30 @@ void 	print_char_from_8bits(unsigned char *bin_array) // change to void return a
 	}
 }
 
-int	main(void)
+void	send_newline_binary(int server_PID)
 {
-	char *s = "Bonjour";
+	// Bin for \n is 0000 10 10
+	kill(server_PID, SIGUSR1);		// 0
+	usleep(3000);
+
+	kill(server_PID, SIGUSR1);		// 0
+	usleep(3000);
+
+	kill(server_PID, SIGUSR1);		// 0
+	usleep(3000);
+
+	kill(server_PID, SIGUSR1);		// 0
+	usleep(3000);
+
+	kill(server_PID, SIGUSR2);		// 1
+	usleep(3000);
+
+	kill(server_PID, SIGUSR1);		// 0
+	usleep(3000);
+
+	kill(server_PID, SIGUSR2);		// 1
+	usleep(3000);
+
+	kill(server_PID, SIGUSR1);		// 0
+	usleep(3000);
 }

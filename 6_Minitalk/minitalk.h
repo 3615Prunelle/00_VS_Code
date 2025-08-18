@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:41:59 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/14 18:45:17 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/18 11:53:18 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 // ⚪ Include from other projects
 // ‼️ Compiler et ajouter la ligne "-l[libname without the lib]" dans tasks.json ou makefile
@@ -46,6 +47,7 @@
 // ⚪ Functions signatures - Part 1
 unsigned char	*string_to_bit(char *s);						// Encryption
 void 			print_char_from_8bits(unsigned char *bin_array);		// Decryption
+void			send_newline_binary(int server_PID);
 
 // ⚪ Functions signatures - Part 2
 void			send_signal(int signum);

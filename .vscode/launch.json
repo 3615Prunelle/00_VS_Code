@@ -146,7 +146,7 @@ comment VS Code doit lancer et déboguer un programme C.*/
            "program": "${workspaceRoot}/6_Minitalk/client",	// Chemin d'accès de l'exécutable créé automatiquement sans Makefile
 			// "program": "${workspaceFolder}/5_Push_Swap/server",	// Chemin d'accès de l'exécutable créé par Makefile
 			//"args": ["arg1", "arg2"],
-			"args": ["30511", "AZERTY"],
+			"args": ["64603", "AZERTY"],
 			"environment": [{ "name": "config", "value": "Debug" }],
 			"cwd": "${workspaceFolder}",
 			"MIMode": "gdb",

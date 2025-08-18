@@ -2,15 +2,13 @@
 ⬇️✅‼️⁉️❓❌Ⓜ️🆓
 */
 
-
-// ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ NEXT : Voir page Notion Minitalk ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
-// ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️Ne pas faire de modifs sur le fichier client dans ce VSCode (autre branche)
+// ‼️‼️‼️Ne pas faire de modifs sur le fichier client dans VSCode principal
 
 #include "minitalk.h"
 
 void	got_signal(int signum)
 {
-	//  typedef typeof(void (int))  *sighandler_t;
+	// typedef typeof(void (int))  *sighandler_t;
 	// sighandler_t; est une fonction qui renvoie void et prend un int en param
 	// ft_printf("Got here - Signal : %i\n", signum);
 
@@ -18,13 +16,13 @@ void	got_signal(int signum)
 	static unsigned char	*one_char;					// = 1 bit
 	if (bit_count == 0)
 	{
-		one_char = malloc(sizeof(unsigned char) * 8);	// ajouter if malloc fails + free
+		one_char = ft_calloc(sizeof(unsigned char), 8);	// ajouter if malloc fails + free
 	}
 	if (bit_count == 8)
 	{
 		bit_count = 0;
 		free(one_char);
-		one_char = malloc(sizeof(unsigned char) * 8);	// ajouter if malloc fails + free
+		one_char = ft_calloc(sizeof(unsigned char), 8);	// ajouter if malloc fails + free
 	}
 	if (bit_count < 8)
 	{
@@ -40,21 +38,12 @@ void	got_signal(int signum)
 	}
 	if (bit_count == 8)	// tous les 8 signaux, appel de fonction qui va convertir 8 bits en char, et les print
 	{
-		if(ft_strncmp((char*)one_char, "11111111", 8) == 0)
-		{
-			usleep(9000);
-			write(1, "\n", 1);
-			ft_printf("\t\tLa fin du hari-string\n");
-		}
-		else
-		{
 			print_char_from_8bits(one_char);
 			// ft_printf("\t<<< Binary for that letter : [%s]\n", (char*)one_char);
-		}
 	}
+// add a clean up function ?
 }
 
-// Server expects a signal from client
 int		main(void)
 {
 // Get process ID so we can reach out to it via terminal & kill command (kill -signum pid)
@@ -63,10 +52,10 @@ int		main(void)
 	ft_printf("Waiting for message from client - PID server is [%i]\n", process_id);
 
 	struct sigaction	action_to_launch;
-	action_to_launch.__sigaction_handler;		// (2 options) Fonction à appeler (simple ou avancée)
-	action_to_launch.sa_flags;					// int - Options qui changent le comportement (SA_SIGINFO → utiliser sa_sigaction au lieu de sa_handler. SA_RESTART → relancer les appels systèmes interrompus. Etc.)
-	action_to_launch.sa_mask;					// sigset_t (array of bool) - Signaux à bloquer pendant que le handler tourne
-	action_to_launch.sa_restorer;				// Vieux champ historique pour remettre un handler précédent. Ne pas utiliser.
+	// action_to_launch.__sigaction_handler;		// (2 options) Fonction à appeler (simple ou avancée)
+	// action_to_launch.sa_flags;					// int - Options qui changent le comportement (SA_SIGINFO → utiliser sa_sigaction au lieu de sa_handler. SA_RESTART → relancer les appels systèmes interrompus. Etc.)
+	// action_to_launch.sa_mask;					// sigset_t (array of bool) - Signaux à bloquer pendant que le handler tourne
+	// action_to_launch.sa_restorer;				// Vieux champ historique pour remettre un handler précédent. Ne pas utiliser.
 
 	action_to_launch.sa_handler = got_signal;
 
@@ -89,9 +78,9 @@ int		main(void)
 
 	while (1)		// if no loop, exit after the first signal received
 	{
-		pause();	// attendre un signal (returns a int, what to do with it ?) - Useless ?
+		pause();
 	}
 
-
+// add a clean up function ?
 	return(0);
 }
