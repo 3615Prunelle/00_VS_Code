@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:41:59 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/18 14:12:16 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/18 14:16:04 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 
 // ⚪ Functions signatures - Part 1
 void	char_to_binary(char c, int server_PID);					// Encryption (tech de Fab)
-void 	print_char_from_binary(unsigned char *bin_array);		// Decryption
+void 	print_char_from_binary(bool *binary_array);		// Decryption
 
 // ⚪ Functions signatures - Part 2
 void	send_signal(int signum);

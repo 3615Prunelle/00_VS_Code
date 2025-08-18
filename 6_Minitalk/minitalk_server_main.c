@@ -12,17 +12,17 @@ void	got_signal(int signum)
 	// sighandler_t; est une fonction qui renvoie void et prend un int en param
 	// ft_printf("Got here - Signal : %i\n", signum);
 
-	static int				bit_count;
-	static unsigned char	one_char[8];
+	static int	bit_count;
+	static bool	one_char[8];
 
 	if (bit_count == 8)
 		bit_count = 0;
 	if (bit_count < 8)
 	{
 		if (signum == 10)
-			one_char[bit_count] = '0';
+			one_char[bit_count] = 0;
 		else if (signum == 12)
-			one_char[bit_count] = '1';
+			one_char[bit_count] = 1;
 		bit_count++;
 	}
 	if (bit_count == 8)	// tous les 8 signaux, appel de fonction qui va convertir 8 bits en char, et les print

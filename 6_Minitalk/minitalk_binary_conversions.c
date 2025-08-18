@@ -40,32 +40,22 @@ void	char_to_binary(char c, int server_PID)
 	}
 }
 
-void 	print_char_from_binary(unsigned char *bin_array)
+void 	print_char_from_binary(bool *binary_array)
 {
 	int i = 0;
-	int j = 0;
-	int k;
-	int number_to_conv;
-	int bin_compare;
+	int number_to_conv = 0;
+	int bin_compare = 128;
 	char c;
 
-	while (bin_array[j] != '\0')
+	while (i < 8)	// car binary_array n'a que 8 éléments
 	{
-		number_to_conv = 0;
-		bin_compare = 128;
-		k = 8;
-		while(k > 0)	// prendre les 8 premiers chars - pas nécessaire ici car on en recoit toujours 8 ?
+		if (binary_array[i] == 1)
 		{
-			if (bin_array[j] == '1')
-			{
-				number_to_conv += bin_compare;
-			}
-			j++;
-			k--;
-			bin_compare /= 2;
+			number_to_conv += bin_compare;
 		}
-		c = number_to_conv;
-		write(1, &c, 1);			// VICTOIRE
+		bin_compare /= 2;
 		i++;
 	}
+	c = number_to_conv;
+	write(1, &c, 1);			// VICTOIRE
 }

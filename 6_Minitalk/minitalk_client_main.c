@@ -31,7 +31,7 @@ int	main(int argc, char **argv)
 	{
 		server_PID = ft_atoi(argv[1]);
 		string_to_send = ft_strdup(argv[2]);			// Ⓜ️
-		ft_printf("About to send message [%s] to server (PID [%i])\n", string_to_send, server_PID);
+		ft_printf("About to send a message to server (PID [%i])\n", server_PID);
 		ft_printf("Client PID : %i\n", getpid());	// Client PID change à chaque fois
 
 		while(string_to_send[i] != '\0')
