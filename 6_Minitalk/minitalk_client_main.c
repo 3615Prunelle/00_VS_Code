@@ -12,12 +12,11 @@
 
 #include "minitalk.h"
 
-// ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ NEXT : Voir page Notion Minitalk ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
-// ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️ Branche Client à merge quand débug fini
+// ‼️‼️ Utiliser branche client pour debug ‼️‼️
 
 void	send_signal(int signum)
 {
-	// A importer depuis main
+	// A importer depuis main si elle fait plus de 25 lignes
 }
 
 // Client sends a signal to server
@@ -25,50 +24,26 @@ int	main(int argc, char **argv)
 {
 	int		server_PID;
 	char	*string_to_send;
-	unsigned char *bin_array;
+	int		i;
 
+	i = 0;
 	if(argc == 3)
 	{
 		server_PID = ft_atoi(argv[1]);
 		string_to_send = ft_strdup(argv[2]);			// Ⓜ️
 		ft_printf("About to send message [%s] to server (PID [%i])\n", string_to_send, server_PID);
-		ft_printf("Client PID : %i\n", getpid());	// Change à chaque fois
+		ft_printf("Client PID : %i\n", getpid());	// Client PID change à chaque fois
 
-		bin_array = string_to_bit(string_to_send);		// Ⓜ️ Convertit toute la string et ajoute \n, pas juste char par char
-		//ft_printf("Bin array : [%s]\n", (char *)bin_array);
-
-		int i = 0;
-		int j = 0;
-		while (bin_array[i] != '\0')	// Va printer théoriquement le \n
+		while(string_to_send[i] != '\0')
 		{
-			j = 0;
-			while(j < 8)
-			{
-				if(bin_array[i] == '0')
-				{
-					kill(server_PID, SIGUSR1);
-					usleep(3000);
-				}
-				else if(bin_array[i] == '1')
-				{
-					kill(server_PID, SIGUSR2);
-					usleep(3000);
-				}
-				else if(bin_array[i] == '\n')
-				{
-					send_newline_binary(server_PID);
-					i++;
-					break;	// Pour sortir juste de cette boucle, s'il y a des char à print après le \n
-				}
-				i++;
-				j++;
-			}
+			char_to_binary(string_to_send[i], server_PID);
+			i++;
 		}
-		if (bin_array[i] == '\0')
+		if(string_to_send[i] == '\0')
 		{
+			char_to_binary('\n', server_PID);
 			exit(0);
 		}
-		// add a clean up function
 	}
 	return(0);
 }

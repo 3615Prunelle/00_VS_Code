@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:41:59 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/18 11:53:18 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/18 14:12:16 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@
 // ⚪ Structs
 
 // ⚪ Functions signatures - Part 1
-unsigned char	*string_to_bit(char *s);						// Encryption
-void 			print_char_from_8bits(unsigned char *bin_array);		// Decryption
-void			send_newline_binary(int server_PID);
+void	char_to_binary(char c, int server_PID);					// Encryption (tech de Fab)
+void 	print_char_from_binary(unsigned char *bin_array);		// Decryption
 
 // ⚪ Functions signatures - Part 2
-void			send_signal(int signum);
-void			got_signal(int signum);	// Est-ce nécessaire de mettre une signature de handler ici ?
+void	send_signal(int signum);
+void	got_signal(int signum);	// Est-ce nécessaire de mettre une signature de handler ici ?
 
 // ⚪ Clean up functions
 

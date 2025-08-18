@@ -13,33 +13,21 @@ void	got_signal(int signum)
 	// ft_printf("Got here - Signal : %i\n", signum);
 
 	static int				bit_count;
-	static unsigned char	*one_char;					// = 1 bit
-	if (bit_count == 0)
-	{
-		one_char = ft_calloc(sizeof(unsigned char), 8);	// ajouter if malloc fails + free
-	}
+	static unsigned char	one_char[8];
+
 	if (bit_count == 8)
-	{
 		bit_count = 0;
-		free(one_char);
-		one_char = ft_calloc(sizeof(unsigned char), 8);	// ajouter if malloc fails + free
-	}
 	if (bit_count < 8)
 	{
 		if (signum == 10)
-		{
 			one_char[bit_count] = '0';
-		}
 		else if (signum == 12)
-		{
 			one_char[bit_count] = '1';
-		}
 		bit_count++;
 	}
 	if (bit_count == 8)	// tous les 8 signaux, appel de fonction qui va convertir 8 bits en char, et les print
 	{
-			print_char_from_8bits(one_char);
-			// ft_printf("\t<<< Binary for that letter : [%s]\n", (char*)one_char);
+			print_char_from_binary(one_char);
 	}
 // add a clean up function ?
 }
