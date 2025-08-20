@@ -1,9 +1,9 @@
 # Tuto :
-# Files already tracked by Git are not affected
-# Patterns read from a .gitignore file in the same directory as the path
+# Ignorer un fichier déjà archivé, annuler le suivi du fichier. : git rm --cached FILENAME
 
 # Test pour Push_Swap
-./5_Push_Swap/Test Gitignore 1.txt
+5_Push_Swap/Test Gitignore 1.txt
+5_Push_Swap/Test Gitignore 1 copy.txt
 
 # Prerequisites
 *.d
