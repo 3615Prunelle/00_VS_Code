@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:05:12 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/09 19:30:09 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/20 14:27:37 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	sort_5(t_2stacks *a_b, int *ops_counter)
 }
 
 // Uniquement pour les fonctions <= 5 params
+// free(stack_compare) mis dans loop plutôt qu'à la fin car mem leaks
 t_node	*add_idx_till_5(t_node *stack)
 {
 	int		lower_numbers_counter;
@@ -107,6 +108,7 @@ t_node	*add_idx_till_5(t_node *stack)
 	stack_compare->next = looping_ptr->next;
 	while (looping_ptr != NULL)
 	{
+		free(stack_compare);
 		stack_compare = stack;
 		lower_numbers_counter = 0;
 		while (stack_compare != NULL)
@@ -118,7 +120,6 @@ t_node	*add_idx_till_5(t_node *stack)
 		looping_ptr->index = lower_numbers_counter;
 		looping_ptr = looping_ptr->next;
 	}
-	free(stack_compare);
 	return (stack);
 }
 

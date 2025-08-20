@@ -12,28 +12,59 @@
 
 #include "minitalk.h"
 
+int		build_client_PID(bool *one_char)
+{
+	int i = 0;
+	int number_in_ASCII_format = 0;
+	int bin_compare = 128;
+	char c;
+
+	while (i < 8)				// car binary_array n'a que 8 éléments
+	{
+		if (one_char[i] == 1)
+		{
+			number_in_ASCII_format += bin_compare;
+		}
+		bin_compare /= 2;
+		i++;
+	}
+	c = number_in_ASCII_format;	// on a le premier chiffre, mais on veut récupérer le dernier
+
+
+// ‼️‼️‼️ Apprendre à gérer la récursivité then come back here ‼️‼️‼️
+// Ou pas : envoyer la taille du PID puis PID puis string
+// envoyer aussi la taille de la string (size_t) car ma tech n'est pas authorisée (recevoir PUIS print)
+// envoyer la taille du PID
+
+
+	int	client_PID;
+	static char *int_string;
+
+	// faire récursive pour commencer par la fin >> Not anymore
+
+	if(one_char)
+
+
+
+	return(client_PID);
+}
+
 void	char_to_binary(char c, int server_PID)
 {
-	bool *bool_array;
 	int bitmask = 128;		// N'évolue pas car on vérifie toujours le premier bit (et on shift le binaire du char vers la gauche)
-	bool_array = malloc (sizeof(bool) * 8);		// bool = 1 byte = on peut mettre le binaire de \n dedans
 	int i = 0;
-
-	// ft_printf("Char is %c - Its ASCII is %d\n", c, c);
 
 	while(i < 8)
 	{
 		if(c & bitmask)
 		{
-			bool_array[i] = 1;
 			kill(server_PID, SIGUSR2);
-			usleep(3000);				// Test avec pauses plus courtes
+			usleep(600);
 		}
 		else
 		{
-			bool_array[i] = 0;
 			kill(server_PID, SIGUSR1);
-			usleep(3000);				// Test avec pauses plus courtes
+			usleep(600);
 		}
 		i++;
 		c = c << 1;
@@ -47,7 +78,7 @@ void 	print_char_from_binary(bool *binary_array)
 	int bin_compare = 128;
 	char c;
 
-	while (i < 8)	// car binary_array n'a que 8 éléments
+	while (i < 8)				// car binary_array n'a que 8 éléments
 	{
 		if (binary_array[i] == 1)
 		{

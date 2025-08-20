@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 15:37:06 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/09 10:19:30 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/20 14:29:49 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 // (argc == 2) means long string OR only one number
 int	main(int argc, char **argv)
 {
-	int	i;
 	int	arr_size;
 	int	*numbers_arr;
 
-	i = 0;
 	numbers_arr = NULL;
 	if (argc < 2)
 	{
@@ -81,6 +79,7 @@ int	*above_two_argv(char **inputs, int argc, int *numbers_arr, int *arr_size)
 	return (numbers_arr);
 }
 
+// Renvoi d'un "" car aucune action si numbers already sorted
 void	check_array(int *numbers_arr, int *arr_size)
 {
 	int	i;
@@ -95,6 +94,6 @@ void	check_array(int *numbers_arr, int *arr_size)
 	if (is_number_repeat(numbers_arr, *arr_size))
 		clean_early_exit(ERROR_MSG, numbers_arr);
 	if (is_sorted(numbers_arr, *arr_size))
-		clean_early_exit(ERROR_MSG, numbers_arr);
+		clean_early_exit("", numbers_arr);
 	struct_config(numbers_arr, arr_size);
 }

@@ -6,12 +6,14 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 18:52:57 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/07 18:52:59 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/20 14:15:16 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+// Astuce Antoine Forty2 - Au lieu de lignes 26 à 28
+// Faire un compound literal : *node = (t_node){content, NULL, 0};
 t_node	*new_node(void *content)
 {
 	t_node	*node;
