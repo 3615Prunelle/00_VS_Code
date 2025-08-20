@@ -8,7 +8,7 @@
 # VERY IMPORTANT : Vérifier l'ordre des flags/élements dans les commandes est très important et peut
 #	générer des grosses erreurs à la compilation même si juste 2 éléments sont inversés
 #	Par exemple, les objets doivent toujours précéder les -l pour que le linker voie ce qui doit être résolu.
-#		$() or ${} are used to refer to a varable
+#		$() or ${} are used to refer to a variable
 
 # Name of the executable (program, library, etc) to be created, with or without extension
 NAME =
@@ -26,7 +26,7 @@ CC = cc
 #	-I.			Ensures that header files in the current project folder are found during compilation
 #					(pas nécessaire si j'ai mis les #include "lib_truc.h" dans tous les fichiers)
 #	-I			Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
-#					!! Bien s'assurer de mettre TOUS les répertoires !!
+#					!! Bien s'assurer de mettre TOUS les répertoires, chacun précédé de -I !!
 #				Mettre path relatif de chaque repo dans lequel on a un .h qui nous intéresse
 CFLAGS = -g -Wall -Wextra -Werror -I ../repo1
 
@@ -34,7 +34,7 @@ CFLAGS = -g -Wall -Wextra -Werror -I ../repo1
 # Linking (avec un Linker) =  Dire au programme "Voilà où trouver tout ce que tu utilises"
 # NB : On ne met les $(LFLAGS) que dans les commandes de l'étape de linking (pour créer un exécutable final)
 #	-L			Ajoute un répertoire à aller scanner pour aller chercher des library nécessaires (.a ou .so)
-#					!! Bien s'assurer de mettre TOUS les répertoires les library citées après !!
+#					!! Bien s'assurer de mettre TOUS les répertoires des library citées après, chacun précédé de -L !!
 #					Ou alors, mettre toutes les library dans le même répertoire
 #	-l			Ajoute une library spécifique (pas besoin d'écrire la partie 'lib', voire note ci dessous)
 #	-lft		= -l ft = -l (lib)ft = Liaison avec libft.a
@@ -71,7 +71,8 @@ BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
 # 		... Pour les scripts:
 #	[Target = (Généralement) Nom d’exécutable ou de fichier objet] : [Prérequis / Dépendance(s) = éléments ou code source nécessaires pour créer la target]
-#	(Ligne(s) suivante(s)) TAB + [Commande shell que make doit exécuter pour construire une target]
+#	(Ligne(s) suivante(s)) TAB + [Commande shell que make doit exécuter pour construire une target/cible]
+# Info à retenir : dans les règles / scripts, les commandes shells sont toujours après un retour à la ligne + tab. Jamais comme dépendance après ':'
 
 # First rule in the Makefile = Default rule to compile the library - Runs when I type "make"
 #	The 'all' rule is called by 'make' to create (NAME) after calling the ruleX

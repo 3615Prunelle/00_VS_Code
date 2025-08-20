@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 19:25:46 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/20 16:43:32 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/20 17:53:44 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		loop_ptr = loop_ptr->next;
 	}
 
-	printf ("\n⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅3rd Pass in lstadd_back⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅\n\n");
+	printf ("\nॱ˙˙ॱᐧ.˳˳.⋅3rd Pass in lstadd_backॱ˙˙ॱᐧ.˳˳.⋅\n\n");
 
 	t_list *isidor;
 	isidor = ft_lstnew(ft_strdup("It's the final countdooooooooooown"));
