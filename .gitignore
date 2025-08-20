@@ -3,7 +3,7 @@
 # Patterns read from a .gitignore file in the same directory as the path
 
 # Test pour Push_Swap
-./5_Push_Swap/Watch_Push_Swap.txt
+./5_Push_Swap/Test Gitignore 1.txt
 
 # Prerequisites
 *.d
