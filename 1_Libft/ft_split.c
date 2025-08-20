@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:59:46 by schappuy          #+#    #+#             */
-/*   Updated: 2025/03/10 01:33:26 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:47:38 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void		ft_init(int *i, int *idx_fnl, int *sub_beg, int *is_new_word);
-static void		ft_let_it_gooo(char **array_of_arrays, int nbr_elements);
-static void		ft_final(char **arrays, const char *s, char c, size_t size_s);
-static int		ft_count_str(const char *s, char c, size_t size_s);
+static void	ft_init(int *i, int *idx_fnl, int *sub_beg, int *is_new_word);
+static void	ft_let_it_gooo(char **array_of_arrays, int nbr_elements);
+static void	ft_final(char **arrays, const char *s, char c, size_t size_s);
+static int	ft_count_str(const char *s, char c, size_t size_s);
 
 char	**ft_split(const char *s, char c)
 {
@@ -23,7 +23,7 @@ char	**ft_split(const char *s, char c)
 	char	**array_of_arrays;
 
 	nb_str = ft_count_str(s, c, ft_strlen(s));
-	array_of_arrays = ft_calloc ((nb_str + 1), sizeof (char *));
+	array_of_arrays = ft_calloc((nb_str + 1), sizeof(char *));
 	if (!array_of_arrays)
 		return (0);
 	ft_final(array_of_arrays, s, c, ft_strlen(s));
@@ -47,7 +47,7 @@ static void	ft_let_it_gooo(char **array_of_arrays, int nbr_elements)
 {
 	while (nbr_elements > 0)
 	{
-		free (array_of_arrays[nbr_elements - 1]);
+		free(array_of_arrays[nbr_elements - 1]);
 		array_of_arrays[nbr_elements - 1] = NULL;
 		nbr_elements--;
 	}

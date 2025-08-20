@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 19:25:46 by schappuy          #+#    #+#             */
-/*   Updated: 2025/04/21 13:54:53 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:43:32 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ Adds the node ’new’ at the end of the list.
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	t_list *last;
+	t_list	*last;
 
 	if (!lst || !new)
-		return;
+		return ;
 	if (!*lst)
 	{
 		*lst = new;
-		//new->next = NULL; // NOPE, because 'new' may not be the last node
-		return;
+		// new->next = NULL; // NOPE, because 'new' may not be the last node
+		return ;
 	}
 	last = ft_lstlast(*lst);
 	last->next = new;
-	//new->next = NULL; // NOPE, because 'new' may not be the last node
+	// new->next = NULL; // NOPE, because 'new' may not be the last node
 }
 /* int	main(void)
 {
@@ -56,7 +56,8 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	int node = 1;
 	while (loop_ptr != NULL)
 	{
-		printf("Node [%d] - Address [%p] - Content [%s] - Next [%p]\n", node, loop_ptr, (char *)loop_ptr->content, loop_ptr->next);
+		printf("Node [%d] - Address [%p] - Content [%s] - Next [%p]\n", node,
+			loop_ptr, (char *)loop_ptr->content, loop_ptr->next);
 		node++;
 		loop_ptr = loop_ptr->next;
 	}
@@ -71,7 +72,8 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	node = 1;
 	while (loop_ptr != NULL)
 	{
-		printf("Node [%d] - Address [%p] - Content [%s] - Next [%p]\n", node, loop_ptr, (char *)loop_ptr->content, loop_ptr->next);
+		printf("Node [%d] - Address [%p] - Content [%s] - Next [%p]\n", node,
+			loop_ptr, (char *)loop_ptr->content, loop_ptr->next);
 		node++;
 		loop_ptr = loop_ptr->next;
 	}

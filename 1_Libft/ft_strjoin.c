@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:52:12 by schappuy          #+#    #+#             */
-/*   Updated: 2024/12/13 15:34:21 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:47:59 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		new[i] = s1[i];
 		i++;
 	}
-	while (s2 [j] != '\0')
+	while (s2[j] != '\0')
 	{
 		new[i] = s2[j];
 		i++;

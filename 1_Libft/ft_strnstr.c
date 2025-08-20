@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:41:24 by schappuy          #+#    #+#             */
-/*   Updated: 2024/12/16 19:44:50 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:48:17 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 		}
 		if (little[j] == '\0')
 		{
-			return ((char *) big + i);
+			return ((char *)big + i);
 		}
 		i++;
 	}

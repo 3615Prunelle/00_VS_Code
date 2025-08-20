@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/04/17 01:27:28 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:54:22 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@
 // I define a structure that I call 's_list' with two members: a void ptr to data and a pointer to the structure itself called next
 typedef struct s_list
 {
-	void			*content;	// The data contained in the node (Using void * allows me to store any type of data)
-	struct s_list	*next;		// The address of the next node, or NULL if the next node is the last one.
-}					t_list;		// t_list is an alias for struct s_list to make the code shorter and cleaner in the exercises
+	void *content;       // Using void * allows me to store any type of data)
+	struct s_list *next; // NULL if the next node is the last one.
+}		t_list;
+// t_list is an alias for struct s_list to make the code shorter and cleaner in the exercises
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -54,22 +55,22 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(const char *s, char c);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
-//Bonus functions
+// Bonus functions
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
-void	ft_lstclear(t_list **lst, void (*del)(void	*));
+void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-void	del(void *param); // double check if doesn't give errors
+void	del(void *param);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:59:46 by schappuy          #+#    #+#             */
-/*   Updated: 2024/12/16 19:45:28 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:47:16 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,15 @@ void	ft_putstr_fd(char *s, int fd)
 	i = 0;
 	while (s[i] != '\0')
 	{
-		write (fd, &s[i], 1);
+		write(fd, &s[i], 1);
 		i++;
 	}
 }
+
+/*
+Smart hint by Antoine Forty2:
+Utiliser ft_strlen et write(fd, string, length) - Pas besoin de loop
+*/
 
 // int	main(void)
 // {
