@@ -1,5 +1,9 @@
-# Main
-ft_printf_main.c
+# Tuto :
+# Files already tracked by Git are not affected
+# Patterns read from a .gitignore file in the same directory as the path
+
+# Test pour Push_Swap
+./5_Push_Swap/Watch_Push_Swap.txt
 
 # Prerequisites
 *.d

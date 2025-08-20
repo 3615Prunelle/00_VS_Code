@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:03:26 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/09 10:22:15 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/20 15:28:03 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_node	*add_idx_above_5(int *numbers_arr, int *arr_size, t_node *stack)
 	t_node	*stack_copy;
 
 	i = 0;
-	lower_numbers_counter = 0;
 	stack_copy = stack;
 	while (i < *arr_size)
 	{
