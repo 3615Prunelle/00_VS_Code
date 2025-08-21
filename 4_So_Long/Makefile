@@ -10,7 +10,9 @@ LFLAGS = -L ../99_lib -lmlx42 -lftprintf -lgetnextline -lglfw -lft #-lglfw goes 
 SRCS = 	so_long_main_build.c \
 		so_long_graphics.c \
 		so_long_checkers.c \
+		so_long_path_check.c \
 		so_long_misc.c \
+		so_long_handler_bonus.c \
 		so_long_free_functions.c
 
 OBJS = $(SRCS:.c=.o)

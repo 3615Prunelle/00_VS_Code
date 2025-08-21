@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long_free_functions.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 22:58:34 by sophie            #+#    #+#             */
+/*   Updated: 2025/08/21 11:20:20 by sophie           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
 void	simple_print_exit(char *s)
@@ -6,12 +18,14 @@ void	simple_print_exit(char *s)
 	exit(1);
 }
 
-// char **line etant l'adresse d'un pointeur, char *line est donc un pointeur, qu'on doit free puis remettre a zero
-// close(*fd); Dereference le pointeur vers fd pour le fermer - Fermer un fd est important pour eviter les fd leaks
+// char **line etant l'adresse d'un pointeur, char *line est
+// donc un pointeur, qu'on doit free puis remettre a zero
+// close(*fd); Dereference le pointeur vers fd pour le fermer
+// NB : Fermer un fd est important pour eviter les fd leaks
 // A la fin, on force GNL avec une valeur neg pour libérer son static buffer
 void	free_gnl_return_and_exit(char *error_message, char **line, int *fd)
 {
-	ft_printf("%s\n", error_message);
+	ft_printf("Error : [%s]\n", error_message);
 	free(*line);
 	*line = NULL;
 	close(*fd);
@@ -19,8 +33,8 @@ void	free_gnl_return_and_exit(char *error_message, char **line, int *fd)
 	exit(1);
 }
 
-// Free toutes les lignes de content (avant fonctions MLX42 ou après leur clean up)
-void	free_logic_part(char *message, s_game *any_game)
+// Free toutes les lignes de content
+void	free_logic_part(char *message, t_game *any_game)
 {
 	ft_printf("%s", message);
 	while (any_game->max_lines > 0)
@@ -37,28 +51,28 @@ void	free_logic_part(char *message, s_game *any_game)
 // Free everything MLX42 related when exit game
 void	clean_and_exit(void *param)
 {
-	s_game	*game;
+	t_game	*game;
 
 	game = param;
 	if (!game)
 		return ;
 	if (game->ground_image)
-		mlx_delete_image(WINDOW, game->ground_image);
-	if (WALL_IMG)
-		mlx_delete_image(WINDOW, WALL_IMG);
-	if (PLAYER_IMG)
-		mlx_delete_image(WINDOW, PLAYER_IMG);
-	if (COLLECTIBLE_IMG)
-		mlx_delete_image(WINDOW, COLLECTIBLE_IMG);
-	if (ESCAPE_IMG)
-		mlx_delete_image(WINDOW, ESCAPE_IMG);
+		mlx_delete_image(game->window, game->ground_image);
+	if (game->wall_image)
+		mlx_delete_image(game->window, game->wall_image);
+	if (game->player_image)
+		mlx_delete_image(game->window, game->player_image);
+	if (game->collectible_image)
+		mlx_delete_image(game->window, game->collectible_image);
+	if (game->escape_image)
+		mlx_delete_image(game->window, game->escape_image);
 	if (game->bonus_string1)
-		mlx_delete_image(WINDOW, game->bonus_string1);
+		mlx_delete_image(game->window, game->bonus_string1);
 	if (game->bonus_string2)
-		mlx_delete_image(WINDOW, game->bonus_string2);
-	if (WINDOW)
-		mlx_terminate(WINDOW);
-	free_logic_part(OK_MESSSAGE_05, game);
+		mlx_delete_image(game->window, game->bonus_string2);
+	if (game->window)
+		mlx_terminate(game->window);
+	free_logic_part(MSG_04, game);
 	ft_printf("... Something to add, Queen Strerror ? : [%s]\n\n",
 		strerror(errno));
 	exit(1);

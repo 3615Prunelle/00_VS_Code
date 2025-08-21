@@ -1,20 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long_main_build.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 22:58:49 by sophie            #+#    #+#             */
+/*   Updated: 2025/08/21 11:20:20 by sophie           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
-// Copy paste the 3 lines below at beginning if evaluator complains about Valgrind output
+// Copy paste the 3 lines below at beginning if evaluator
+// complains about Valgrind output
 // mlx_t *blabla = mlx_init(1000, 1000, GAME_NAME, true);
 // mlx_terminate(blabla);
 // exit(1);
-// Fonction Build_map = Création/Remplissage de la carte et affichage de la fenêtre de jeu (vide) + upload/malloc image player
-// display_map(&game); = Set up de l'affichage de la carte (real display dans mlx_loop)
+// Fonction Build_map = Création/Remplissage de la carte et affichage de la
+// fenêtre de jeu (vide) + upload/malloc image player
+// display_map(&game); = Set up de l'affichage de la
+// carte (real display dans mlx_loop)
 // Hook = Set up de fonction qui sera appelée par mlx_loop
 // Seule fonction pour interagir avec le jeu : key_actions
 // mlx_close_hook = quitter le jeu via clic X
-// mlx_loop(game.window); = Keep at the end - Starts to render to window with all requested elements, until shutdown is requested
+// mlx_loop(game.window); = Keep at the end - Starts to render the window
+// with all requested elements, until shutdown is requested
 int		main(int argc, char **argv)
 {
 	char	*path;
 	int		fd;
-		s_game game;
+	t_game	game;
 
 	if (argc == 2)
 	{
@@ -26,16 +42,16 @@ int		main(int argc, char **argv)
 		display_map(&game);
 		mlx_key_hook(game.window, key_actions, &game);
 		mlx_close_hook(game.window, clean_and_exit, &game);
-		ft_printf(OK_MESSSAGE_02);
+		ft_printf(MSG_02);
 		mlx_loop(game.window);
 		clean_and_exit(&game);
 	}
 	else if (argc < 2)
-		ft_printf(ERROR_MESSSAGE_01);
+		ft_printf(ERR_MSG_01);
 	return (0);
 }
 
-int	check_input_get_fd(char *path)
+int		check_input_get_fd(char *path)
 {
 	int		size_path;
 	char	*extension;
@@ -49,44 +65,47 @@ int	check_input_get_fd(char *path)
 	{
 		free(extension);
 		free(compare);
-		simple_print_exit(ERROR_MESSSAGE_02);
+		simple_print_exit(ERR_MSG_02);
 	}
 	free(extension);
 	free(compare);
 	fd = open(path, O_RDWR);
 	if ((!fd) || (fd < 0))
 	{
-		simple_print_exit(ERROR_MESSSAGE_01);
+		simple_print_exit(ERR_MSG_01);
 	}
 	return (fd);
 }
 
-// Set everything to null = éviter valeurs poubelle et segfaults quand passage dans free_logic_part
-void	set_structs_pointers_to_null(s_game *game)
+// Set everything to null = éviter valeurs poubelle et
+// segfaults quand passage dans free_logic_part
+void	set_structs_pointers_to_null(t_game *game)
 {
 	game->ground_image = NULL;
-	WALL_IMG = NULL;
-	PLAYER_IMG = NULL;
-	COLLECTIBLE_IMG = NULL;
-	ESCAPE_IMG = NULL;
+	game->wall_image = NULL;
+	game->player_image = NULL;
+	game->collectible_image = NULL;
+	game->escape_image = NULL;
 	game->bonus_string1 = NULL;
 	game->bonus_string2 = NULL;
-	WINDOW = NULL;
+	game->window = NULL;
 }
 
-// ft_strlen dans while loop = Check if all lines are equal in size (= rectangular map)
-// Last if = Taille minimum pour avoir autre chose que des murs (not requested in subject, remove ?)
+// ft_strlen dans while loop = Check if all lines
+//		are equal in size (= rectangular map)
+// Last if = Taille minimum pour avoir autre chose que des
+//		murs (not requested in subject, remove ?)
 // close(fd); à la fin est important, sinon ne lira pas suite
-void	get_map_size(int fd, s_game *game)
+void	get_map_size(int fd, t_game *game)
 {
 	size_t	length_line;
 	int		line_counter;
+	char	*gnl_line_return;
 
-	char *gnl_line_return ;
 	line_counter = 0;
 	gnl_line_return = get_next_line(fd);
 	if (!gnl_line_return)
-		free_gnl_return_and_exit(ERROR_MESSSAGE_03, &gnl_line_return, &fd);
+		free_gnl_return_and_exit(ERR_MSG_03, &gnl_line_return, &fd);
 	length_line = ft_strlen(gnl_line_return);
 	while (gnl_line_return != NULL)
 	{
@@ -95,10 +114,10 @@ void	get_map_size(int fd, s_game *game)
 		line_counter++;
 		if ((gnl_line_return != NULL)
 			&& (ft_strlen(gnl_line_return) != length_line))
-			free_gnl_return_and_exit(ERROR_MESSSAGE_05, &gnl_line_return, &fd);
+			free_gnl_return_and_exit(ERR_MSG_05, &gnl_line_return, &fd);
 	}
 	if ((length_line < 4) || (line_counter < 3))
-		free_gnl_return_and_exit(ERROR_MESSSAGE_06, &gnl_line_return, &fd);
+		free_gnl_return_and_exit(ERR_MSG_06, &gnl_line_return, &fd);
 	game->max_lines = line_counter;
 	game->max_columns = length_line;
 	close(fd);
@@ -106,11 +125,13 @@ void	get_map_size(int fd, s_game *game)
 
 // On alloue manuellement la première colonne uniquement (lignes done by GNL)
 // mlx_init = Connection to the graphical system - MLX MALLOC DONE HERE
-// still reachable: 299,966 bytes in 3,312 blocks - Investigated and normal if doesn't increase after
-// Valgrind flag but normal (internal MLX42/GLFW allocation, can't be freed manually)
-s_game	build_map(int fd, char *path)
+// still reachable: 299,966 bytes in 3,312 blocks
+// Investigated and normal if doesn't increase after
+// Valgrind flag but normal (internal MLX42/GLFW allocation,
+// can't be freed manually)
+t_game	build_map(int fd, char *path)
 {
-	s_game	game;
+	t_game	game;
 	int		i;
 
 	get_map_size(fd, &game);
@@ -127,8 +148,9 @@ s_game	build_map(int fd, char *path)
 	}
 	game.escape_pos = get_tile_position(game, ESCAPE);
 	set_structs_pointers_to_null(&game);
-	if (!(game.window = mlx_init(TILE_SIZE * (game.max_columns - 1), TILE_SIZE
-				* game.max_lines, GAME_NAME, false)))
+	game.window = mlx_init(TILE_SIZE * (game.max_columns - 1),
+		TILE_SIZE * game.max_lines, GAME_NAME, false);
+	if (!(game.window))
 	{
 		clean_and_exit(&game);
 	}

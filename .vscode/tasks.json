@@ -227,7 +227,9 @@ Explication des clés principales :
 				"so_long_main_build.c",		// Fichiers à compiler ensemble (les autres projets sont ajoutés différemment plus bas)
 				"so_long_graphics.c",
 				"so_long_checkers.c",
+				"so_long_path_check.c",
 				"so_long_misc.c",
+				"so_long_handler_bonus.c",
 				"so_long_free_functions.c",
 // Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
 				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
