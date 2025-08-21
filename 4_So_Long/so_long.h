@@ -6,22 +6,22 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/21 14:39:31 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/21 18:04:40 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-// ⚪ #define - Yeah that's a lot, don't judge me.
+// ⚪ #define
 // ‼️Paths ne marchent que via mon VSCode - Trouver une autre solution
 // En attendant, run Valgrind depuis 00_VSCode et mettre le chemin d'accès
 // valgrind ./4_So_Long/so_long /home/sophie/Documents/__path__de__la__map
-# define PATH_GROUND "./4_So_Long/ic_Square_Purple.png"
-# define PATH_WALL "./4_So_Long/ic_Square_Black.png"
-# define PATH_PLAYER "./4_So_Long/ic_Player_Diplo.png"
-# define PATH_COLLEC "./4_So_Long/ic_Collectible_Corn.png"
-# define PATH_ESCAPE "./4_So_Long/ic_Escape_Bike.png"
+# define PATH_GROUND "./textures/ic_Square_Purple.png"
+# define PATH_WALL "./textures/ic_Square_Black.png"
+# define PATH_PLAYER "./textures/ic_Player_Diplo.png"
+# define PATH_COLLEC "./textures/ic_Collectible_Corn.png"
+# define PATH_ESCAPE "./textures/ic_Escape_Bike.png"
 # define RIGHT 6
 # define LEFT 4
 # define UP 8

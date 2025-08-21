@@ -1,9 +1,10 @@
+# Makefile pour Eval (l'original a été backup)
 # Modifs de config pour évals :
 # Créer un dossier par librairie, dans le projet actuel, et y placer :
 #		La sélection de fonctions utilisées (ou tout mettre)
 #		Son Makefile
 #		Son .h
-# Updater le Makefile + .h de chaque librairie (fonctions, bonus, règles etc si nécessaire)
+# Updater le Makefile (+ .h ?) de chaque librairie (fonctions, bonus, règles etc si nécessaire)
 # Dans le Makefile du projet, créer une règle (par librairie) pour compiler les librairies nécessaires au projet
 # Mettre cette règle comme dépendance dans le script qui va compiler mon projet actuel
 # Mettre le dossier où se trouvent les .h et .a dans les flags de compilation de mon projet actuel
