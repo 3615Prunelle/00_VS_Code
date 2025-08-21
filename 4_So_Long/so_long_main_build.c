@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:49 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 11:20:20 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/21 14:32:01 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 // mlx_close_hook = quitter le jeu via clic X
 // mlx_loop(game.window); = Keep at the end - Starts to render the window
 // with all requested elements, until shutdown is requested
-int		main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	char	*path;
 	int		fd;
@@ -51,7 +51,7 @@ int		main(int argc, char **argv)
 	return (0);
 }
 
-int		check_input_get_fd(char *path)
+int	check_input_get_fd(char *path)
 {
 	int		size_path;
 	char	*extension;
@@ -83,9 +83,9 @@ void	set_structs_pointers_to_null(t_game *game)
 {
 	game->ground_image = NULL;
 	game->wall_image = NULL;
-	game->player_image = NULL;
-	game->collectible_image = NULL;
-	game->escape_image = NULL;
+	game->playr_img = NULL;
+	game->collec_img = NULL;
+	game->escap_img = NULL;
 	game->bonus_string1 = NULL;
 	game->bonus_string2 = NULL;
 	game->window = NULL;
@@ -149,11 +149,11 @@ t_game	build_map(int fd, char *path)
 	game.escape_pos = get_tile_position(game, ESCAPE);
 	set_structs_pointers_to_null(&game);
 	game.window = mlx_init(TILE_SIZE * (game.max_columns - 1),
-		TILE_SIZE * game.max_lines, GAME_NAME, false);
+			TILE_SIZE * game.max_lines, GAME_NAME, false);
 	if (!(game.window))
 	{
 		clean_and_exit(&game);
 	}
-	game.player_image = path_to_image(&game, game.window, PATH_PLAYER);
+	game.playr_img = path_to_image(&game, game.window, PATH_PLAYER);
 	return (game);
 }

@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:59:00 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 11:42:18 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/21 14:41:46 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,9 @@ t_tile	target_position(t_game game, int move)
 // Vérifier chaque possibilité de mouvement
 // Create counter
 // Update de la position du player
-// If need shell testing, use print_map_fun(game); here
 void	move_player_logic(t_game game, int move)
 {
 	static int	step_counter;
-
 	t_tile		player;
 	t_tile		target;
 
@@ -84,8 +82,8 @@ void	move_player_graphic(t_game *game)
 	updated_player_pos = get_tile_position(*game, PLAYER);
 	if (updated_player_pos.column != -1)
 	{
-		game->player_image->instances[0].x = updated_player_pos.column * TILE_SIZE;
-		game->player_image->instances[0].y = updated_player_pos.line * TILE_SIZE;
+		game->playr_img->instances[0].x = updated_player_pos.column * TILE_SIZE;
+		game->playr_img->instances[0].y = updated_player_pos.line * TILE_SIZE;
 	}
 	else
 	{
@@ -109,28 +107,28 @@ bool	is_move_allowed(t_game game, t_tile target)
 // If : if on escape + collectibles fetched : exit game
 void	delete_collectible_instance(t_game *game)
 {
-	size_t	index;
+	size_t	i;
 	int		ctibles_amount;
 
-	index = 0;
+	i = 0;
 	ctibles_amount = get_collectibles_left(*game);
-	while (index < game->collectible_image->count)
+	while (i < game->collec_img->count)
 	{
-		if (game->player_image->instances[0].x == game->collectible_image->instances[index].x
-			&& game->player_image->instances[0].y == game->collectible_image->instances[index].y)
-		{
-			game->collectible_image->instances[index].enabled = false;
-		}
-		index++;
+		if (game->playr_img->instances[0].x == game->collec_img->instances[i].x
+			&& game->playr_img->instances[0].y
+			== game->collec_img->instances[i].y)
+			game->collec_img->instances[i].enabled = false;
+		i++;
 	}
 	if (ctibles_amount == 0)
 	{
-		if (game->player_image->instances[0].x == game->escape_image->instances[0].x
-			&& game->player_image->instances[0].y == game->escape_image->instances[0].y)
+		if (game->playr_img->instances[0].x == game->escap_img->instances[0].x
+			&& game->playr_img->instances[0].y
+			== game->escap_img->instances[0].y)
 		{
-			game->escape_image->instances[0].enabled = false;
+			game->escap_img->instances[0].enabled = false;
 			mlx_close_window(game->window);
 		}
-		index++;
+		i++;
 	}
 }

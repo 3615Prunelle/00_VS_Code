@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:15 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 11:20:20 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/21 14:32:01 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	display_map(t_game *game)
 		line++;
 	}
 	game->wall_image = path_to_image(game, game->window, PATH_WALL);
-	game->collectible_image = path_to_image(game, game->window, PATH_COLLECTIBLE);
-	game->escape_image = path_to_image(game, game->window, PATH_ESCAPE);
+	game->collec_img = path_to_image(game, game->window, PATH_COLLEC);
+	game->escap_img = path_to_image(game, game->window, PATH_ESCAPE);
 	add_wall_collectible_exit_images(game);
 	add_player_image(game);
 }
@@ -52,9 +52,9 @@ void	add_wall_collectible_exit_images(t_game *game)
 			if (game->content[line][column] == '1')
 				display_image(game, game->wall_image, column, line);
 			else if (game->content[line][column] == 'C')
-				display_image(game, game->collectible_image, column, line);
+				display_image(game, game->collec_img, column, line);
 			else if (game->content[line][column] == 'E')
-				display_image(game, game->escape_image, column, line);
+				display_image(game, game->escap_img, column, line);
 			column++;
 		}
 		line++;
@@ -73,7 +73,7 @@ void	add_player_image(t_game *game)
 		while (game->content[line][column] != '\n')
 		{
 			if (game->content[line][column] == 'P')
-				display_image(game, game->player_image, column, line);
+				display_image(game, game->playr_img, column, line);
 			column++;
 		}
 		line++;

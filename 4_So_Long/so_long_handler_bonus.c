@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:15 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 11:20:20 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/21 14:11:18 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	key_actions(mlx_key_data_t keydata, void *param)
 
 	game = param;
 	move = 0;
-	if (!game || !game->player_image || game->player_image->count < 1)
+	if (!game || !game->playr_img || game->playr_img->count < 1)
 		return ;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 	{

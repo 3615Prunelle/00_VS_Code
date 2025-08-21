@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:27 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 11:20:20 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/21 14:23:00 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ bool	check_everything(t_game *game)
 		return (false);
 	}
 	if ((!is_element(game, PLAYER)) || (!is_element(game, ESCAPE))
-		|| (!is_element(game, COLLECTIBLE)))
+		|| (!is_element(game, COLLEC)))
 	{
 		return (false);
 	}
@@ -131,7 +131,7 @@ bool	is_element(t_game *game, char element)
 	return (true);
 }
 
-int		get_collectibles_left(t_game game)
+int	get_collectibles_left(t_game game)
 {
 	int	ctibles_amount;
 	int	y;
@@ -145,7 +145,7 @@ int		get_collectibles_left(t_game game)
 		x = 0;
 		while (x < game.max_columns)
 		{
-			if (game.content[y][x] == COLLECTIBLE)
+			if (game.content[y][x] == COLLEC)
 			{
 				ctibles_amount++;
 			}

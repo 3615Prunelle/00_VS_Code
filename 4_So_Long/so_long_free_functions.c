@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:34 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 11:20:20 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/21 14:32:01 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ void	clean_and_exit(void *param)
 		mlx_delete_image(game->window, game->ground_image);
 	if (game->wall_image)
 		mlx_delete_image(game->window, game->wall_image);
-	if (game->player_image)
-		mlx_delete_image(game->window, game->player_image);
-	if (game->collectible_image)
-		mlx_delete_image(game->window, game->collectible_image);
-	if (game->escape_image)
-		mlx_delete_image(game->window, game->escape_image);
+	if (game->playr_img)
+		mlx_delete_image(game->window, game->playr_img);
+	if (game->collec_img)
+		mlx_delete_image(game->window, game->collec_img);
+	if (game->escap_img)
+		mlx_delete_image(game->window, game->escap_img);
 	if (game->bonus_string1)
 		mlx_delete_image(game->window, game->bonus_string1);
 	if (game->bonus_string2)

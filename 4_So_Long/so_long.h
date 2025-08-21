@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/21 12:19:33 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/21 14:39:31 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,16 @@
 # define PATH_GROUND "./4_So_Long/ic_Square_Purple.png"
 # define PATH_WALL "./4_So_Long/ic_Square_Black.png"
 # define PATH_PLAYER "./4_So_Long/ic_Player_Diplo.png"
-# define PATH_COLLECTIBLE "./4_So_Long/ic_Collectible_Corn.png"
+# define PATH_COLLEC "./4_So_Long/ic_Collectible_Corn.png"
 # define PATH_ESCAPE "./4_So_Long/ic_Escape_Bike.png"
 # define RIGHT 6
 # define LEFT 4
 # define UP 8
 # define DOWN 2
-# define TILE_CHAR(MAP, ELEMENT) (MAP)[(ELEMENT).line][(ELEMENT).column]
-# define TILE_CHAR_PTR(MAP, ELEMENT) (MAP)[(ELEMENT)->line][(ELEMENT)->column]
 
 # define WALL '1'
 # define PLAYER 'P'
-# define COLLECTIBLE 'C'
+# define COLLEC 'C'
 # define ESCAPE 'E'
 # define EMPTY_SPACE '0'
 # define CHECKED 'V'
@@ -68,8 +66,8 @@
 # include <libft.h>
 # include <ft_printf.h>
 # include <get_next_line.h>
-
-// NOTE : mettre les dossiers 99 + 98 au lieu de ca ^ car ce projet dépend des .h + .a mais pas besoin du reste
+// mettre les repos 99/98 au lieu des include
+// et faire un makefile distinct pour evals
 
 // ⚪ Structs
 typedef struct node
@@ -86,7 +84,7 @@ typedef struct moves
 	t_tile		right;
 }				t_four_moves;
 
-typedef struct
+typedef struct game
 {
 	int			max_lines;
 	int			max_columns;
@@ -95,9 +93,9 @@ typedef struct
 	mlx_t		*window;
 	mlx_image_t	*ground_image;
 	mlx_image_t	*wall_image;
-	mlx_image_t	*player_image;
-	mlx_image_t	*collectible_image;
-	mlx_image_t	*escape_image;
+	mlx_image_t	*playr_img;
+	mlx_image_t	*collec_img;
+	mlx_image_t	*escap_img;
 	mlx_image_t	*bonus_string1;
 	mlx_image_t	*bonus_string2;
 }				t_game;
@@ -108,10 +106,10 @@ void			get_map_size(int fd, t_game *game);
 void			set_structs_pointers_to_null(t_game *game);
 bool			check_everything(t_game *game);
 bool			are_walls_approved(t_game game);
-bool			is_path_valid(t_tile player_pos, t_tile dest_pos, t_game game_copy,
-					int tot_ctibles);
+bool			is_path_valid(t_tile player_pos, t_tile dest_pos,
+					t_game game_copy, int tot_ctibles);
 bool			path_pre_checks(t_game *game_copy, t_tile *player_pos);
-t_four_moves		moves_options_set_up(t_tile player_pos);
+t_four_moves	moves_options_set_up(t_tile player_pos);
 bool			is_element(t_game *game, char element);
 t_game			duplicate_game(t_game game);
 
@@ -141,7 +139,4 @@ void			free_logic_part(char *message, t_game *any_game);
 void			free_gnl_return_and_exit(char *error_message, char **line,
 					int *fd);
 void			clean_and_exit(void *param);
-
-// ⚪ Testing
-void	print_map_fun(t_game game); // To delete - Only for testing
 #endif
