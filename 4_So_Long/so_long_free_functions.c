@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:34 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/22 12:40:55 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 17:27:53 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	simple_print_exit(char *s)
 {
-	ft_printf("Error : [%s]\n", s);
+	ft_dprintf(2, "Error : [%s]\n", s);
 	exit(1);
 }
 
@@ -25,7 +25,7 @@ void	simple_print_exit(char *s)
 // A la fin, on force GNL avec une valeur neg pour libérer son static buffer
 void	free_gnl_return_and_exit(char *error_message, char **line, int *fd)
 {
-	ft_printf("Error : [%s]\n", error_message);
+	ft_dprintf(2, "Error : [%s]\n", error_message);
 	free(*line);
 	*line = NULL;
 	close(*fd);
@@ -36,7 +36,7 @@ void	free_gnl_return_and_exit(char *error_message, char **line, int *fd)
 // Free toutes les lignes de content
 void	free_logic_part(char *message, t_game *any_game)
 {
-	ft_printf("%s", message);
+	ft_dprintf(2, "%s", message);
 	while (any_game->max_lines > 0)
 	{
 		free(any_game->content[any_game->max_lines - 1]);

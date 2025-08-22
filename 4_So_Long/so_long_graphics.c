@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:15 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 14:32:01 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 17:27:53 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	display_image(t_game *game, mlx_image_t *image, int column, int line)
 	if (mlx_image_to_window(game->window, image, column * TILE_SIZE, line
 			* TILE_SIZE) == -1)
 	{
-		ft_printf("Error : [%s]\n", ERR_MSG_10);
+		ft_dprintf(2, "Error : [%s]\n", ERR_MSG_10);
 		clean_and_exit(game);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 17:45:21 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/08 12:45:51 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 17:27:53 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,12 @@ t_node	*create_stack(t_node *stack, int *numbers_arr, int *arr_size)
 	}
 	return (stack);
 }
-
+// print sur stderr
 void	clean_early_exit(char *msg, int *numbers_arr)
 {
-	int	fd;
-
-	fd = 2;
 	if (numbers_arr)
 		free(numbers_arr);
-	ft_fprintf(&fd, "%s", msg);
+	ft_dprintf(2, "%s", msg);
 	exit(1);
 }
 

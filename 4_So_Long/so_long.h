@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/22 14:41:36 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 17:15:53 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@
 
 # define GAME_NAME "Space Invader Diplo Corn Quest"
 
-# define MSG_01 "Check up 1/2 done - Logic part is about to be free\n"
-# define MSG_02 "Check up 2/2 done - You're good to play - Have fun !\n"
-# define MSG_03 "Did you just dare press the escape key? Coward.\n"
+# define MSG_01 "Check up done - You're good to play - Have fun !\n"
+# define MSG_02 "Did you just dare press the escape key? Coward.\n"
 
 # define ERR_MSG_01 "No map, no play !"
 # define ERR_MSG_02 "Map file extension must be .ber"

@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:34:53 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/20 21:28:31 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 17:27:53 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_printf(const char *string, ...)
 
 	fd = 1;
 	va_start(ptr_string, string);
-	print_to_fd(&fd, string, ptr_string);
+	print_to_fd(fd, string, ptr_string);
 	va_end(ptr_string);
 }
 
@@ -34,7 +34,7 @@ qui accepte un FD comme param
 Donc bien penser à lui donner (par ex fd 2 = sortie erreur, etc)
 TO DO : updater le .h avec ces deux nouvelles fonctions
 WHen done testing, use it in push_swap */
-void	ft_fprintf(int *fd, const char *string, ...)
+void	ft_dprintf(int fd, const char *string, ...)
 {
 	va_list	ptr_string;
 
@@ -51,7 +51,7 @@ NB: S'il s'agit d'une string simple sans %, je peux aussi utiliser ft_putstr_fd
 Le 1er paramètre (fd) peut donc désormais être 2
 (sortie erreur standard = fd 2) par exemple.
 */
-int	print_to_fd(int *fd, const char *string, va_list ptr_string)
+int	print_to_fd(int fd, const char *string, va_list ptr_string)
 {
 	int	i;
 	int	j;
@@ -67,7 +67,7 @@ int	print_to_fd(int *fd, const char *string, va_list ptr_string)
 		}
 		else
 		{
-			write(*fd, &string[i], 1);
+			write(fd, &string[i], 1);
 			i++;
 			j++;
 		}
@@ -75,7 +75,7 @@ int	print_to_fd(int *fd, const char *string, va_list ptr_string)
 	return (j);
 }
 
-int	specifiers_call(int *fd, char c, va_list ptr_string)
+int	specifiers_call(int fd, char c, va_list ptr_string)
 {
 	int	j;
 

@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:49 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/22 14:35:00 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 17:27:53 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int	main(int argc, char **argv)
 		display_map(&game);
 		mlx_key_hook(game.window, key_actions, &game);
 		mlx_close_hook(game.window, clean_and_exit, &game);
-		ft_printf(MSG_02);
+		ft_printf(MSG_01);
 		mlx_loop(game.window);
 		clean_and_exit(&game);
 	}
 	else if (argc < 2)
-		ft_printf("Error : [%s]\n", ERR_MSG_01);
+		ft_dprintf(2, "Error : [%s]\n", ERR_MSG_01);
 	return (0);
 }
 
@@ -147,7 +147,7 @@ t_game	build_map(int fd, char *path)
 	game.escape_pos = get_tile_position(game, ESCAPE);
 	set_structs_pointers_to_null(&game);
 	if (!(check_everything(&game)))
-			clean_and_exit(&game);
+		clean_and_exit(&game);
 	game.window = mlx_init(TILE_SIZE * (game.max_columns - 1),
 			TILE_SIZE * game.max_lines, GAME_NAME, false);
 	if (!(game.window))

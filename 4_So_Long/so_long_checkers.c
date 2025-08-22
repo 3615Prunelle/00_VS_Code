@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:27 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 19:04:13 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 17:27:53 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	check_everything(t_game *game)
 
 	if (!are_walls_approved(*game))
 	{
-		ft_printf("Error : [%s]\n", ERR_MSG_04);
+		ft_dprintf(2, "Error : [%s]\n", ERR_MSG_04);
 		return (false);
 	}
 	if ((!is_element(game, PLAYER)) || (!is_element(game, ESCAPE))
@@ -42,7 +42,7 @@ bool	check_everything(t_game *game)
 		free_logic_part(ERR_MSG_09, &game_copy);
 		return (false);
 	}
-	free_logic_part(MSG_01, &game_copy);
+	free_logic_part("", &game_copy);
 	return (true);
 }
 
@@ -124,9 +124,9 @@ bool	is_element(t_game *game, char element)
 		y++;
 	}
 	if (element_counter == 0)
-		return (ft_printf("Error : [%s]\n", ERR_MSG_07), false);
+		return (ft_dprintf(2, "Error : [%s]\n", ERR_MSG_07), false);
 	if ((element_counter > 1) && ((element == 'P') || (element == 'E')))
-		return (ft_printf("Error : [%s]\n", ERR_MSG_08), false);
+		return (ft_dprintf(2, "Error : [%s]\n", ERR_MSG_08), false);
 	return (true);
 }
 
