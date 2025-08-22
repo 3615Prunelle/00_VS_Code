@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:34:53 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/20 18:07:41 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 14:46:23 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,16 +101,16 @@ int	specifiers_call(int *fd, char c, va_list ptr_string)
 	return (j);
 }
 
-int	main(void)
-{
-	ft_printf("Char :\t\t%c\n", 'Z');
-	ft_printf("String :\t\t%s\n", "Holà");
-	ft_printf("Pointer :\t\t%p\n", "Pouet");
-	ft_printf("Decimal :\t\t%d\n", -22);
-	ft_printf("Integer :\t\t%i\n", -33);
-	ft_printf("Unsigned int :\t\t%u\n", 44);
-	ft_printf("Hexadecimal lowercase:\t%x\n", 1000);
-	ft_printf("Hexadecimal uppercase :\t%X\n", 1000);
-	ft_printf("Percentage :\t%%\n");
-	return (0);
-}
+// int	main(void)
+// {
+// 	ft_printf("Char :\t\t%c\n", 'Z');
+// 	ft_printf("String :\t\t%s\n", "Holà");
+// 	ft_printf("Pointer :\t\t%p\n", "Pouet");
+// 	ft_printf("Decimal :\t\t%d\n", -22);
+// 	ft_printf("Integer :\t\t%i\n", -33);
+// 	ft_printf("Unsigned int :\t\t%u\n", 44);
+// 	ft_printf("Hexadecimal lowercase:\t%x\n", 1000);
+// 	ft_printf("Hexadecimal uppercase :\t%X\n", 1000);
+// 	ft_printf("Percentage :\t%%\n");
+// 	return (0);
+// }

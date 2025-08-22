@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/22 12:41:05 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 14:41:36 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // Use other Makefile for evals (done - Same repo)
 
 // ⚪ #define
-// Paths to update depending on cumputer
+// Paths to update depending on computer - If Eval, use other Makefile
 # define PATH_GROUND "./4_So_Long/textures/ic_Square_Purple.png"
 # define PATH_WALL "./4_So_Long/textures/ic_Square_Black.png"
 # define PATH_PLAYER "./4_So_Long/textures/ic_Player_Diplo.png"
