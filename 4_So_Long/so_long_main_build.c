@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:49 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 14:32:01 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 13:00:39 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int argc, char **argv)
 		clean_and_exit(&game);
 	}
 	else if (argc < 2)
-		ft_printf(ERR_MSG_01);
+		ft_printf("Error : [%s]\n", ERR_MSG_01);
 	return (0);
 }
 
@@ -147,13 +147,12 @@ t_game	build_map(int fd, char *path)
 		game.content[i] = get_next_line(fd);
 	}
 	game.escape_pos = get_tile_position(game, ESCAPE);
+	// exit if error BEFORE mlx_init
 	set_structs_pointers_to_null(&game);
 	game.window = mlx_init(TILE_SIZE * (game.max_columns - 1),
 			TILE_SIZE * game.max_lines, GAME_NAME, false);
 	if (!(game.window))
-	{
 		clean_and_exit(&game);
-	}
 	game.playr_img = path_to_image(&game, game.window, PATH_PLAYER);
 	return (game);
 }

@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:27 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 14:23:00 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/21 19:04:13 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ t_tile	get_tile_position(t_game game, char element)
 	t_tile	element_position;
 
 	y = 0;
-	x = 0;
 	element_position.line = -1;
 	element_position.column = -1;
 	while (y < game.max_lines)

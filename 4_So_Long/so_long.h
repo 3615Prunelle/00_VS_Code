@@ -6,22 +6,22 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/21 18:04:40 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 12:41:05 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
+// Use other Makefile for evals (done - Same repo)
+
 // ⚪ #define
-// ‼️Paths ne marchent que via mon VSCode - Trouver une autre solution
-// En attendant, run Valgrind depuis 00_VSCode et mettre le chemin d'accès
-// valgrind ./4_So_Long/so_long /home/sophie/Documents/__path__de__la__map
-# define PATH_GROUND "./textures/ic_Square_Purple.png"
-# define PATH_WALL "./textures/ic_Square_Black.png"
-# define PATH_PLAYER "./textures/ic_Player_Diplo.png"
-# define PATH_COLLEC "./textures/ic_Collectible_Corn.png"
-# define PATH_ESCAPE "./textures/ic_Escape_Bike.png"
+// Paths to update depending on cumputer
+# define PATH_GROUND "./4_So_Long/textures/ic_Square_Purple.png"
+# define PATH_WALL "./4_So_Long/textures/ic_Square_Black.png"
+# define PATH_PLAYER "./4_So_Long/textures/ic_Player_Diplo.png"
+# define PATH_COLLEC "./4_So_Long/textures/ic_Collectible_Corn.png"
+# define PATH_ESCAPE "./4_So_Long/textures/ic_Escape_Bike.png"
 # define RIGHT 6
 # define LEFT 4
 # define UP 8
@@ -39,7 +39,6 @@
 # define MSG_01 "Check up 1/2 done - Logic part is about to be free\n"
 # define MSG_02 "Check up 2/2 done - You're good to play - Have fun !\n"
 # define MSG_03 "Did you just dare press the escape key? Coward.\n"
-# define MSG_04 "\nAnd ... Tiiime tooo say goodbye !\n"
 
 # define ERR_MSG_01 "No map, no play !"
 # define ERR_MSG_02 "Map file extension must be .ber"
@@ -60,14 +59,13 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdbool.h>
-# include <string.h>	// pour errno right below
+# include <string.h>
 # include <errno.h>
 
 # include <libft.h>
 # include <ft_printf.h>
 # include <get_next_line.h>
 // mettre les repos 99/98 au lieu des include
-// et faire un makefile distinct pour evals
 
 // ⚪ Structs
 typedef struct node

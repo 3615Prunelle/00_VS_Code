@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:34 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 14:32:01 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 12:40:55 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	clean_and_exit(void *param)
 		mlx_delete_image(game->window, game->bonus_string2);
 	if (game->window)
 		mlx_terminate(game->window);
-	free_logic_part(MSG_04, game);
-	ft_printf("... Something to add, Queen Strerror ? : [%s]\n\n",
-		strerror(errno));
+	free_logic_part("", game);
 	exit(1);
 }
