@@ -8,7 +8,8 @@ CFLAGS = -g -I ../../98_include
 LFLAGS = -L ../../99_lib -lftprintf -lft
 
 SRCS = 	minitalk_server_main.c \
-		minitalk_binary_conversions_s.c
+		minitalk_binary_conversions_s.c \
+		minitalk_server_actions.c
 
 OBJS = $(SRCS:.c=.o)
 

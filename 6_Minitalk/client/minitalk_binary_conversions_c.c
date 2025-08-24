@@ -21,24 +21,25 @@ Envoyer, dans l'ordre :
 */
 
 
-void	char_to_binary(char c, int server_PID)
+unsigned char	*char_to_binary(char c)
 {
 	int bitmask = 128;		// N'évolue pas car on vérifie toujours le premier bit (et on shift le binaire du char vers la gauche)
 	int i = 0;
+	unsigned char	*converted_char;
+	converted_char = malloc(sizeof(unsigned char) * 8);		// un seul char
 
 	while(i < 8)
 	{
 		if(c & bitmask)
 		{
-			kill(server_PID, SIGUSR2);
-			usleep(600);
+			converted_char[i] = '1';
 		}
 		else
 		{
-			kill(server_PID, SIGUSR1);
-			usleep(600);
+			converted_char[i] = '0';
 		}
 		i++;
 		c = c << 1;
 	}
+	return(converted_char);
 }
