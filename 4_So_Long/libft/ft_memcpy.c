@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:40:26 by schappuy          #+#    #+#             */
-/*   Updated: 2025/05/02 20:11:50 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:40:17 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*ft_memcpy(void *dest, const void *srce, size_t siz)
 	ptr_dest = (unsigned char *)dest;
 	ptr_srce = (const unsigned char *)srce;
 	i = 0;
-	while (i < siz) // note lo_long : si siz = 10, ptr_sce[10] = '\0'
+	while (i < siz)
 	{
 		ptr_dest[i] = ptr_srce[i];
 		i++;

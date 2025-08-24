@@ -4,7 +4,7 @@
 #		Puis on définit les scripts à exécuter par ces règles (qui incluent eux même des variables et des commandes)
 #		Je peux donner les noms que je veux aux variables et aux règles
 #		Les règles clean, fclean, re et .PHONY doivent toujours être présentes
-#		Les règles sont appelées par make (I chose with one, default is first one)
+#		Les règles sont appelées par make (I chose wich one, default is first one)
 # VERY IMPORTANT : Vérifier l'ordre des flags/élements dans les commandes est très important et peut
 #	générer des grosses erreurs à la compilation même si juste 2 éléments sont inversés
 #	Par exemple, les objets doivent toujours précéder les -l pour que le linker voie ce qui doit être résolu.
@@ -90,12 +90,13 @@ all: $(NAME) ruleX
 #		rcs		Remplace (r) ou créée (c), puis crée un sommaire (s) à mon programme pour que le linker (qui assemble l'exécutablel) trouve facilement quelle fonction est dans quel .o
 #				If (NAME) already exists, it updates the object files inside
 # NB : No command = Nothing will be created
+# $(LFLAGS) doit toujours être à la fin de la ligne de lien, pas dans la compilation simple
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 # Another example
 	$(CC) -ggdb -o $@ $(OBJS) $(LFLAGS)
 # Another example (-o = output = telling the compiler which name to give to the excutable)
-	$(CC) $(CFLAGS) $(LFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LFLAGS)
 
 # Rule to compile the source files into object files
 # This rule is called automatically if/when a .o file is needed

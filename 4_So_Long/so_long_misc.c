@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:59:00 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 14:41:46 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 18:15:21 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_tile	target_position(t_game game, int move)
 		target.line = player.line - 1;
 		target.column = player.column;
 	}
-	else if (move == DOWN)
+	else
 	{
 		target.line = player.line + 1;
 		target.column = player.column;

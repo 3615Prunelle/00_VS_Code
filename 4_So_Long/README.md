@@ -1,9 +1,12 @@
 Hello, welcome to my game !
-
 Just git clone and make, then execute with the map of your choice as an argument (in the maps folder)
 
-You may miss a library. If you do (pick and choose depending on the error message) :
-'# sudo apt install build-essential libx11-dev libglfw3-dev libglfw3 xorg-dev'
+Possible errors :
+* Can't find any file related to MLX42 ? (graphic library)
+>> Just git clone MLX42 from github. Don't worry about compiling it, my Makefile takes care of that.
+
+>> You may miss another library. If you do (pick and choose depending on the error message) :
+sudo apt install build-essential libx11-dev libglfw3-dev libglfw3 xorg-dev'
 
 If the Makefile starts with
 '# Makefile pour Eval (l'original a été backup)'
@@ -12,7 +15,7 @@ It's the right one.
 If if starts with
 '# All notes are now in the Makefile template'
 Don't use it.
-Instead, rename the 'Makefile_for_eval' to Makefile, and you should be good to go !
+Instead, delete that Makefile, and rename the 'Makefile_for_eval' to Makefile, and you should be good to go !
 
 Have fun ^^'
 

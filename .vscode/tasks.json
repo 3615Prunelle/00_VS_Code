@@ -1,20 +1,3 @@
-/*Ce fichier tasks.json est utilisé par VS Code pour automatiser la compilation des fichiers C
-via des tâches. Il définit plusieurs tâches de compilation qui peuvent être exécutées avant
-le lancement du programme (comme défini dans launch.json).
-Chaque tâche est une commande shell ou système qui exécute un compilateur (gcc, clang ou cc)
-avec différents paramètres.
------------
-Explication des clés principales :
-- tasks				Liste des différentes tâches de compilation.
-- type				Type de tâche (ex. cppbuild pour la compilation C/C++).
-- label				Nom de la tâche, utilisé pour l'exécuter depuis VS Code.
-- command			Commande exécutée (ex. /usr/bin/gcc ou clang).
-- args				Liste des arguments passés à la commande.
-- options.cwd		Répertoire où la commande est exécutée.
-- problemMatcher	Permet à VS Code d'afficher les erreurs de compilation.
-- group				Définit si la tâche est une tâche de compilation principale.
-- detail			Indique que la tâche a été générée automatiquement par le debugger.
-*/
 {
 	"tasks": [
 		{
@@ -337,14 +320,14 @@ Explication des clés principales :
 			"args": [
 				"-g",
 				"minitalk_server_main.c",
-				"minitalk_binary_conversions.c",
+				"minitalk_binary_conversions_s.c",
 // Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
-				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
-				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
-				"-L${workspaceFolder}/6_Minitalk/",	// Pour la library du projet en cours
+				"-I${workspaceFolder}/../98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
+				"-L${workspaceFolder}/../99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
+//				"-L${workspaceFolder}/6_Minitalk/",		// Pour la library du projet en cours
 				//"-DROUQUINETTE_DEBUG",		// Trick super badass si besoin
 				"-o",
-				"${workspaceFolder}/6_Minitalk/server",		// Path de l'exécutable
+				"${workspaceFolder}/6_Minitalk/server/server",		// Path de l'exécutable
 				// "-Wall",						// Active tous les avertissements de base
 				// "-Wextra",					// Active des avertissements supplémentaires
 				// "-Werror",					// Traite les avertissements comme des erreurs
@@ -352,7 +335,7 @@ Explication des clés principales :
 				"-lft"							// -lft = -l ft = -l (lib)ft = Liaison avec libft.a - A METTRE A LA FIN IMPERATIVEMENT Sinon bug de type 'undefined reference to ft_*'
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/6_Minitalk"
+				"cwd": "${workspaceFolder}/6_Minitalk/server"
 			},
 			"group": {
 				"kind": "build",
@@ -368,22 +351,20 @@ Explication des clés principales :
 			"args": [
 				"-g",
 				"minitalk_client_main.c",
-				"minitalk_binary_conversions.c",
-// Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
-				"-I${workspaceFolder}/98_include",		// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
-				"-L${workspaceFolder}/99_lib",			// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
-				"-L${workspaceFolder}/6_Minitalk/",	// Pour la library du projet en cours
-				//"-DROUQUINETTE_DEBUG",		// Trick super badass si besoin
+				"minitalk_binary_conversions_c.c",
+				"-I${workspaceFolder}/98_include",
+				"-L${workspaceFolder}/99_lib",
+				"-L${workspaceFolder}/6_Minitalk/client/client",
 				"-o",
-				"${workspaceFolder}/6_Minitalk/client",		// Path de l'exécutable
-				// "-Wall",						// Active tous les avertissements de base
-				// "-Wextra",					// Active des avertissements supplémentaires
-				// "-Werror",					// Traite les avertissements comme des erreurs
-				"-lftprintf",					// A chaque nouveau .a/.h à utiliser, ajouter une ligne au dessus de celle-ci. Penser à compiler le projet avant de tester dans VSCode
-				"-lft"							// -lft = -l ft = -l (lib)ft = Liaison avec libft.a - A METTRE A LA FIN IMPERATIVEMENT Sinon bug de type 'undefined reference to ft_*'
+				"${workspaceFolder}/6_Minitalk/client/client",
+				// "-Wall",
+				// "-Wextra",
+				// "-Werror",
+				"-lftprintf",
+				"-lft"
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/6_Minitalk"
+				"cwd": "${workspaceFolder}/6_Minitalk/client"
 			},
 			"group": {
 				"kind": "build",
@@ -392,6 +373,59 @@ Explication des clés principales :
 			"problemMatcher": []
 		},
 //--------- Sum up : Compil pour Minitalk Client --------------------------------------------------------------------- //
+		{
+			"label": "C/C++: Tâche",	// Nom de la tâche appelée par la config
+			"type": "shell",
+			"command": "/usr/bin/cc",
+			"args": [
+// Flags de compilation puis de linking
+				"-g",						// Debug info
+				"minitalk_client_main.c",	// Fichier(s) à compiler
+// Sur recommandation de Fab, créé répertoires lib + include qui seront à ajouter dans le .json + makefile de chaque projet, dès que les .h et .a existent
+				"-I${workspaceFolder}/98_include",	// -I = Ajoute un répertoire à aller scanner pour aller chercher des include (.h)
+				"-L${workspaceFolder}/99_lib",		// -L = Ajoute un répertoire à aller scanner pour aller chercher des library (.a ou .so) + rajouter lib (ex : "-lft") en dernier arg
+				"-L${workspaceFolder}/***",				// Chemin d'accès du répertoire où se trouve l'exécutable
+				//"-DROUQUINETTE_DEBUG",	// Trick super badass si besoin
+				"-o",						// Flag qui précède le nom de l'exécutable
+				"${workspaceFolder}/***",	// Path + nom de l'exécutable
+				"-Wall",					// Active tous les avertissements de base
+				"-Wextra",					// Active des avertissements supplémentaires
+				"-Werror",					// Traite les avertissements comme des erreurs
+// S'assurer que tous les projets/libs ont été compilés avant de les ajouter aux lignes suivantes
+				"-lftprintf",				// A chaque nouveau .a/.h à utiliser, ajouter une ligne au dessus de celle-ci.
+				"-lft"						// -lft = -l ft = -l (lib)ft = Liaison avec libft.a - A METTRE A LA FIN IMPERATIVEMENT Sinon bug de type 'undefined reference to ft_*'
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/***"	// Path du repo où se trouvent les .c mentionnés plus haut
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+//--------- Sum up : Tâche tuto (toujours garder en dernier) --------------------------------------------------------------------- //
 ],
 	"version": "2.0.0"
 }
+
+/*Ce fichier tasks.json est utilisé par VS Code pour automatiser la compilation des fichiers C
+via des tâches. Il définit plusieurs tâches de compilation qui peuvent être exécutées avant
+le lancement du programme (comme défini dans launch.json).
+Chaque tâche est une commande shell ou système qui exécute un compilateur (gcc, clang ou cc)
+avec différents paramètres.
+-----------
+Explication des clés principales :
+- tasks				Liste des différentes tâches de compilation.
+- type				Type de tâche (ex. cppbuild pour la compilation C/C++).
+- label				Nom de la tâche, utilisé pour l'exécuter depuis VS Code.
+- command			Commande exécutée (ex. /usr/bin/gcc ou clang).
+- args				Liste des arguments passés à la commande.
+- options.cwd		Répertoire où la commande est exécutée.
+- problemMatcher	Permet à VS Code d'afficher les erreurs de compilation.
+- group				Définit si la tâche est une tâche de compilation principale.
+- detail			Indique que la tâche a été générée automatiquement par le debugger.
+
+VSCode définit ${workspaceFolder} comme la racine du projet ouvert dans VSCode, donc pour moi :
+/home/sophie/Documents/00_VS_Code
+*/

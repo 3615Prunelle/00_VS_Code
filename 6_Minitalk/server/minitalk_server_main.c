@@ -2,9 +2,9 @@
 ⬇️✅‼️⁉️❓❌Ⓜ️🆓
 */
 
-// ‼️‼️‼️Ne pas faire de modifs sur le fichier client dans VSCode principal
+// ‼️Use other branch to debug
 
-#include "minitalk.h"
+#include "minitalk_server.h"
 
 void	receiving_PID(int signum)
 {
@@ -79,15 +79,15 @@ int		main(void)
 	sigaction_return1 = sigaction(SIGUSR1, &print_string, NULL);		// A privilégier plutôt que signal (plus fiable)
 	sigaction_return2 = sigaction(SIGUSR2, &print_string, NULL);
 
-	// if((sigaction_return1 == -1) || (sigaction_return2 == -1))
+	// if((sigaction_return1 == -1) || (sigaction_return2 == -1))		// Pour débug ?
 	// {
 	// 	ft_printf("Sigaction return 1 : [%i]\n", sigaction_return1);
 	// 	ft_printf("Sigaction return 2 : [%i]\n", sigaction_return2);
 	// 	ft_printf("Errno message : [%s]\n", strerror(errno));
 	// }
 
-// récupérer le PID du client (avant de print chaque string)
-// première boucle while pour le PID (tant que le char est un chiffre ?)
+// récupérer size puis PID du client (avant de print chaque string)
+// première boucle while pour le PID size
 // envoyer signal au client
 // print string
 

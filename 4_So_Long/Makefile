@@ -1,4 +1,5 @@
 # All notes are now in the Makefile template
+# Bien penser à changer path des textures avant eval
 NAME = so_long
 
 CC = cc

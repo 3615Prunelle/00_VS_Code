@@ -1,6 +1,7 @@
 # Makefile pour Eval (l'original a été backup)
 # Si soucis de compil pour l'éval, make sure que l'ordi sur lequel a été cloné mon repo ait ces libs :
 # sudo apt install build-essential libx11-dev libglfw3-dev libglfw3 xorg-dev
+# Bien penser à changer path des textures avant eval
 NAME = so_long
 
 CC = cc

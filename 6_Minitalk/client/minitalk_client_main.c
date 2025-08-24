@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_client.h"
 
 // ‼️‼️ Utiliser branche client pour debug ‼️‼️
 
@@ -19,7 +19,6 @@ void	send_signal(int signum)
 	// A importer depuis main si elle fait plus de 25 lignes
 }
 
-// Client sends a signal to server
 int	main(int argc, char **argv)
 {
 	int		server_PID;
@@ -37,6 +36,12 @@ int	main(int argc, char **argv)
 
 		// envoyer le PID du client par signaux, avant ou après la string (maybe better before ?)
 		client_PID = ft_itoa(getpid());
+
+		size_t	size_PID;
+		size_PID = ft_strlen(client_PID);
+		ft_printf("Size PID : %d", size_PID);
+
+
 		while(client_PID[i] != '\0')
 		{
 			char_to_binary(client_PID[i], server_PID);

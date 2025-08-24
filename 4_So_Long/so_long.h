@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/22 17:15:53 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/22 17:54:50 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 // ⚪ #define
 // Paths to update depending on computer - If Eval, use other Makefile
+// Bien penser à changer path des textures avant eval
 # define PATH_GROUND "./4_So_Long/textures/ic_Square_Purple.png"
 # define PATH_WALL "./4_So_Long/textures/ic_Square_Black.png"
 # define PATH_PLAYER "./4_So_Long/textures/ic_Player_Diplo.png"
