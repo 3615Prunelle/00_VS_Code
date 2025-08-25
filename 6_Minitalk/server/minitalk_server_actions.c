@@ -6,32 +6,32 @@
 
 #include "minitalk_server.h"
 
-void	get_client_PID(void)		// Action 1
-{
-	// receive size first (1 char)
-	// malloc (outside of handler) or declare array of unsigned char [size]
-	// receive PID and fill up array
-	// send signal to client
-	struct sigaction	client_PID_related_actions;		// A faire
-	client_PID_related_actions.sa_handler = receive_PID;
+// void	get_client_PID(void)		// Action 1
+// {
+// 	// receive size first (1 char)
+// 	// malloc (outside of handler) or declare array of unsigned char [size]
+// 	// receive PID and fill up array
+// 	// send signal to client
+// 	struct sigaction	client_PID_related_actions;		// A faire
+// 	client_PID_related_actions.sa_handler = receive_PID;
 
-// actions on 'set' : set it to empty, then add the 2 only authorized signals in it
-	sigemptyset(&client_PID_related_actions.sa_mask);
-	sigaddset(&client_PID_related_actions.sa_mask, SIGUSR1);
-	sigaddset(&client_PID_related_actions.sa_mask, SIGUSR2);
+// // actions on 'set' : set it to empty, then add the 2 only authorized signals in it
+// 	sigemptyset(&client_PID_related_actions.sa_mask);
+// 	sigaddset(&client_PID_related_actions.sa_mask, SIGUSR1);
+// 	sigaddset(&client_PID_related_actions.sa_mask, SIGUSR2);
 
-	client_PID_related_actions.sa_flags = 0;				// A faire sinon buggy
+// 	client_PID_related_actions.sa_flags = 0;				// A faire sinon buggy
 
-	int sigaction_return1;		// pour back up le return (-1 si erreur)
-	int sigaction_return2;
-	sigaction_return1 = sigaction(SIGUSR1, &client_PID_related_actions, NULL);
-	sigaction_return2 = sigaction(SIGUSR2, &client_PID_related_actions, NULL);
+// 	int sigaction_return1;		// pour back up le return (-1 si erreur)
+// 	int sigaction_return2;
+// 	sigaction_return1 = sigaction(SIGUSR1, &client_PID_related_actions, NULL);
+// 	sigaction_return2 = sigaction(SIGUSR2, &client_PID_related_actions, NULL);
 
-	while(1)
-	{
-		pause();
-	}
-}
+// 	while(1)
+// 	{
+// 		pause();
+// 	}
+// }
 
 // void		handler(int signo, siginfo_t *info, void *other)
 void	receive_PID(int signum)		// Handler - Change signature to (see above)
@@ -48,9 +48,9 @@ void	receive_PID(int signum)		// Handler - Change signature to (see above)
 	if (bit_count < 8)
 	{
 		if (signum == 10)
-			one_char[bit_count] = 0;
+			one_char[bit_count] = '0';
 		else if (signum == 12)
-			one_char[bit_count] = 1;
+			one_char[bit_count] = '1';
 		bit_count++;
 	}
 	if (bit_count == 8)	// tous les 8 signaux, appel de fonction
@@ -79,21 +79,28 @@ void	got_signal(int signum)
 	// typedef typeof(void (int))  *sighandler_t;
 	// sighandler_t; est une fonction qui renvoie void et prend un int en param
 
-	static int	bit_count;
+	static int				bit_count;
 	static unsigned char	one_char[8];
 
 	if (bit_count == 8)
 		bit_count = 0;
-	if (bit_count < 8)
+	else if (bit_count < 8)
 	{
 		if (signum == 10)
-			one_char[bit_count] = 0;
+		{
+			one_char[bit_count] = '0';
+			ft_printf("Char is : %c\n", one_char[bit_count]);
+		}
 		else if (signum == 12)
-			one_char[bit_count] = 1;
+		{
+			one_char[bit_count] = '1';
+			ft_printf("Char is : %c\n", one_char[bit_count]);
+		}
 		bit_count++;
 	}
 	if (bit_count == 8)	// tous les 8 signaux, appel de fonction qui va convertir 8 bits en char, et les print
 	{
+			ft_printf("Bit count is : %d", bit_count);
 			print_char_from_binary(one_char);
 	}
 // add a clean up function ?

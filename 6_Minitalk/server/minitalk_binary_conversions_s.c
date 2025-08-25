@@ -21,11 +21,11 @@ Recevoir, dans l'ordre :
 	String
 */
 
-int		build_client_PID(unsigned char *one_char)
-{
-	int i = 0;
+// int		build_client_PID(unsigned char *one_char)
+// {
+// 	int i = 0;
 
-}
+// }
 
 // A changer (ne doit pas print one by one)
 void 	print_char_from_binary(unsigned char *binary_array)
@@ -37,7 +37,7 @@ void 	print_char_from_binary(unsigned char *binary_array)
 
 	while (i < 8)				// car binary_array n'a que 8 éléments
 	{
-		if (binary_array[i] == 1)
+		if (binary_array[i] == '1')
 		{
 			number_to_conv += bin_compare;
 		}
