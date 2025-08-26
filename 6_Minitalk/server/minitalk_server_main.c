@@ -2,57 +2,115 @@
 ⬇️✅‼️⁉️❓❌Ⓜ️🆓
 */
 
-// ‼️Use other branch to debug
-
 #include "minitalk_server.h"
+
+// volatile int	volatile_number = 0;
+volatile char	buffer[5]; // max size_t = 65535 = 5 digits ---- Mettre un \0 à la fin ?
 
 int		main(void)
 {
-// Get process ID so I can reach out to it via terminal & kill command (kill -signum pid)
+// Get process ID so I can reach out to it via terminal & kill command (kill -signo pid)
 	int	process_id;
 	process_id = getpid();
 	ft_printf("Waiting for message from client - PID server is [%i]\n", process_id);
 
-	struct sigaction	print_string;
-	// struct sigaction	send_signal;	// A faire
-
-	print_string.sa_handler = got_signal;
+	struct sigaction	deal_with_signal;
+	deal_with_signal.sa_sigaction = got_signal;
 
 // actions on 'set' : set it to empty, then add the 2 only authorized signals in it
-	sigemptyset(&print_string.sa_mask);
-	sigaddset(&print_string.sa_mask, SIGUSR1);
-	sigaddset(&print_string.sa_mask, SIGUSR2);
+	sigemptyset(&deal_with_signal.sa_mask);
+	sigaddset(&deal_with_signal.sa_mask, SIGUSR1);
+	sigaddset(&deal_with_signal.sa_mask, SIGUSR2);
 
-	print_string.sa_flags = 0;				// A faire sinon bugs
+	deal_with_signal.sa_flags = SA_SIGINFO;				// Pour récupérer le PID du client (entre autres)
 
-	// int sigaction_return1;
+	sigaction(SIGUSR1, &deal_with_signal, NULL);
+	sigaction(SIGUSR2, &deal_with_signal, NULL);
+
+	// int sigaction_return1;					// Pour débug ?
 	// int sigaction_return2;
-	// sigaction_return1 = sigaction(SIGUSR1, &print_string, NULL);
-	// sigaction_return2 = sigaction(SIGUSR2, &print_string, NULL);
-
-	sigaction(SIGUSR1, &print_string, NULL);
-	sigaction(SIGUSR2, &print_string, NULL);
-
-	// if((sigaction_return1 == -1) || (sigaction_return2 == -1))		// Pour débug ?
+	// sigaction_return1 = sigaction(SIGUSR1, &deal_with_signal, NULL);
+	// sigaction_return2 = sigaction(SIGUSR2, &deal_with_signal, NULL);
+	// if((sigaction_return1 == -1) || (sigaction_return2 == -1))
 	// {
 	// 	ft_printf("Sigaction return 1 : [%i]\n", sigaction_return1);
 	// 	ft_printf("Sigaction return 2 : [%i]\n", sigaction_return2);
 	// 	ft_printf("Errno message : [%s]\n", strerror(errno));
 	// }
 
-// récupérer size puis PID du client (avant de print chaque string)
-// première boucle while pour le PID size
-// envoyer signal au client
-// print string
+	// while (volatile_number == 0)
 
-	while (1)		// if no loop, exit after the first signal received
+	// while (ft_strlen((const char*)buffer) <= 5) // ou ft_strlen(buffer) != 5 ?? puis sortir, puis malloc, puis boucle while pour remplir buffer?
+	while (1)
 	{
-		pause(); // marche aussi si je ne le mets pas, à retirer si need to remove 3 lines
-
-		// créer une fonction par action : get_client_PID // send_signal_to_client // receive&print_string
-		// chacune avec leur struct et une boucle while ?
+		pause(); // marche aussi sans ? Check & retirer si need to remove 3 lines
+		// ft_printf("Dans while -------------------------- buffer[%d] = %c\n\n\n", i, buffer[i]);
 	}
+
 
 // add a clean up function ?
 	return(0);
+}
+
+void	got_signal(int signo, siginfo_t *info, void *other)	// Handler (can't change signature)
+{
+	(void)other;	// sinon -Werror me met une erreur (unused param)
+
+	static int				bit_count;
+	static unsigned char	one_char_binary_array[8];
+	int						client_PID;
+	static int				first_pass;
+// write(1, "\n\t\t\t\t\t\t******PASS******\n", 24);
+	if(first_pass == 0)
+	{
+		client_PID = info->si_pid;
+		write(1, "Sending first signal to client\n", 31);
+		kill(client_PID, SIGUSR1);
+		first_pass = 1;
+	}
+	if (bit_count == 8)
+	{
+		bit_count = 0;
+		ft_memset(one_char_binary_array, 0, 8);	// nécessaire ?
+	}
+	if (bit_count < 8)
+	{
+		if (signo == 10)
+		{
+			one_char_binary_array[bit_count] = '0';
+			write(1, "\t\t\t\t\t\t0\n", 8);
+			kill(client_PID, SIGUSR1);
+		}
+		else if (signo == 12)
+		{
+			one_char_binary_array[bit_count] = '1';
+			write(1, "\t\t\t\t\t\t1\n", 8);
+			kill(client_PID, SIGUSR1);
+		}
+		bit_count++;
+	}
+	if (bit_count == 8)
+	{
+		// ft_printf("Binary array just received : %s\n", one_char_binary_array);
+		ft_printf("Char just received (to encrypt) : [%c]\n", get_char_from_binary(one_char_binary_array));
+		get_size_string(one_char_binary_array);
+	}
+}
+
+void	get_size_string(unsigned char *one_char_binary_array)
+{
+	static int i;
+
+	if(ft_strncmp((char*)one_char_binary_array, "00100000", 8) != 0)	// remplir avec des espaces pour incrémenter ft_strlen dans main
+	{
+		buffer[i] = get_char_from_binary(one_char_binary_array);
+		printf("\t\t\t\t\t\tNew buffer char ? >> %c", buffer[i]);
+		i++;
+	}
+	else if((ft_strncmp((char*)one_char_binary_array, "00100000", 8) == 0) && (i < 5))		// 5 = buffer size
+	{
+		buffer[i] = get_char_from_binary(one_char_binary_array); // remplir le buffer avec des espaces
+		printf("\t\t\t\t\t\tBuffer is being filled with 00100000");
+		i++;
+	}
 }

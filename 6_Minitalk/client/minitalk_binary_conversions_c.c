@@ -20,8 +20,7 @@ Envoyer, dans l'ordre :
 	String
 */
 
-
-unsigned char	*char_to_binary(char c)
+unsigned char	*char_to_binary(unsigned char c)
 {
 	int bitmask = 128;		// N'évolue pas car on vérifie toujours le premier bit (et on shift le binaire du char vers la gauche)
 	int i = 0;

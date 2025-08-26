@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:41:59 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/24 16:13:29 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/26 18:29:32 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@
 // ⚪ Structs
 
 // ⚪ Functions signatures
-void			send_PID(char *client_PID, int server_PID);
-unsigned char	*char_to_binary(char c);					// Encryption (tech de Fab)
+void			print_reception(int signo, siginfo_t *info, void *other);	// Handler
+void			send_string_size(unsigned char *converted_size_to_send, int server_PID);
+void			send_string(unsigned char *converted_string_to_send, int server_PID);
+unsigned char	*char_to_binary(unsigned char c);					// Encryption (tech de Fab)
 void			send_binary_char(unsigned char *binary_char, int server_PID);
 
 // ⚪ Clean up functions

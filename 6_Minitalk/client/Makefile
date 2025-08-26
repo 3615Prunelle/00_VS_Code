@@ -3,7 +3,7 @@ NAME = client
 CC = cc
 
 # Add -Wall -Wextra -Werror when done
-CFLAGS = -g -I ../../98_include
+CFLAGS = -Wall -Wextra -Werror -g -I ../../98_include
 
 LFLAGS = -L ../../99_lib -lftprintf -lft
 

@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:41:59 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/24 17:56:10 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/26 18:24:02 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINITALK_SERVER_H
 
 // ⚪ #define
-
 
 // ⚪ #include
 // #define _POSIX_C_SOURCE 200809L	// Décommenter si 42 VS Code ne reconnait pas certaines variables/fonctions
@@ -45,11 +44,11 @@
 // ⚪ Structs
 
 // ⚪ Functions signatures
-void	get_client_PID(void);		// Action 1
+void	got_signal(int signo, siginfo_t *info, void *other);	// Handler
+void	get_size_string(unsigned char *one_char_binary_array);
+
 int		get_int_from_binary(unsigned char *binary_array);
-void 	print_char_from_binary(unsigned char *binary_array);		// Decryption
-void	receive_PID(int signum);		// Handler 1
-void	got_signal(int signum);			// Handler 2
+char 	get_char_from_binary(unsigned char *binary_array);		// Decryption
 
 // ⚪ Clean up functions
 

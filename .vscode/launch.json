@@ -138,7 +138,7 @@
 			"request": "launch",
 			"program": "${workspaceRoot}/6_Minitalk/client/client",
 			//"args": ["arg1", "arg2"],
-			"args": ["6123", "AZERTY"],
+			"args": ["56259", "AZERTY OWI tralala 789"],
 			"environment": [{ "name": "config", "value": "Debug" }],
 			"cwd": "${workspaceFolder}",
 			"MIMode": "gdb",

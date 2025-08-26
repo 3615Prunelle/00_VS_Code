@@ -12,27 +12,68 @@
 
 #include "minitalk_client.h"
 
-// ‼️‼️ Utiliser branche client pour debug ‼️‼️
-
-void	send_PID(char *client_PID, int server_PID)
+void	send_string_size(unsigned char *converted_size_to_send, int server_PID)
 {
-		int i = 0;
-		size_t	size_PID;
-		size_PID = ft_strlen(client_PID);
-		char *size_to_ascii = ft_itoa(size_PID);	// string : "5 \0"
+	unsigned char	*binary_char_to_send;	// faire avec array plutôt que malloc ? car no need à l'extérieur de la fonction
+	int	i = 0;
 
-		unsigned char *size_to_send = char_to_binary(size_to_ascii[0]);
+	static int sending_spaces;
+	int	length_of_size_array = ft_strlen((char*)converted_size_to_send);
 
-		send_binary_char(size_to_send, server_PID);
+	while(i < length_of_size_array)
+	{
+		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		binary_char_to_send = char_to_binary(converted_size_to_send[i]);
+		send_binary_char(binary_char_to_send, server_PID);
+		free(binary_char_to_send);
+		ft_printf("Sent digit (in ASCII form) : [%c]\n", converted_size_to_send[i]);
+		i++;
+	}
+	if(converted_size_to_send[i] == '\0')
+	{
+		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		binary_char_to_send = char_to_binary(' ');
+		send_binary_char(binary_char_to_send, server_PID);
+		free(binary_char_to_send);
+		sending_spaces = 1;
+		ft_printf("----- Done sending 'digits' + one space ! About to send other spaces then the string.\n");
+		i++;
+	}
+	while((i < 5) && (sending_spaces == 1))
+	{
+		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		binary_char_to_send = char_to_binary(' ');
+		send_binary_char(binary_char_to_send, server_PID);
+		free(binary_char_to_send);
+		ft_printf("----- Sent space\n");
+		i++;
+	}
+	ft_printf("----- Done with arrays of zeros, now sending the string\n");
+}
 
-		// // A faire quand server a bien recu la size
-		// while(client_PID[i] != '\0')
-		// {
-		// 	// déclarer variable unsigned char pour mettre le return de char_to_binary, un chiffre après l'autre
-		// 	// puis envoyer cette suite binaire au server
-		// 	char_to_binary(client_PID[i]);
-		// 	i++;
-		// }
+void	send_string(unsigned char *converted_string_to_send, int server_PID)
+{
+	unsigned char	*binary_char_to_send;	// faire avec array plutôt que malloc ? car no need à l'extérieur de la fonction
+	int	i = 0;
+
+	while(converted_string_to_send[i] != '\0')
+	{
+		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		binary_char_to_send = char_to_binary(converted_string_to_send[i]);
+		send_binary_char(binary_char_to_send, server_PID);
+		free(binary_char_to_send);
+		ft_printf("Sent char : [%c]\n", converted_string_to_send[i]);
+		i++;
+	}
+	if(converted_string_to_send[i] == '\0')
+	{
+		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		binary_char_to_send = char_to_binary('\n');
+		send_binary_char(binary_char_to_send, server_PID);
+		free(binary_char_to_send);
+		ft_printf("----- Done sending chars ! About to exit.\n");
+	}
+	exit(0);
 }
 
 void	send_binary_char(unsigned char *binary_char, int server_PID)
@@ -43,12 +84,12 @@ void	send_binary_char(unsigned char *binary_char, int server_PID)
 		if(binary_char[i] == '0')
 		{
 			kill(server_PID, SIGUSR1);
-			sleep(1);				// remove when AR set up
+			usleep(5000);		// remove when AR set up ? - Or create another one without sleep (bc sleep required before sending signal)
 		}
 		else
 		{
 			kill(server_PID, SIGUSR2);
-			sleep(1);				// remove when AR set up
+			usleep(5000);		// remove when AR set up ?
 		}
 		i++;
 	}
@@ -56,12 +97,18 @@ void	send_binary_char(unsigned char *binary_char, int server_PID)
 
 int	main(int argc, char **argv)
 {
-	int		server_PID;
-	char	*string_to_send;
-	int		i;
-	char	*client_PID;
+	int				server_PID;
+	int				string_length;
+	char			*string_to_send;
+	unsigned char	*converted_size_to_send;
 
-	i = 0;
+	struct sigaction	received_signal_from_server;
+	received_signal_from_server.sa_sigaction = print_reception;
+	received_signal_from_server.sa_flags = SA_SIGINFO;		// pas nécessaire mais avec cette config je ne peux pas mettre zéro (TBC)
+	sigemptyset(&received_signal_from_server.sa_mask);
+	sigaddset(&received_signal_from_server.sa_mask, SIGUSR1);
+	sigaction(SIGUSR1, &received_signal_from_server, NULL);
+
 	if(argc == 3)
 	{
 		server_PID = ft_atoi(argv[1]);
@@ -69,21 +116,23 @@ int	main(int argc, char **argv)
 		ft_printf("About to send a message to server (PID [%i])\n", server_PID);
 		ft_printf("Client PID : %i\n", getpid());	// Client PID change à chaque fois
 
-		client_PID = ft_itoa(getpid());
-		send_PID(client_PID, server_PID);
-
-
-		// i = 0;
-		// while(string_to_send[i] != '\0')
-		// {
-		// 	char_to_binary(string_to_send[i]);
-		// 	i++;
-		// }
-		// if(string_to_send[i] == '\0')
-		// {
-		// 	char_to_binary('\n');
-		// 	exit(0);
-		// }
+		string_length = ft_strlen(string_to_send);
+		converted_size_to_send = (unsigned char*)ft_itoa(string_length);
+		send_string_size(converted_size_to_send, server_PID);
+		// send_string(string_to_send, string_length, server_PID); // starting by the 1st char
+		exit(0);
 	}
 	return(0);
+}
+
+void	print_reception(int signo, siginfo_t *info, void *other)	// Handler
+{
+	(void)info;		// sinon erreurs (unused params)
+	(void)other;	// sinon erreurs (unused params)
+
+	if (signo == 10)
+	{
+		write(1, "\n\t\t\t\tSignal Received By Server !\n", 33);
+	}
+	// changer pour que le message s'affiche seulement la première fois (avec un static int + if)
 }

@@ -21,14 +21,14 @@ Recevoir, dans l'ordre :
 	String
 */
 
-// int		build_client_PID(unsigned char *one_char)
+// int		build_client_PID(unsigned char *one_char_binary_array)
 // {
 // 	int i = 0;
 
 // }
 
 // A changer (ne doit pas print one by one)
-void 	print_char_from_binary(unsigned char *binary_array)
+char 	get_char_from_binary(unsigned char *binary_array)
 {
 	int i = 0;
 	int number_to_conv = 0;
@@ -45,23 +45,26 @@ void 	print_char_from_binary(unsigned char *binary_array)
 		i++;
 	}
 	c = number_to_conv;
-	write(1, &c, 1);			// VICTOIRE
+	// printf("Seems like I made it ? Char is : %c\n", c);
+	// write(1, &c, 1);			// VICTOIRE
+	return(c);
 }
 int		get_int_from_binary(unsigned char *binary_array)
 {
 	int i = 0;
 	int number = 0;
 	int bin_compare = 128;
-	char c;
 
 	while (i < 8)				// car binary_array n'a que 8 éléments
 	{
-		if (binary_array[i] == 1)
+		if (binary_array[i] == '1')
 		{
 			number += bin_compare;
 		}
 		bin_compare /= 2;
 		i++;
 	}
+	number = number + '0';	// convert ascii into matching number
+	// ft_printf("Right converted number is %d\n", number);
 	return(number);
 }
