@@ -6,7 +6,7 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:41:59 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/26 20:56:46 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/26 23:40:26 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@
 void	got_signal(int signo, siginfo_t *info, void *other);	// Handler
 void	get_size_string(unsigned char *one_char_binary_array);
 void	get_string(unsigned char *one_char_binary_array);
+void	fill_buffer(void);
+void	please(int signo, siginfo_t *info, void *other);		// Handler
 
 int		get_int_from_binary(unsigned char *binary_array);
 char 	get_char_from_binary(unsigned char *binary_array);		// Decryption
