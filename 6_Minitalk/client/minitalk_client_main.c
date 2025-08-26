@@ -99,7 +99,7 @@ int	main(int argc, char **argv)
 {
 	int				server_PID;
 	int				string_length;
-	char			*string_to_send;
+	unsigned char	*string_to_send;
 	unsigned char	*converted_size_to_send;
 
 	struct sigaction	received_signal_from_server;
@@ -112,14 +112,14 @@ int	main(int argc, char **argv)
 	if(argc == 3)
 	{
 		server_PID = ft_atoi(argv[1]);
-		string_to_send = ft_strdup(argv[2]);		// Ⓜ️
+		string_to_send = (unsigned char*)ft_strdup(argv[2]);		// Ⓜ️
 		ft_printf("About to send a message to server (PID [%i])\n", server_PID);
 		ft_printf("Client PID : %i\n", getpid());	// Client PID change à chaque fois
 
-		string_length = ft_strlen(string_to_send);
+		string_length = ft_strlen((char*)string_to_send);
 		converted_size_to_send = (unsigned char*)ft_itoa(string_length);
 		send_string_size(converted_size_to_send, server_PID);
-		// send_string(string_to_send, string_length, server_PID); // starting by the 1st char
+		send_string(string_to_send, server_PID); // starting by the 1st char
 		exit(0);
 	}
 	return(0);

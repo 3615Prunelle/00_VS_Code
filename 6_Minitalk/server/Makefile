@@ -3,7 +3,7 @@ NAME = server
 CC = cc
 
 # Add -Wall -Wextra -Werror when done
-CFLAGS = -Wall -Wextra -Werror -g -I ../../98_include
+CFLAGS = -g -I ../../98_include
 
 LFLAGS = -L ../../99_lib -lftprintf -lft
 

@@ -12,22 +12,6 @@
 
 #include "minitalk_server.h"
 
-/*
-Attendre d'avoir reçu la string pour la print
-Recevoir, dans l'ordre :
-	Size du PID (size_t)
-	PID
-	Size string (size_t)
-	String
-*/
-
-// int		build_client_PID(unsigned char *one_char_binary_array)
-// {
-// 	int i = 0;
-
-// }
-
-// A changer (ne doit pas print one by one)
 char 	get_char_from_binary(unsigned char *binary_array)
 {
 	int i = 0;

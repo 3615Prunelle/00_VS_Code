@@ -4,8 +4,7 @@
 
 #include "minitalk_server.h"
 
-// volatile int	volatile_number = 0;
-volatile char	buffer[5]; // max size_t = 65535 = 5 digits ---- Mettre un \0 à la fin ?
+volatile unsigned char buffer[6]; // car size_t max est 5 char + \0
 
 int		main(void)
 {
@@ -40,11 +39,26 @@ int		main(void)
 
 	// while (volatile_number == 0)
 
-	// while (ft_strlen((const char*)buffer) <= 5) // ou ft_strlen(buffer) != 5 ?? puis sortir, puis malloc, puis boucle while pour remplir buffer?
-	while (1)
+	while (ft_strlen((const char*)buffer) < 5) // puis sortir, puis malloc, puis boucle while pour remplir buffer?
 	{
 		pause(); // marche aussi sans ? Check & retirer si need to remove 3 lines
-		// ft_printf("Dans while -------------------------- buffer[%d] = %c\n\n\n", i, buffer[i]);
+	}
+
+	ft_printf("VICTOIRE - Buffer : %s\n", buffer);
+	size_t size_of_string = ft_atoi((char*)buffer);
+	ft_printf("Size of buffer in int ? %d\n", size_of_string);
+
+	unsigned char	*da_string;
+	da_string = malloc(sizeof(unsigned char) * size_of_string);
+
+	while (1)
+	{
+		ft_printf("Début Boucle while - Buffer : %s\n", buffer);
+		// recevoir les char
+		// les mettre 5 par 5 dans le buffer
+		// vider le buffer dans la string à la suite - HOW ? ft_strjoin ?
+		pause();
+		ft_printf("Fin Boucle while - Buffer : %s\n", buffer);
 	}
 
 
@@ -60,6 +74,7 @@ void	got_signal(int signo, siginfo_t *info, void *other)	// Handler (can't chang
 	static unsigned char	one_char_binary_array[8];
 	int						client_PID;
 	static int				first_pass;
+	static int				total_count;
 // write(1, "\n\t\t\t\t\t\t******PASS******\n", 24);
 	if(first_pass == 0)
 	{
@@ -78,39 +93,72 @@ void	got_signal(int signo, siginfo_t *info, void *other)	// Handler (can't chang
 		if (signo == 10)
 		{
 			one_char_binary_array[bit_count] = '0';
-			write(1, "\t\t\t\t\t\t0\n", 8);
+			// write(1, "\t\t\t\t\t\t0\n", 8);
 			kill(client_PID, SIGUSR1);
 		}
 		else if (signo == 12)
 		{
 			one_char_binary_array[bit_count] = '1';
-			write(1, "\t\t\t\t\t\t1\n", 8);
+			// write(1, "\t\t\t\t\t\t1\n", 8);
 			kill(client_PID, SIGUSR1);
 		}
 		bit_count++;
+		total_count++;
 	}
-	if (bit_count == 8)
+	if ((bit_count == 8) && (total_count < 45))
 	{
-		// ft_printf("Binary array just received : %s\n", one_char_binary_array);
-		ft_printf("Char just received (to encrypt) : [%c]\n", get_char_from_binary(one_char_binary_array));
+		ft_printf("\n--------------- Char just received (to encrypt) : [%c]\n", get_char_from_binary(one_char_binary_array));
 		get_size_string(one_char_binary_array);
+	}
+	// else if ((bit_count == 8) && (total_count >= 45))			// 8 (bits) * 5 (size of buffer without \0)
+	// {
+	// 	get_string(one_char_binary_array);
+	// }
+}
+
+void	get_string(unsigned char *one_char_binary_array)
+{
+	static int i;
+	if((ft_strncmp((char*)one_char_binary_array, "00000000", 8) != 0) && (i < 5))		// null terminator = fin de la string
+	{
+		printf("(string) one_char_binary_array : [%s]\n", one_char_binary_array);
+		buffer[i] = get_char_from_binary(one_char_binary_array);
+		printf("\t\t\t\t\t\tNew buffer char >> [%c]\n", buffer[i]);
+		i++;
+	}
+	else if(ft_strncmp((char*)one_char_binary_array, "00000000", 8) == 0)		// 5 = buffer size sans le \0
+	{
+		printf("(string) one_char_binary_array : [%s]\n", one_char_binary_array);
+		buffer[i] = '\n';
+		printf("\t\t\tEnd of the party - Line break (theorically)");
+		i++;
+	}
+	else if (i == 5)
+	{
+		buffer[i] = '\0';
+		i = 0;
 	}
 }
 
 void	get_size_string(unsigned char *one_char_binary_array)
 {
 	static int i;
-
 	if(ft_strncmp((char*)one_char_binary_array, "00100000", 8) != 0)	// remplir avec des espaces pour incrémenter ft_strlen dans main
 	{
+		printf("(size) one_char_binary_array : [%s]\n", one_char_binary_array);
 		buffer[i] = get_char_from_binary(one_char_binary_array);
-		printf("\t\t\t\t\t\tNew buffer char ? >> %c", buffer[i]);
+		printf("\t\t\t\t\t\tNew buffer char >> [%c]\n", buffer[i]);
 		i++;
 	}
-	else if((ft_strncmp((char*)one_char_binary_array, "00100000", 8) == 0) && (i < 5))		// 5 = buffer size
+	else if((ft_strncmp((char*)one_char_binary_array, "00100000", 8) == 0) && (i < 5))		// 5 = buffer size sans le \0
 	{
-		buffer[i] = get_char_from_binary(one_char_binary_array); // remplir le buffer avec des espaces
-		printf("\t\t\t\t\t\tBuffer is being filled with 00100000");
+		printf("(size) one_char_binary_array : [%s]\n", one_char_binary_array);
+		buffer[i] = get_char_from_binary(one_char_binary_array);							// remplir le buffer avec les espaces reçus
+		printf("\t\t\t\t\t\tNew buffer char >> [%c]\n", buffer[i]);
 		i++;
+	}
+	else if (i == 5)
+	{
+		buffer[i] = '\0';
 	}
 }
