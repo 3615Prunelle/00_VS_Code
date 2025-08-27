@@ -43,7 +43,7 @@ int		main(void)
 	ft_printf("VICTOIRE - Buffer : %s\n", buffer);
 	size_t size_of_string = ft_atoi((char*)buffer);
 	ft_printf("Size of buffer in int ? %d\n", size_of_string);
-	ft_printf("\t\t\t\t__________ DEBUG FROM HERE __________\n");
+	ft_printf("\t\t\t_______________ DEBUG FROM HERE _______________\n");
 
 	free((void*)buffer);
 	buffer = ft_calloc(sizeof(unsigned char), size_of_string + 2);			// pour \n et \0
@@ -83,9 +83,6 @@ void	fill_buffer(void)
 	{
 		pause();
 	}
-
-	ft_printf("ET QU'EST CE QU'ON DIT ? - Buffer : %s\n", buffer);
-	free((void*)buffer);
 }
 
 void	please(int signo, siginfo_t *info, void *other)	// Handler (can't change signature)
@@ -103,6 +100,7 @@ void	please(int signo, siginfo_t *info, void *other)	// Handler (can't change si
 		write(1, "Sending second signal to client\n", 32);
 		kill(client_PID_bis, SIGUSR1);
 		first_pass_bis = 1;
+		ft_memset(one_char_binary_array_bis, 0, 8);	// La
 	}
 	if (bit_count_bis == 8)
 	{
@@ -127,7 +125,7 @@ void	please(int signo, siginfo_t *info, void *other)	// Handler (can't change si
 	}
 	if (bit_count_bis == 8)
 	{
-		write(1, "\n\t******** Char just received (to encrypt) : [", 46);
+		write(1, "\n\t******** Char just received (to encrypt) : [", 46);			// Something is wrong
 		char this_one = get_char_from_binary(one_char_binary_array_bis);
 		write(1, &this_one, 1);
 		write(1, "]\n", 2);
@@ -188,11 +186,13 @@ void	got_signal(int signo, siginfo_t *info, void *other)	// Handler (can't chang
 void	get_string(unsigned char *one_char_binary_array)	// Appelée par handler
 {
 	static int i_bis;
-	write(1, "get_string called, i_bis = ", 27);
-	write(1, &i_bis, 1);
-	write(1, "\n", 1);
 	if(ft_strncmp((char*)one_char_binary_array, "00000000", 8) != 0)			// null terminator = fin de la string
 	{
+		// write(1, "\n\tProof that something is wrong here : [", 40);
+		// char this_one = get_char_from_binary(one_char_binary_array);
+		// write(1, &this_one, 1);
+		// write(1, "]\n", 2);
+
 		// printf("(string) one_char_binary_array : [%s]\n", one_char_binary_array);
 		buffer[i_bis] = get_char_from_binary(one_char_binary_array);
 		// printf("\t\t\t\t\t\tNew buffer char >> [%c]\n", buffer[i_bis]);
@@ -203,6 +203,8 @@ void	get_string(unsigned char *one_char_binary_array)	// Appelée par handler
 		// printf("(string) one_char_binary_array : [%s]\n", one_char_binary_array);
 		buffer[i_bis] = '\n';
 		// printf("\t\t\tEnd of the party - Line break (theorically)");
+		write(1, "CECI EST UN TEST\n", 17);
+		free((void*)buffer);
 	}
 }
 

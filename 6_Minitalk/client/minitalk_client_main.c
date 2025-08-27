@@ -14,7 +14,7 @@
 
 void	send_string_size(unsigned char *converted_size_to_send, int server_PID)
 {
-	unsigned char	*binary_char_to_send;	// faire avec array plutôt que malloc ? car no need à l'extérieur de la fonction
+	unsigned char	*size_binary_char_to_send;	// faire avec array plutôt que malloc ? car no need à l'extérieur de la fonction
 	int	i = 0;
 
 	static int sending_spaces;
@@ -22,29 +22,29 @@ void	send_string_size(unsigned char *converted_size_to_send, int server_PID)
 
 	while(i < length_of_size_array)
 	{
-		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
-		binary_char_to_send = char_to_binary(converted_size_to_send[i]);
-		send_binary_char(binary_char_to_send, server_PID);
-		free(binary_char_to_send);
+		size_binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		size_binary_char_to_send = char_to_binary(converted_size_to_send[i]);
+		send_binary_char(size_binary_char_to_send, server_PID);
+		free(size_binary_char_to_send);
 		ft_printf("Sent digit (in ASCII form) : [%c]\n", converted_size_to_send[i]);
 		i++;
 	}
 	if(converted_size_to_send[i] == '\0')
 	{
-		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
-		binary_char_to_send = char_to_binary(' ');
-		send_binary_char(binary_char_to_send, server_PID);
-		free(binary_char_to_send);
+		size_binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		size_binary_char_to_send = char_to_binary(' ');
+		send_binary_char(size_binary_char_to_send, server_PID);
+		free(size_binary_char_to_send);
 		sending_spaces = 1;
 		ft_printf("----- Done sending 'digits' + one space ! About to send other spaces then the string.\n");
 		i++;
 	}
 	while((i < 5) && (sending_spaces == 1))
 	{
-		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
-		binary_char_to_send = char_to_binary(' ');
-		send_binary_char(binary_char_to_send, server_PID);
-		free(binary_char_to_send);
+		size_binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		size_binary_char_to_send = char_to_binary(' ');
+		send_binary_char(size_binary_char_to_send, server_PID);
+		free(size_binary_char_to_send);
 		ft_printf("----- Sent space\n");
 		i++;
 	}
@@ -53,24 +53,24 @@ void	send_string_size(unsigned char *converted_size_to_send, int server_PID)
 
 void	send_string(unsigned char *converted_string_to_send, int server_PID)
 {
-	unsigned char	*binary_char_to_send;	// faire avec array plutôt que malloc ? car no need à l'extérieur de la fonction
+	unsigned char	*string_binary_char_to_send;	// faire avec array plutôt que malloc ? car no need à l'extérieur de la fonction
 	int	i = 0;
 
 	while(converted_string_to_send[i] != '\0')
 	{
-		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
-		binary_char_to_send = char_to_binary(converted_string_to_send[i]);
-		send_binary_char(binary_char_to_send, server_PID);
-		free(binary_char_to_send);
+		string_binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		string_binary_char_to_send = char_to_binary(converted_string_to_send[i]);
+		send_binary_char(string_binary_char_to_send, server_PID);
+		free(string_binary_char_to_send);
 		ft_printf("Sent char : [%c]\n", converted_string_to_send[i]);
 		i++;
 	}
 	if(converted_string_to_send[i] == '\0')
 	{
-		binary_char_to_send = malloc(sizeof(unsigned char) * 8);
-		binary_char_to_send = char_to_binary('\n');
-		send_binary_char(binary_char_to_send, server_PID);
-		free(binary_char_to_send);
+		string_binary_char_to_send = malloc(sizeof(unsigned char) * 8);
+		string_binary_char_to_send = char_to_binary('\n');
+		send_binary_char(string_binary_char_to_send, server_PID);
+		free(string_binary_char_to_send);
 		ft_printf("----- Done sending chars ! About to exit.\n");
 	}
 	exit(0);
@@ -130,9 +130,17 @@ void	print_reception(int signo, siginfo_t *info, void *other)	// Handler
 	(void)info;		// sinon erreurs (unused params)
 	(void)other;	// sinon erreurs (unused params)
 
-	if (signo == 10)
+	static int once_is_enough;
+
+	if (once_is_enough == 0)
 	{
-		write(1, "\n\t\t\t\tSignal Received By Server !\n", 33);
+		if (signo == 10)
+		{
+			write(1, "\n\t\t\t\tSignal Received By Server !\n", 33);
+			once_is_enough = 1;
+		}
 	}
+
+
 	// changer pour que le message s'affiche seulement la première fois (avec un static int + if)
 }
