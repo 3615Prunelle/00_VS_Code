@@ -29,8 +29,6 @@ char 	get_char_from_binary(unsigned char *binary_array)
 		i++;
 	}
 	c = number_to_conv;
-	// printf("Seems like I made it ? Char is : %c\n", c);
-	// write(1, &c, 1);			// VICTOIRE
 	return(c);
 }
 int		get_int_from_binary(unsigned char *binary_array)

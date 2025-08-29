@@ -26,7 +26,7 @@ void	send_string_size(unsigned char *converted_size_to_send, int server_PID)
 		size_binary_char_to_send = char_to_binary(converted_size_to_send[i]);
 		send_binary_char(size_binary_char_to_send, server_PID);
 		free(size_binary_char_to_send);
-		ft_printf("Sent digit (in ASCII form) : [%c]\n", converted_size_to_send[i]);
+		// ft_printf("Sent digit (in ASCII form) : [%c]\n", converted_size_to_send[i]);
 		i++;
 	}
 	if(converted_size_to_send[i] == '\0')
@@ -36,7 +36,7 @@ void	send_string_size(unsigned char *converted_size_to_send, int server_PID)
 		send_binary_char(size_binary_char_to_send, server_PID);
 		free(size_binary_char_to_send);
 		sending_spaces = 1;
-		ft_printf("----- Done sending 'digits' + one space ! About to send other spaces then the string.\n");
+		// ft_printf("----- Done sending 'digits' + one space ! About to send other spaces then the string.\n");
 		i++;
 	}
 	while((i < 5) && (sending_spaces == 1))
@@ -45,10 +45,10 @@ void	send_string_size(unsigned char *converted_size_to_send, int server_PID)
 		size_binary_char_to_send = char_to_binary(' ');
 		send_binary_char(size_binary_char_to_send, server_PID);
 		free(size_binary_char_to_send);
-		ft_printf("----- Sent space\n");
+		// ft_printf("----- Sent space\n");
 		i++;
 	}
-	ft_printf("----- Done with arrays of zeros, now sending the string\n");
+	// ft_printf("----- Done with arrays of zeros, now sending the string\n");
 }
 
 void	send_string(unsigned char *converted_string_to_send, int server_PID)
@@ -62,16 +62,21 @@ void	send_string(unsigned char *converted_string_to_send, int server_PID)
 		string_binary_char_to_send = char_to_binary(converted_string_to_send[i]);
 		send_binary_char(string_binary_char_to_send, server_PID);
 		free(string_binary_char_to_send);
-		ft_printf("Sent char : [%c]\n", converted_string_to_send[i]);
+		// ft_printf("Sent char : [%c]\n", converted_string_to_send[i]);
 		i++;
 	}
 	if(converted_string_to_send[i] == '\0')
 	{
 		string_binary_char_to_send = malloc(sizeof(unsigned char) * 8);
-		string_binary_char_to_send = char_to_binary('\n');
+		string_binary_char_to_send = char_to_binary('\0');
 		send_binary_char(string_binary_char_to_send, server_PID);
 		free(string_binary_char_to_send);
-		ft_printf("----- Done sending chars ! About to exit.\n");
+
+		// string_binary_char_to_send = malloc(sizeof(unsigned char) * 8);		// No need ? Car on write un \n in server side
+		// string_binary_char_to_send = char_to_binary('\n');
+		// send_binary_char(string_binary_char_to_send, server_PID);
+		// free(string_binary_char_to_send);
+		// ft_printf("----- Done sending chars ! About to exit.\n");
 	}
 	exit(0);
 }
@@ -84,12 +89,12 @@ void	send_binary_char(unsigned char *binary_char, int server_PID)
 		if(binary_char[i] == '0')
 		{
 			kill(server_PID, SIGUSR1);
-			usleep(5000);		// remove when AR set up ? - Or create another one without sleep (bc sleep required before sending signal)
+			usleep(3000);		// remove when AR set up ? - Or create another one without sleep (bc sleep required before sending signal)
 		}
 		else
 		{
 			kill(server_PID, SIGUSR2);
-			usleep(5000);		// remove when AR set up ?
+			usleep(3000);		// remove when AR set up ?
 		}
 		i++;
 	}
@@ -140,7 +145,4 @@ void	print_reception(int signo, siginfo_t *info, void *other)	// Handler
 			once_is_enough = 1;
 		}
 	}
-
-
-	// changer pour que le message s'affiche seulement la première fois (avec un static int + if)
 }

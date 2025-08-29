@@ -6,14 +6,15 @@
 /*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:41:59 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/29 15:51:05 by sophie           ###   ########.fr       */
+/*   Updated: 2025/08/29 20:49:54 by sophie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_SERVER_H
 # define MINITALK_SERVER_H
 
-// ⚪ #define
+// ⚪ #define / Variables globales
+extern unsigned char *buffer; // Doesn't work if I put it this way
 
 // ⚪ #include
 // #define _POSIX_C_SOURCE 200809L	// Décommenter si 42 VS Code ne reconnait pas certaines variables/fonctions
@@ -45,10 +46,8 @@
 
 // ⚪ Functions signatures
 void	got_signal1(int signo, siginfo_t *info, void *other);	// Handler
-void	get_size_string(unsigned char *one_char_binary_array);
-void	get_string(unsigned char *one_char_binary_array);
-void	fill_buffer(void);
-void	got_signal2(int signo, siginfo_t *info, void *other);		// Handler
+bool	get_size_string(unsigned char *one_char_binary_array);
+bool	get_string(unsigned char *one_char_binary_array);
 
 int		get_int_from_binary(unsigned char *binary_array);
 char 	get_char_from_binary(unsigned char *binary_array);		// Decryption
