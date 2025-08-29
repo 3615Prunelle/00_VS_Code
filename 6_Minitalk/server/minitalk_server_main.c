@@ -12,7 +12,7 @@ int		main(void)
 	ft_printf("Waiting for message from client - PID server is [%i]\n", process_id);
 
 	struct sigaction	deal_with_signal;
-	deal_with_signal.sa_sigaction = got_signal;
+	deal_with_signal.sa_sigaction = got_signal1;
 
 // actions on 'set' : set it to empty, then add the 2 only authorized signals in it
 	sigemptyset(&deal_with_signal.sa_mask);
@@ -23,17 +23,6 @@ int		main(void)
 
 	sigaction(SIGUSR1, &deal_with_signal, NULL);
 	sigaction(SIGUSR2, &deal_with_signal, NULL);
-
-	// int sigaction_return1;					// Pour débug ?
-	// int sigaction_return2;
-	// sigaction_return1 = sigaction(SIGUSR1, &deal_with_signal, NULL);
-	// sigaction_return2 = sigaction(SIGUSR2, &deal_with_signal, NULL);
-	// if((sigaction_return1 == -1) || (sigaction_return2 == -1))
-	// {
-	// 	ft_printf("Sigaction return 1 : [%i]\n", sigaction_return1);
-	// 	ft_printf("Sigaction return 2 : [%i]\n", sigaction_return2);
-	// 	ft_printf("Errno message : [%s]\n", strerror(errno));
-	// }
 
 	while (ft_strlen((const char*)buffer) < 5) // puis sortir, puis malloc, puis boucle while pour remplir buffer?
 	{
@@ -57,7 +46,7 @@ int		main(void)
 void	fill_buffer(void)
 {
 	struct sigaction	time_to_pray;
-	time_to_pray.sa_sigaction = please;
+	time_to_pray.sa_sigaction = got_signal2;
 
 	sigemptyset(&time_to_pray.sa_mask);
 	sigaddset(&time_to_pray.sa_mask, SIGUSR1);
@@ -68,24 +57,13 @@ void	fill_buffer(void)
 	sigaction(SIGUSR1, &time_to_pray, NULL);
 	sigaction(SIGUSR2, &time_to_pray, NULL);
 
-	// int sigaction_return1;					// Pour débug ?
-	// int sigaction_return2;
-	// sigaction_return1 = sigaction(SIGUSR1, &time_to_pray, NULL);
-	// sigaction_return2 = sigaction(SIGUSR2, &time_to_pray, NULL);
-	// if((sigaction_return1 == -1) || (sigaction_return2 == -1))
-	// {
-	// 	ft_printf("Sigaction return 1 : [%i]\n", sigaction_return1);
-	// 	ft_printf("Sigaction return 2 : [%i]\n", sigaction_return2);
-	// 	ft_printf("Errno message : [%s]\n", strerror(errno));
-	// }
-
 	while (true)
 	{
 		pause();
 	}
 }
 
-void	please(int signo, siginfo_t *info, void *other)	// Handler (can't change signature)
+void	got_signal2(int signo, siginfo_t *info, void *other)	// Handler (can't change signature)
 {
 	(void)other;	// sinon -Werror me met une erreur (unused param)
 
@@ -100,12 +78,12 @@ void	please(int signo, siginfo_t *info, void *other)	// Handler (can't change si
 		write(1, "Sending second signal to client\n", 32);
 		kill(client_PID_bis, SIGUSR1);
 		first_pass_bis = 1;
-		ft_memset(one_char_binary_array_bis, 0, 8);	// La
+		ft_memset(one_char_binary_array_bis, 0, 8);	// Super important
 	}
 	if (bit_count_bis == 8)
 	{
 		bit_count_bis = 0;
-		ft_memset(one_char_binary_array_bis, 0, 8);	// nécessaire ?
+		ft_memset(one_char_binary_array_bis, 0, 8);	// Reset & clean - Super important
 	}
 	if (bit_count_bis < 8)
 	{
@@ -135,7 +113,7 @@ void	please(int signo, siginfo_t *info, void *other)	// Handler (can't change si
 }
 
 
-void	got_signal(int signo, siginfo_t *info, void *other)	// Handler (can't change signature)
+void	got_signal1(int signo, siginfo_t *info, void *other)	// Handler (can't change signature)
 {
 	(void)other;	// sinon -Werror me met une erreur (unused param)
 
@@ -150,11 +128,12 @@ void	got_signal(int signo, siginfo_t *info, void *other)	// Handler (can't chang
 		write(1, "Sending first signal to client\n", 31);
 		kill(client_PID, SIGUSR1);
 		first_pass = 1;
+		ft_memset(one_char_binary_array, 0, 8);	// Super important
 	}
 	if (bit_count == 8)
 	{
 		bit_count = 0;
-		ft_memset(one_char_binary_array, 0, 8);	// nécessaire ?
+		ft_memset(one_char_binary_array, 0, 8);	// Reset & clean - Super important
 	}
 	if (bit_count < 8)
 	{
