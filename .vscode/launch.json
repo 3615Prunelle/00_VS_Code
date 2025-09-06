@@ -27,13 +27,14 @@
 		},
 //--------- Sum up : Configuration classique pour exécuter et déboguer un programme C avec prise en charge de la console externe. ----- //
 		{
-			"name": "Fichier en cours",
+			"name": "Fichier en cours",		// ATTENTION - Faire F5 depuis le fichier visible sur VSCOde (ne marche pas si je suis sur un .json)
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceRoot}/a.out",
+			"program": "${fileDirname}/${fileBasenameNoExtension}",			// ATTENTION - Doit matcher "args" dans tasks.json
 			// "args": ["arg1", "arg2"],
+			"args": ["      this      .      "],
 			"environment": [{ "name": "config", "value": "Debug" }],	// Définit une variable d'environnement
-			"cwd": "${workspaceFolder}",								// Racine (dossier VSCode) - Attention dans l'emploi de chemins d'acces pour args fichiers tests
+			"cwd": "${fileDirname}",					// Racine (dossier VSCode) - ATTENTION - Doit matcher "cwd" dans tasks.json
 			"preLaunchTask": "C/C++: cc build active file"				// Compile uniquement le fichier en cours d'édition
 		},
 //--------- Sum up : Lance un programme C compilé avec un flag Debug (probablement pour un mode de compilation spécifique) ------------ //
@@ -88,7 +89,7 @@
 //         			"program": "${workspaceRoot}/a.out",
 			"program": "${workspaceRoot}/4_So_Long/so_long",
             // "args": ["arg1", "arg2"],
-            "args": ["/home/sophie/Documents/00_VS_Code/4_So_Long/maps/minimal_map_for_testing.ber"],
+            "args": ["/home/sophie/Documents/00_VS_Code/4_So_Long/maps/SI_1.ber"],
             "environment": [{ "name": "config", "value": "Debug" }],
             "cwd": "${workspaceFolder}",
             // "preLaunchTask": "C/C++: cc build so_long"

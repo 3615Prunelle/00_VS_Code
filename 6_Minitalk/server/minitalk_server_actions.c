@@ -17,6 +17,7 @@ void	got_signal1(int signo, siginfo_t *info, void *other)	// Handler (can't chan
 		first_pass = 1;
 		ft_memset(one_char_binary_array, 0, 8);	// Super important
 	}
+	// kill(client_PID, SIGUSR2);
 	if (bit_count == 8)
 	{
 		bit_count = 0;

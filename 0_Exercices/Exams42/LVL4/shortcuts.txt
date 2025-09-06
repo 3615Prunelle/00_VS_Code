@@ -1,0 +1,8 @@
+inoremap ( ()<left>
+inoremap { {}<left>
+inoremap " ""<left>
+inoremap [ []<left>
+inoremap < <><left>
+inoremap ' ''<left>
+inoremap while while()<left>
+inoremap if if()<left>

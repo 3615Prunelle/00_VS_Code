@@ -12,14 +12,6 @@
 
 #include "minitalk_client.h"
 
-/*
-Envoyer, dans l'ordre :
-	Size du PID (size_t)
-	PID
-	Size string (size_t)
-	String
-*/
-
 unsigned char	*char_to_binary(unsigned char c)
 {
 	int bitmask = 128;		// N'évolue pas car on vérifie toujours le premier bit (et on shift le binaire du char vers la gauche)
