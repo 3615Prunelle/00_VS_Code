@@ -6,8 +6,8 @@
 
 unsigned char	reverse_bits(unsigned char octet)
 {
-	// octet is		1 0 1 0 1 0 1 0		170 en decimal	10 10 en hexa = aa
-	// on veut		0 1 0 1 0 1 0 1		85				5 5				55
+	// octet is		1 1 1 1 0 0 0 0		240 en decimal	15 0 en hexa =	f0
+	// on veut		0 0 0 0 1 1 1 1		15				0 15			0f
 
 	unsigned char	new = '\0';		// Pour n'avoir que des 0 par défaut = base clean
 	unsigned int	bitmask = 128;
@@ -28,7 +28,7 @@ unsigned char	reverse_bits(unsigned char octet)
 int		main(void)
 {
 // Exemple : Char 'C' 🔄 Decimal 67 🔄 Binaire 0 1 0 0 0 0 1 1 🔄 0 1 0 0   0 0 1 1 🔄 Hexa 4   3
-	unsigned char	octet = 170;
+	unsigned char	octet = 240;
 	printf("Param char : [%02x]\n", octet);		// output : 0x43
 
 	unsigned char	new;
