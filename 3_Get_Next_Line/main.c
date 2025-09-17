@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 
 	if(argc >= 2)
 	{
-		// file_descriptor = open ("/home/schappuy/00_VS_Code/1_Libft/ft_isalpha.c", O_RDONLY);
+		// file_descriptor = open ("/home/schappuy/00_Root/1_Libft/ft_isalpha.c", O_RDONLY);
 		file_descriptor = open (argv[1], O_RDONLY);	// Test to fetch file to read from shell
 
 		line_number = 1;

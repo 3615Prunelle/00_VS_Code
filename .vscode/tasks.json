@@ -352,7 +352,7 @@ Explication des clés principales :
 - detail			Indique que la tâche a été générée automatiquement par le debugger.
 
 VSCode définit ${workspaceFolder} comme la racine du projet ouvert dans VSCode, donc pour moi :
-/home/sophie/Documents/00_VS_Code
+/home/sophie/Documents/00_Root
 
 De la même manière, voici la bonne synthaxe pour désigner le dossier d'un fichier spécifique :
 ${fileDirname}

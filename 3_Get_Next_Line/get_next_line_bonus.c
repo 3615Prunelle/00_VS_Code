@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 23:21:43 by schappuy          #+#    #+#             */
-/*   Updated: 2025/04/20 18:20:05 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/09/17 23:00:56 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,16 +126,16 @@ int	main(void)
 	char		*grand_final[amount_of_fd];
 	int			fd_finished[amount_of_fd];
 
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_nl", O_RDONLY);
-	 file_descriptor1 = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_42_char_no_nl", O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_42_char_with_nl", O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_multiple_line_no_nl", O_RDONLY);
-	 file_descriptor2 = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_multiple_line_with_nl", O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_multiple_nlx5", O_RDONLY);
-	 file_descriptor3 = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_alternate_line_nl_no_nl", O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_alternate_line_nl_with_nl", O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_big_line_no_nl", O_RDONLY);
-	// file_descriptor = open ("/home/schappuy/00_VS_Code/3_Get_Next_Line/TestFile_big_line_with_nl", O_RDONLY);
+	// file_descriptor = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_nl", O_RDONLY);
+	 file_descriptor1 = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_42_char_no_nl", O_RDONLY);
+	// file_descriptor = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_42_char_with_nl", O_RDONLY);
+	// file_descriptor = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_multiple_line_no_nl", O_RDONLY);
+	 file_descriptor2 = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_multiple_line_with_nl", O_RDONLY);
+	// file_descriptor = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_multiple_nlx5", O_RDONLY);
+	 file_descriptor3 = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_alternate_line_nl_no_nl", O_RDONLY);
+	// file_descriptor = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_alternate_line_nl_with_nl", O_RDONLY);
+	// file_descriptor = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_big_line_no_nl", O_RDONLY);
+	// file_descriptor = open ("/home/schappuy/00_Root/3_Get_Next_Line/TestFile_big_line_with_nl", O_RDONLY);
 	// file_descriptor = open ("", O_RDONLY);
 
 	fd_array[0] = file_descriptor1;
