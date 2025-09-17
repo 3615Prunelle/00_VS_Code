@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 15:47:23 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/09 10:20:48 by sophie           ###   ########.fr       */
+/*   Updated: 2025/09/09 15:33:57 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct stacks
 int				*two_argv(char *input, int *numbers_arr, int *arr_size);
 int				*above_two_argv(char **inputs, int argc, int *numbers_arr,
 					int *arr_size);
-int				ft_atol(char *s);
+int				ft_atoi_check_long(char *s, int *numbers_arr);
 int				count_numbers(char *s);
 int				*string_to_int_array(char *s, int *numbers_arr);
 bool			is_numerical_only(char *s);

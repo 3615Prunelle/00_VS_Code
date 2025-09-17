@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long_checkers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:27 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/22 17:27:53 by sophie           ###   ########.fr       */
+/*   Updated: 2025/09/09 14:49:55 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	check_everything(t_game *game)
 	int		ctibles_amount;
 	t_game	game_copy;
 
-	if (!are_walls_approved(*game))
+	if ((!are_walls_approved(*game)) || (!are_chars_valid(*game)))
 	{
 		ft_dprintf(2, "Error : [%s]\n", ERR_MSG_04);
 		return (false);
@@ -76,31 +76,28 @@ bool	are_walls_approved(t_game game)
 	return (true);
 }
 
-// Return -1 si element not found - Utile pour debug
-t_tile	get_tile_position(t_game game, char element)
+// while (j < game.max_columns - 1) car on ne veut pas checker le \n
+bool	are_chars_valid(t_game game)
 {
-	int		y;
-	int		x;
-	t_tile	element_position;
+	int	i;
+	int	j;
 
-	y = 0;
-	element_position.line = -1;
-	element_position.column = -1;
-	while (y < game.max_lines)
+	i = 0;
+	while (i < game.max_lines)
 	{
-		x = 0;
-		while (x < game.max_columns)
+		j = 0;
+		while (j < game.max_columns - 1)
 		{
-			if (game.content[y][x] == element)
-			{
-				element_position.line = y;
-				element_position.column = x;
-			}
-			x++;
+			if ((game.content[i][j] == '1') || (game.content[i][j] == '0')
+				|| (game.content[i][j] == 'P') || (game.content[i][j] == 'C')
+					|| (game.content[i][j] == 'E' ))
+				j++;
+			else
+				return (false);
 		}
-		y++;
+		i++;
 	}
-	return (element_position);
+	return (true);
 }
 
 // Check qu'il y a seulement : 1 joueur + 1 escape / AU MOINS 1 collec ✅

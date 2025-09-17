@@ -255,9 +255,9 @@
 		{
 			"label": "Build with Makefile for So_Long",
 			"type": "shell",
-			"command": "make",
-//			"args": [],				// Par défaut, commande make. Ajouter ["fclean"] ou autre si nécessaire
-			"args": ["re"],
+			"command": "make",							// Par défaut, commande make. Ajouter ["fclean"] ou autre si nécessaire (dessous)
+//			"args": [],
+			"args": ["re"],								// Complément de la commande Make
 			"options": {
 				"cwd": "${workspaceFolder}/4_So_Long",	// Localisation du Makefile
 			},
@@ -282,58 +282,14 @@
 			},
 			"problemMatcher": []
 		},
-//--------- Tâche 11 : Compil pour Minitalk Server ----------------------------------------------------------------------------------------------------- //
+//--------- Tâche 11 : Compil pour Minitalk ----------------------------------------------------------------------------------------------------- //
 		{
-			"label": "C/C++: cc build minitalk server",
+			"label": "Build with Makefile for Minitalk",
 			"type": "shell",
-			"command": "/usr/bin/cc",
-			"args": [
-				"-g",
-				"minitalk_server_main.c",
-				"minitalk_binary_conversions_s.c",
-				"minitalk_server_actions.c",
-				"-I${workspaceFolder}/98_include",
-				"-L${workspaceFolder}/99_lib",
-				"-L${workspaceFolder}/6_Minitalk/server/server",
-				"-o",
-				"${workspaceFolder}/6_Minitalk/server/server",
-				// "-Wall",						// Active tous les avertissements de base
-				// "-Wextra",					// Active des avertissements supplémentaires
-				// "-Werror",					// Traite les avertissements comme des erreurs
-				"-lftprintf",					// A chaque nouveau .a/.h à utiliser, ajouter une ligne au dessus de celle-ci. Penser à compiler le projet avant de tester dans VSCode
-				"-lft"							// -lft = -l ft = -l (lib)ft = Liaison avec libft.a - A METTRE A LA FIN IMPERATIVEMENT Sinon bug de type 'undefined reference to ft_*'
-			],
+			"command": "make",
+			"args": ["re"],				// Par défaut, commande make. Ajouter ["re] ou autre si nécessaire
 			"options": {
-				"cwd": "${workspaceFolder}/6_Minitalk/server"
-			},
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"problemMatcher": []
-		},
-//--------- Tâche 11 : Compil pour Minitalk Client ------------------------------------------------------------------------------------------------------ //
-		{
-			"label": "C/C++: cc build minitalk client",
-			"type": "shell",
-			"command": "/usr/bin/cc",
-			"args": [
-				"-g",
-				"minitalk_client_main.c",
-				"minitalk_binary_conversions_c.c",
-				"-I${workspaceFolder}/98_include",
-				"-L${workspaceFolder}/99_lib",
-				"-L${workspaceFolder}/6_Minitalk/client/client",
-				"-o",
-				"${workspaceFolder}/6_Minitalk/client/client",
-				// "-Wall",
-				// "-Wextra",
-				// "-Werror",
-				"-lftprintf",
-				"-lft"
-			],
-			"options": {
-				"cwd": "${workspaceFolder}/6_Minitalk/client"
+				"cwd": "${workspaceFolder}/6_Minitalk/"		// Localisation du Makefile
 			},
 			"group": {
 				"kind": "build",

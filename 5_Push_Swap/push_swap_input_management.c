@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap_input_management.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 17:33:43 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/03 17:43:25 by sophie           ###   ########.fr       */
+/*   Updated: 2025/09/09 15:46:14 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	*string_to_int_array(char *s, int *numbers_arr)
 	i = 0;
 	while (strings_array[i] != NULL)
 	{
-		numbers_arr[i] = ft_atol(strings_array[i]);
+		numbers_arr[i] = ft_atoi_check_long(strings_array[i], numbers_arr);
 		i++;
 	}
 	i = 0;
@@ -83,11 +83,12 @@ int	*string_to_int_array(char *s, int *numbers_arr)
 	return (numbers_arr);
 }
 
-int	ft_atol(char *s)
+// Store the result in long int to check if it's within INT_MIN INT_MAX size
+int	ft_atoi_check_long(char *s, int *numbers_arr)
 {
-	int	i;
-	int	tot;
-	int	sign;
+	int			i;
+	long int	tot;
+	int			sign;
 
 	i = 0;
 	tot = 0;
@@ -105,6 +106,8 @@ int	ft_atol(char *s)
 		tot = tot * 10 + s[i] - '0';
 		i++;
 	}
+	if ((tot * sign < INT_MIN) || (tot * sign > INT_MAX))
+		clean_early_exit(ERROR_MSG, numbers_arr);
 	return (tot * sign);
 }
 

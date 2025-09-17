@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long_path_check.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:58:27 by sophie            #+#    #+#             */
-/*   Updated: 2025/08/21 14:21:51 by sophie           ###   ########.fr       */
+/*   Updated: 2025/09/09 15:01:29 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,31 @@ bool	is_path_valid(t_tile player_pos, t_tile dest_pos, t_game game_copy,
 	if (is_path_valid(player_go.right, dest_pos, game_copy, tot_ctibles))
 		return (true);
 	return (false);
+}
+
+// Return -1 si element not found - Utile pour debug
+t_tile	get_tile_position(t_game game, char element)
+{
+	int		y;
+	int		x;
+	t_tile	element_position;
+
+	y = 0;
+	element_position.line = -1;
+	element_position.column = -1;
+	while (y < game.max_lines)
+	{
+		x = 0;
+		while (x < game.max_columns)
+		{
+			if (game.content[y][x] == element)
+			{
+				element_position.line = y;
+				element_position.column = x;
+			}
+			x++;
+		}
+		y++;
+	}
+	return (element_position);
 }

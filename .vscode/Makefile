@@ -1,3 +1,24 @@
+# Modifs de config pour évals :
+
+# Créer un dossier par librairie, dans le projet actuel, et y placer :
+#		La sélection de fonctions utilisées (ou tout mettre si flemme) - ATTENTION : si ft_printf, bien penser a mettre celles de libft necessaires pour ft_printf
+#		Son Makefile
+#		Son .h
+# Updater le Makefile de chaque librairie (fonctions, bonus, règles etc si nécessaire)
+# Les .h peuvent etre les laisses comme tels, pas besoin d’enlever les lignes des fonctions pas utilisees
+# Dans le Makefile du projet, créer une target (par librairie) pour compiler les librairies nécessaires au projet
+# ATTENTION - Faire une target (relative path de l'executable) et pas une règle pour éviter problèmes de relink
+# Mettre cette target comme dépendance dans le script qui va compiler mon projet actuel
+# Mettre le dossier où se trouvent les .h et .a dans les flags de compilation de mon projet actuel
+# Ajouter des commandes pour que fclean nettoie aussi les sous dossiers
+
+# Rephrasing Important : Ajouter les libs en dépendance de $(NAME) plutôt que des règles pour éviter relink
+# $(MAKE) est une variable fournie automatiquement par le programme make (pas besoin de la créer) - Voir Makefile Eval de Push-Swap
+# -C (= Change directory) est un flag de make, qui équivaut à :
+# "Va dans ce dossier, exécute le Makefile qui est dedans, puis reviens au dossier courant”
+
+# Notes generales MakeFile :
+
 # NB :	Makefiles must be indented using TABs and not spaces (or make will fail)
 #		On déclare en premier toutes les variables dont make aura besoin pour compiler
 #		Puis on définit des règles (actions) qui utilisent ces variables et éventuellement d'autres règles
@@ -76,7 +97,7 @@ BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
 # First rule in the Makefile = Default rule to compile the library - Runs when I type "make"
 #	The 'all' rule is called by 'make' to create (NAME) after calling the ruleX
-#	$() = Variable nécésssaire (dépendance) pour l'action demandée à "all"
+#	$() = Variable nécesssaire (dépendance) pour l'action demandée à "all"
 #	ruleX = If another rule is required (as a dependency), put it here
 #	Sum up : This rule tells "make" that "all" depends on (NAME) (defined earlier), so it must be built first
 # 	Here, $(NAME) is a dependency, meaning that the bloc below this one (with $(NAME) as a target)

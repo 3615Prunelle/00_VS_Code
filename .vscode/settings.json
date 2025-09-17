@@ -15,7 +15,8 @@
 		"string_view": "c",
 		"minitalk_server.h": "c",
 		"minitalk_client.h": "c",
-		"unistd.h": "c"
+		"unistd.h": "c",
+		"string.h": "c"
 	},
 		"files.exclude": {
 			"**/*.o": true	// Masquer tous les .o après chaque compilation

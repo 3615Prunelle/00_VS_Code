@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sophie <sophie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:07:11 by schappuy          #+#    #+#             */
-/*   Updated: 2025/08/22 17:54:50 by sophie           ###   ########.fr       */
+/*   Updated: 2025/09/09 14:59:36 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,37 @@
 // Use other Makefile for evals (done - Same repo)
 
 // ⚪ #define
-// Paths to update depending on computer - If Eval, use other Makefile
+// Paths to update depending on computer/tool - If Eval, use other Makefile
 // Bien penser à changer path des textures avant eval
+
+/*
+// Below paths for VSCode debug from root repo
 # define PATH_GROUND "./4_So_Long/textures/ic_Square_Purple.png"
 # define PATH_WALL "./4_So_Long/textures/ic_Square_Black.png"
 # define PATH_PLAYER "./4_So_Long/textures/ic_Player_Diplo.png"
 # define PATH_COLLEC "./4_So_Long/textures/ic_Collectible_Corn.png"
 # define PATH_ESCAPE "./4_So_Long/textures/ic_Escape_Bike.png"
+ */
+
+# define PATH_GROUND "./textures/ic_Square_Purple.png"
+# define PATH_WALL "./textures/ic_Square_Black.png"
+# define PATH_PLAYER "./textures/ic_Player_Diplo.png"
+# define PATH_COLLEC "./textures/ic_Collectible_Corn.png"
+# define PATH_ESCAPE "./textures/ic_Escape_Bike.png"
+
 # define RIGHT 6
 # define LEFT 4
 # define UP 8
 # define DOWN 2
 
-# define WALL '1'
-# define PLAYER 'P'
-# define COLLEC 'C'
-# define ESCAPE 'E'
-# define EMPTY_SPACE '0'
-# define CHECKED 'V'
+// Used ASCII Values otherwise Norminette gives a false positive :
+// "Preprocessor statement must only contain constant defines"
+# define WALL 49			// ASCII for '1'
+# define PLAYER 80			// ASCII for 'P'
+# define COLLEC 67			// ASCII for 'C'
+# define ESCAPE 69			// ASCII for 'E'
+# define EMPTY_SPACE 48		// ASCII for '0'
+# define CHECKED 86			// ASCII for 'V'
 
 # define GAME_NAME "Space Invader Diplo Corn Quest"
 
@@ -43,7 +56,7 @@
 # define ERR_MSG_01 "No map, no play !"
 # define ERR_MSG_02 "Map file extension must be .ber"
 # define ERR_MSG_03 "Map empty or not displayable"
-# define ERR_MSG_04 "Your funky map is not valid, check the walls position !"
+# define ERR_MSG_04 "No funky map allowed (Check chars / walls position) !"
 # define ERR_MSG_05 "Your artistic map isn't valid, it has to be rectangular !"
 # define ERR_MSG_06 "Map too small, no space to play :( "
 # define ERR_MSG_07 "Something is missing (Player / Collectible / Exit)"
@@ -54,7 +67,6 @@
 # define TILE_SIZE 72
 
 // ⚪ #include
-# include <MLX42/MLX42.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -65,6 +77,7 @@
 # include <libft.h>
 # include <ft_printf.h>
 # include <get_next_line.h>
+# include <MLX42.h>
 // mettre les repos 99/98 au lieu des include
 
 // ⚪ Structs
@@ -104,6 +117,7 @@ void			get_map_size(int fd, t_game *game);
 void			set_structs_pointers_to_null(t_game *game);
 bool			check_everything(t_game *game);
 bool			are_walls_approved(t_game game);
+bool			are_chars_valid(t_game game);
 bool			is_path_valid(t_tile player_pos, t_tile dest_pos,
 					t_game game_copy, int tot_ctibles);
 bool			path_pre_checks(t_game *game_copy, t_tile *player_pos);
