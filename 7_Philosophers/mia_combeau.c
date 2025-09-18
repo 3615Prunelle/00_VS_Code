@@ -13,8 +13,7 @@ void *thread_routine(void *data)
  // La fonction pthread_self() renvoie
  // l'identifiant propre à ce thread.
  tid = pthread_self();
- printf("%sThread [%ld]: Le plus grand ennui c'est d'exister sans vivre.%s\n",
-  YELLOW, tid, NC);
+ printf("%sThread [%ld]: Le plus grand ennui c'est d'exister sans vivre.%s\n", YELLOW, tid, NC);
  return (NULL); // Le thread termine ici.
 }
 

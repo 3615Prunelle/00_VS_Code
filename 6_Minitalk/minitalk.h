@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 23:41:59 by sophie            #+#    #+#             */
-/*   Updated: 2025/09/17 19:07:49 by schappuy         ###   ########.fr       */
+/*   Updated: 2025/09/17 23:14:19 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h> // Pour getpid, usleep (& others TBD)
+# include <unistd.h> // Pour getpid & usleep
 
 // ⚪ Functions signatures - Server
 void	receive_and_print_msg(char **buffer, uint32_t *backup_size,
@@ -42,7 +42,5 @@ bool	build_32bits(int signo, int *client_pid, uint32_t *string_size,
 void	client_handler(int signo);
 void	send_32bits(int server_pid, uint32_t size);
 void	send_8bits(int server_pid, unsigned char c);
-
-// ⚪ Clean up functions
 
 #endif

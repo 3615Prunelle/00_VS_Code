@@ -33,9 +33,9 @@
 				"${file}",
 				"-o",
 				"${fileDirname}/${fileBasenameNoExtension}",	// Génère un exécutable du nom du fichier, dans le dossier du fichier - ATTENTION, doit matcher "program" dans launch.json
-				"-Wall",						// Active tous les avertissements de base
-				"-Wextra",						// Active des avertissements supplémentaires
-				"-Werror",						// Traite les avertissements comme des erreurs
+				// "-Wall",						// Active tous les avertissements de base
+				// "-Wextra",						// Active des avertissements supplémentaires
+				// "-Werror",						// Traite les avertissements comme des erreurs
 			],
 			"options": {
 				"cwd": "${fileDirname}"				// Path du repo où se trouve le fichier à compiler (mentionné plus haut) - ATTENTION - Doit matcher "cwd" dans launch.json
@@ -80,7 +80,7 @@
 		},
 //--------- Tâche 4 : Compile et linke LibFt (essentiel pour tester des projets 42) -------------------------------------------------------------------- //
 		{
-			"type": "cppbuild",						// Tache 5
+			"type": "cppbuild",
 			"label": "My LibFt library",
 			"command": "/usr/bin/cc",
 			"args": [
@@ -297,7 +297,22 @@
 			},
 			"problemMatcher": []
 		},
-//--------- Tâche 12 : Tâche tuto (garder en dernier) --------------------------------------------------------------------------------------------------- //
+//--------- Tâche 12 : Compil pour Philosophers ----------------------------------------------------------------------------------------------------- //
+		{
+			"label": "Build with Makefile for Philosophers",
+			"type": "shell",
+			"command": "make",
+			"args": ["re"],				// Par défaut, commande make. Ajouter ["re] ou autre si nécessaire
+			"options": {
+				"cwd": "${workspaceFolder}/7_Philosophers/"		// Localisation du Makefile
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+//--------- Tâche 99 : Tâche tuto (garder en dernier) --------------------------------------------------------------------------------------------------- //
 		{
 			"label": "C/C++: Tâche",	// Nom de la tâche appelée par la config
 			"type": "shell",
@@ -334,7 +349,8 @@
 	"version": "2.0.0"
 }
 
-/*Ce fichier tasks.json est utilisé par VS Code pour automatiser la compilation des fichiers C
+/*
+Ce fichier tasks.json est utilisé par VS Code pour automatiser la compilation des fichiers C
 via des tâches. Il définit plusieurs tâches de compilation qui peuvent être exécutées avant
 le lancement du programme (comme défini dans launch.json).
 Chaque tâche est une commande shell ou système qui exécute un compilateur (gcc, clang ou cc)
@@ -356,5 +372,4 @@ VSCode définit ${workspaceFolder} comme la racine du projet ouvert dans VSCode,
 
 De la même manière, voici la bonne synthaxe pour désigner le dossier d'un fichier spécifique :
 ${fileDirname}
-
 */

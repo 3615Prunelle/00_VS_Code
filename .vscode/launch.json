@@ -117,7 +117,7 @@
 			// "preLaunchTask": "C/C++: cc build push_swap"
 			"preLaunchTask": "Build with Makefile for Push_Swap"
 		},
-//--------- Minitalk 1/2 ----------------------------------------------------------------------------------------------------- //
+//--------- Minitalk 1/2 --------------------------------------------------------------------------------------------------------------- //
 		{
 			"name": "Minitalk Server w/ Makefile",
 			"type": "cppdbg",
@@ -132,7 +132,7 @@
 			],
 			"preLaunchTask": "Build with Makefile for Minitalk"
 		},
-//--------- Minitalk 2/2 ----------------------------------------------------------------------------------------------------- //
+//--------- Minitalk 2/2 --------------------------------------------------------------------------------------------------------------- //
 		{
 			"name": "Minitalk Client w/ Makefile",
 			"type": "cppdbg",
@@ -147,6 +147,22 @@
 				{ "text": "handle SIGUSR2 nostop pass" }	// intercepte le signal avant mon programme ('interupt' ou autre erreur)
 			],
 			"preLaunchTask": "Build with Makefile for Minitalk"
+		},
+//--------- Philosophers --------------------------------------------------------------------------------------------------------------- //
+		{
+			"name": "Philosophers w/ Makefile",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceRoot}/7_Philosophers/philo",
+			// "args": [""],
+			"environment": [{ "name": "config", "value": "Debug" }],
+			"cwd": "${workspaceFolder}",
+			"MIMode": "gdb",
+			"setupCommands": [
+				{ "text": "handle SIGUSR1 nostop pass" },	// Indispensable pour débug dans VSCode, sinon erreur car gdb
+				{ "text": "handle SIGUSR2 nostop pass" }	// intercepte le signal avant mon programme ('interupt' ou autre erreur)
+			],
+			"preLaunchTask": "Build with Makefile for Philosophers"
 		},
 //--------- Tuto Config - A garder en dernier ------------------------------------------------------------------------------------------- //
 		// {
