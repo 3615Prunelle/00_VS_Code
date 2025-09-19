@@ -13,6 +13,7 @@
 
 int j = 0;
 
+// A thread function takes a void pointer, and returns a void pointer
 void *sandbox_thread(void *data)
 {
 	pthread_t	which_ID_is_curently_here;
