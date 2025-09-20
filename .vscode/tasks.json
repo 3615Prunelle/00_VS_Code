@@ -3,7 +3,7 @@
 //--------- Tâche 1 : Compilation la plus basique, utile pour compiler et exécuter un seul fichier C sans créer de projet plus complexe ----------------- //
 		{
 			"type": "cppbuild",
-			"label": "C/C++: gcc build active file",		// Attention, tâches aux noms similaires plus bas, ne pas confondre (ici, compilateur gcc)
+			"label": "C/C++: build active file w/gcc",		// Attention, tâches aux noms similaires plus bas, ne pas confondre (ici, compilateur gcc)
 			"command": "/usr/bin/gcc",						// Utilise gcc pour compiler le fichier C actuellement ouvert (${file})
 			"args": [
 				"-g",										// Ajoute le flag -g pour inclure des informations de débogage
@@ -30,6 +30,7 @@
 			"command": "/usr/bin/cc",					// Utilise cc (un alias pour gcc ou clang) pour compiler le fichier ouvert
 			"args": [
 				"-g",
+				// "-fsanitize=thread",					// Utile pour spotter des data race quand je manipule des threads
 				"${file}",
 				"-o",
 				"${fileDirname}/${fileBasenameNoExtension}",	// Génère un exécutable du nom du fichier, dans le dossier du fichier - ATTENTION, doit matcher "program" dans launch.json

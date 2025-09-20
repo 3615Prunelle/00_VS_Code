@@ -154,7 +154,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceRoot}/7_Philosophers/philo",
-			// "args": [""],
+			"args": ["5", "10", "20", "30", "4"],
 			"environment": [{ "name": "config", "value": "Debug" }],
 			"cwd": "${workspaceFolder}",
 			"MIMode": "gdb",
